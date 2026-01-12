@@ -7,9 +7,58 @@
 
 	<link rel="preload" href="/fonts/bricolage-grotesque-v9-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
 </head>
-<body class="text-sm leading-10">
+<body class="font-body text-sm leading-5">
 	<JsRequired></JsRequired>
 
+	<div class="app-container">
+		<!-- Description about myself -->
+		<div class="myself p-14">
+			<SectionHeader
+				title="À PROPOS"
+				svgPath="<path d='M21.3333 2.66667V5.33334' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><path d='M23.8867 29.3333C23.8867 27.2116 23.0438 25.1768 21.5435 23.6765C20.0432 22.1762 18.0084 21.3333 15.8867 21.3333C13.7649 21.3333 11.7301 22.1762 10.2298 23.6765C8.72953 25.1768 7.88667 27.2116 7.88667 29.3333' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><path d='M10.6667 2.66667V5.33334' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><path d='M16 21.3333C18.9455 21.3333 21.3333 18.9455 21.3333 16C21.3333 13.0545 18.9455 10.6667 16 10.6667C13.0545 10.6667 10.6667 13.0545 10.6667 16C10.6667 18.9455 13.0545 21.3333 16 21.3333Z' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/><path d='M25.3333 5.33333H6.66667C5.19391 5.33333 4 6.52724 4 7.99999V26.6667C4 28.1394 5.19391 29.3333 6.66667 29.3333H25.3333C26.8061 29.3333 28 28.1394 28 26.6667V7.99999C28 6.52724 26.8061 5.33333 25.3333 5.33333Z' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'"
+			></SectionHeader>
 
+			<div class="mt-12">
+				<h2 class="font-header font-extrabold text-5xl">Johan</h2>
+
+				<div class="mt-6 space-y-3">
+					<Skill
+						name="Développeur"
+						svgPath="<path d='M10 15.8333H16.6667' stroke='currentColor' stroke-opacity='0.95' stroke-width='2.15' stroke-linecap='round' stroke-linejoin='round'/><path d='M3.33333 14.1667L8.33333 9.16667L3.33333 4.16667' stroke='currentColor' stroke-opacity='0.95' stroke-width='2.15' stroke-linecap='round' stroke-linejoin='round'/>"
+					></Skill>
+					<Skill
+						name="Étudiant"
+						additional="(17 ans)"
+						svgPath="<path d='M17.85 9.10167C17.9992 9.03585 18.1258 8.92772 18.2141 8.79067C18.3024 8.65362 18.3486 8.49366 18.3469 8.33061C18.3453 8.16757 18.2958 8.0086 18.2046 7.8734C18.1135 7.7382 17.9847 7.63271 17.8342 7.57L10.6917 4.31667C10.4745 4.21762 10.2387 4.16637 10 4.16637C9.76134 4.16637 9.52547 4.21762 9.30833 4.31667L2.16667 7.56667C2.01831 7.63164 1.8921 7.73845 1.80347 7.87401C1.71485 8.00958 1.66765 8.16803 1.66765 8.33C1.66765 8.49197 1.71485 8.65042 1.80347 8.78599C1.8921 8.92155 2.01831 9.02836 2.16667 9.09333L9.30833 12.35C9.52547 12.449 9.76134 12.5003 10 12.5003C10.2387 12.5003 10.4745 12.449 10.6917 12.35L17.85 9.10167Z' stroke='currentColor' stroke-opacity='0.95' stroke-width='2.05' stroke-linecap='round' stroke-linejoin='round'/><path d='M18.3333 8.33333V13.3333' stroke='currentColor' stroke-opacity='0.95' stroke-width='2.05' stroke-linecap='round' stroke-linejoin='round'/><path d='M5 10.4167V13.3333C5 13.9964 5.52678 14.6323 6.46447 15.1011C7.40215 15.5699 8.67392 15.8333 10 15.8333C11.3261 15.8333 12.5979 15.5699 13.5355 15.1011C14.4732 14.6323 15 13.9964 15 13.3333V10.4167' stroke='currentColor' stroke-opacity='0.95' stroke-width='2.05' stroke-linecap='round' stroke-linejoin='round'/>"
+					></Skill>
+				</div>
+
+				<div class="mt-7 flex flex-wrap gap-2">
+					<SocialButton
+						label="Twitter"
+						href="https://x.com/Johan_Stickman"
+						svgPath="<path d='M15.5833 2.83333C15.5833 2.83333 15.0875 4.32083 14.1667 5.24166C15.3 12.325 7.50834 17.4958 1.41667 13.4583C2.97501 13.5292 4.53334 13.0333 5.66667 12.0417C2.12501 10.9792 0.354172 6.8 2.12501 3.54166C3.68334 5.38333 6.09167 6.44583 8.50001 6.375C7.86251 3.4 11.3333 1.7 13.4583 3.68333C14.2375 3.68333 15.5833 2.83333 15.5833 2.83333Z' stroke='currentColor' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/>"
+					></SocialButton>
+
+					<SocialButton
+						label="GitHub"
+						href="https://github.com/johan-perso"
+						svgPath="<path d='M10.625 15.5833V12.75C10.7235 11.8627 10.4691 10.9722 9.91667 10.2708C12.0417 10.2708 14.1667 8.85416 14.1667 6.375C14.2233 5.48958 13.9754 4.61833 13.4583 3.89583C13.6567 3.08125 13.6567 2.23125 13.4583 1.41666C13.4583 1.41666 12.75 1.41666 11.3333 2.47916C9.46333 2.125 7.53667 2.125 5.66667 2.47916C4.25 1.41666 3.54167 1.41666 3.54167 1.41666C3.32917 2.23125 3.32917 3.08125 3.54167 3.89583C3.02591 4.61542 2.77559 5.49155 2.83333 6.375C2.83333 8.85416 4.95833 10.2708 7.08333 10.2708C6.80708 10.6179 6.60167 11.0146 6.48125 11.4396C6.36083 11.8646 6.32542 12.3108 6.375 12.75V15.5833' stroke='currentColor' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/><path d='M6.375 12.75C3.18041 14.1667 2.83333 11.3333 1.41666 11.3333' stroke='currentColor' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/>"
+					></SocialButton>
+
+					<SocialButton
+						label="Telegram"
+						href="https://t.me/johanstick"
+						svgPath="<g clip-path='url(#clip0_25_48)'><path d='M10.2963 15.3609C10.3232 15.428 10.37 15.4852 10.4304 15.5249C10.4908 15.5646 10.5619 15.5849 10.6341 15.5831C10.7063 15.5812 10.7763 15.5573 10.8345 15.5146C10.8928 15.4718 10.9366 15.4123 10.96 15.3439L15.5642 1.88558C15.5869 1.82282 15.5912 1.7549 15.5767 1.68976C15.5622 1.62463 15.5294 1.56498 15.4822 1.5178C15.435 1.47061 15.3754 1.43784 15.3102 1.42332C15.2451 1.40879 15.1772 1.41312 15.1144 1.43579L1.65608 6.03996C1.58773 6.0634 1.52818 6.10719 1.48543 6.16545C1.44268 6.22371 1.41877 6.29366 1.41692 6.3659C1.41507 6.43814 1.43536 6.50922 1.47508 6.56959C1.51479 6.62997 1.57202 6.67675 1.63908 6.70366L7.25617 8.95616C7.43374 9.02726 7.59507 9.13357 7.73044 9.2687C7.86581 9.40383 7.97242 9.56497 8.04383 9.74241L10.2963 15.3609Z' stroke='currentColor' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/><path d='M15.4799 1.52079L7.73075 9.26925' stroke='currentColor' stroke-width='1.35' stroke-linecap='round' stroke-linejoin='round'/></g><defs><clipPath id='clip0_25_48'><rect width='17' height='17' fill='white'/></clipPath></defs>"
+					></SocialButton>
+				</div>
+			</div>
+		</div>
+
+		<!-- Main page content -->
+		<div class="content">
+			<p>test2</p>
+		</div>
+	</div>
 </body>
 </html>

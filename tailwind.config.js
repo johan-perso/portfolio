@@ -7,10 +7,19 @@ module.exports = {
 	},
 	theme: {
 		extend: {
+			fontFamily: {
+				'header': ['Schibsted Grotesk', 'system-ui', 'sans-serif'],
+				'body': ['Bricolage Grotesque', 'system-ui', 'sans-serif'],
+			},
 			colors: {
 				'primary-background': '#FFFFFF',
 				'primary-header': '#181818',
 				'primary-content': '#383838',
+
+				'light-background': '#F8F8F8',
+				'light-background-heavy': '#F1F1F1', // 60% F8F8F8
+				'light-content': '#98A2B3',
+
 				'link': '#2563EB',
 			}
 		},

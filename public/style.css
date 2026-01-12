@@ -2,9 +2,26 @@
 	font-synthesis: none !important;
 }
 
+/* Main content grid */
+.app-container {
+  height: 100dvh;
 
+  display: grid;
+  grid-template-columns: 40% 60%;
+  grid-template-rows: 1fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.app-container > .myself { grid-area: 1 / 1 / 2 / 2; }
+.app-container > .content { grid-area: 1 / 2 / 2 / 3; }
 
-/* Polices d'écritures */
+.myself *, .content * {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  min-width: 0;
+}
+
+/* Fonts */
 @font-face {
   font-display: swap;
   font-family: 'Bricolage Grotesque';
