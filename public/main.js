@@ -11,12 +11,16 @@ function switchInterface(mode) {
         slider.style.left = `${machineBtn.offsetLeft}px`
         slider.style.width = `${machineBtn.offsetWidth}px`
 
+		humanBtn.classList.add('hover:shadow-inner')
+		machineBtn.classList.remove('hover:shadow-inner')
         machineBtn.setAttribute('disabled', 'true')
         humanBtn.removeAttribute('disabled')
     } else if(mode == 'human') {
         slider.style.left = `${humanBtn.offsetLeft}px`
         slider.style.width = `${humanBtn.offsetWidth}px`
 
+		machineBtn.classList.add('hover:shadow-inner')
+		humanBtn.classList.remove('hover:shadow-inner')
         humanBtn.setAttribute('disabled', 'true')
         machineBtn.removeAttribute('disabled')
     }
