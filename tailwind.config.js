@@ -15,6 +15,7 @@ module.exports = {
 				'primary-background': '#FFFFFF',
 				'primary-header': '#181818',
 				'primary-content': '#383838',
+				'primary-content-heavy': '#1B1B1B',
 
 				'light-background': '#F8F8F8',
 				'light-background-heavy': '#F1F1F1', // 60% #F8F8F8

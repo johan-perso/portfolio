@@ -1,6 +1,6 @@
-<div class="flex flex-row items-center space-x-2 text-light-content">
+<div class="flex flex-row items-center space-x-2 text-light-content {{ $class }}">
 	<svg width='24' height='24' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'>
 		{{ $svgPath }}
 	</svg>
-	<p class="mt-1 font-semibold uppercase">{{ $title }} <span class="sr-only">:</span></p>
+	<p class="{{ this.componentAttribs.addmargintitle ? 'mt-1' : '' }} font-semibold uppercase">{{ $title }} <span class="sr-only">:</span></p>
 </div>
