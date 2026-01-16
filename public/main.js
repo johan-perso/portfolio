@@ -1,16 +1,21 @@
+// ========== Main Variables
+var myselfContainerWidth = 200
+var toastsTimeout = {}
+var toastsClearFunctions = {}
+
 // ========== Main Events
 window.onload = async function(){
 	switchInterface('human') // performs initial width math operations
 	initDropdown()
 
-	const myselfContainerWidth = `${document.getElementById('myselfContainer').clientWidth}px`
+	myselfContainerWidth = document.getElementById('myselfContainer').clientWidth
 	for(var id of ['segmentedControls', 'newsBannerContainer', 'othersTextualAboutMeSections']) {
 		var element = document.getElementById(id)
 		if(!element) {
 			console.warn(`Element with id "${id}" not found for width adjustment.`)
 			continue
 		}
-		element.style.width = myselfContainerWidth
+		element.style.width = `${myselfContainerWidth}px`
 		element.classList.remove('opacity-0') // hide resizing weird rendering at page loading
 	}
 }
@@ -83,21 +88,68 @@ function closeDropdown() {
 }
 
 // ========== Toast Notification
-function showToast(message, duration=3000) {
-	const toast = document.createElement('div')
-	toast.className = 'fixed bottom-4 left-4 bg-gray-800 text-white px-4 py-2 rounded shadow-lg opacity-0 transition-opacity duration-300 z-50'
-	toast.innerText = message
-	document.body.appendChild(toast)
+function showToast(message, duration = 0) {
+	// Check if there is already existing toast
+	for(const id in toastsTimeout) {
+		if(toastsTimeout.hasOwnProperty(id)) {
+			clearTimeout(toastsTimeout[id])
+			toastsClearFunctions[id]()
+			delete toastsTimeout[id]
+			delete toastsClearFunctions[id]
+		}
+	}
 
-	// Trigger reflow to apply the transition
-	void toast.offsetWidth
-	toast.style.opacity = '1'
+	const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth
+	const isShortScreen = screenWidth < 500
 
-	setTimeout(() => {
+	const randomId = `toast-${Math.random().toString(36)}${Date.now().toString(36)}`
+	console.log(`Showing toast (id=${randomId} ; isShortScreen = ${isShortScreen}): "${message}"`)
+
+	const text = document.createElement('p')
+	text.textContent = message
+	text.classList = 'flex items-center justify-center'
+
+    const toast = document.createElement('div')
+    toast.className = `toast z-50 fixed bottom-4 ${isShortScreen ? '' : 'right-4'} bg-blur px-5 py-2 border-2 border-light-background-heavy bg-[rgba(248,248,248,0.4)] text-primary-content font-medium rounded-full bg-heavy-blur`
+	toast.id = randomId
+    toast.style.opacity = '0'
+    toast.style.transform = 'translateY(100px)'
+    toast.style.transition = 'opacity 200ms ease-out, transform 200ms ease-out'
+    toast.style.boxShadow = '0px 4px 4px rgba(223,223,223,0.45);'
+    toast.appendChild(text)
+
+    if(!isShortScreen) {
+		toast.style.width = `${myselfContainerWidth + 40}px`
+	} else {
+		toast.style.width = `${(screenWidth - 40) > 100 ? (screenWidth - 40) : screenWidth}px`
+		toast.style.left = '50%'
+		toast.style.transform = 'translate(-50%, 0)'
+		toast.style.textAlign = 'center'
+	}
+
+    document.body.appendChild(toast)
+    void toast.offsetWidth // force trigger animation
+	if(!isShortScreen) toast.style.transform = 'translateY(0)'
+    toast.style.opacity = '1'
+
+	if(duration == 0) {
+		duration = (message.length * 90)
+		console.log(`Toast duration set to ${duration}ms for message length ${message.length}`)
+	}
+	if(duration < 3000) duration = 3000 // min 3s
+	if(duration > 15000) duration = 15000 // max 15s
+
+	toastsClearFunctions[randomId] = () => {
 		toast.style.opacity = '0'
+		if(!isShortScreen) toast.style.transform = 'translateY(100px)'
 		toast.addEventListener('transitionend', () => {
-			document.body.removeChild(toast)
+			try { document.getElementById(randomId).remove() } catch(e) {}
 		})
+	}
+    toastsTimeout[randomId] = setTimeout(() => {
+		toastsClearFunctions[randomId]()
+		delete toastsTimeout[randomId]
+		delete toastsClearFunctions[randomId]
 	}, duration)
 }
 
@@ -113,18 +165,19 @@ function copyCryptoAddress(crypto) {
 	switch(crypto) {
 		case 'eth':
 			navigator.clipboard.writeText('0x1e198e9Df0519bE9E759E8995518D1A5F8025F0a')
-			showToast('Adresse Ethereum/Base copiée dans le presse-papier !', 2000)
+			showToast('Adresse Ethereum copiée dans le presse-papier !')
 			break
 		case 'btc':
 			navigator.clipboard.writeText('bc1q4ghg2wve6yneadxy58fz5m77jmwyxxtk94jxfj')
-			showToast('Adresse Bitcoin copiée dans le presse-papier !', 2000)
+			showToast('Adresse Bitcoin copiée dans le presse-papier !')
 			break
 		case 'sol':
 			navigator.clipboard.writeText('CfCVJBGqsqiAJ7rDCkUwvMYsmkzSLcjL7CQ1RmBiwfoP')
-			showToast('Adresse Solana copiée dans le presse-papier !', 2000)
+			showToast('Adresse Solana copiée dans le presse-papier !')
 			break
 		default:
 			console.warn(`Unknown crypto type: ${crypto}`)
+			showToast('Type de cryptomonnaie inconnu, veuillez signalez ce problème.')
 			return
 	}
 }
