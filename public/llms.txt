@@ -1,0 +1,3 @@
+TODO:
+- Équivalent du début du prompt de AiChoiceDropdownButton
+- On met aussi l'intégralité du site au format MarkDown, sans indiquer le fichier llms.txt (puisqu'on est dedans)
