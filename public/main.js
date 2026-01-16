@@ -18,6 +18,16 @@ window.onload = async function(){
 		element.style.width = `${myselfContainerWidth}px`
 		element.classList.remove('opacity-0') // hide resizing weird rendering at page loading
 	}
+
+	if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
+}
+
+window.onhashchange = function(event){
+	if(window.location.hash == '#contact'){
+		highlightSection(document.getElementById('contactSection'))
+	} else if(window.location.hash == '#donate'){
+		highlightSection(document.getElementById('donationSection'), true)
+	}
 }
 
 // ========== Human/Machine Interface
@@ -151,6 +161,48 @@ function showToast(message, duration = 0) {
 		delete toastsTimeout[randomId]
 		delete toastsClearFunctions[randomId]
 	}, duration)
+}
+
+// ========== Highlight Sections
+function highlightSection(section, smallShadow = false) {    
+	if(!section || !(section instanceof HTMLElement)) {
+		console.warn('highlightSection: Invalid section provided.')
+		return
+	}
+	if(section.classList.contains('highlighting')) {
+		console.warn('highlightSection: Section is already being highlighted.')
+		return
+	}
+
+    section.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+    });
+
+    const originalBoxShadow = section.style.boxShadow; // store for later revert
+
+	section.style.position = 'relative';
+    section.style.zIndex = '50';
+    section.style.borderRadius = '16px';
+    section.style.transition = 'box-shadow 500ms ease-out, transform 500ms ease-out';
+	section.classList.add('highlighting');
+
+    setTimeout(() => { // wait for scroll to finish before applying highlight
+        section.style.boxShadow = `
+			0 0 0 6px rgba(255, 255, 255, 0.05),
+			0 0 0 ${smallShadow ? '6' : '7'}px rgba(59, 130, 246, 0.4),
+			0 0 40px 4px rgba(59, 130, 246, 0.2),
+			0 10px 30px rgba(0, 0, 0, 0.2)
+		`;
+        section.style.transform = 'scale(1.02)';
+    }, 500);
+
+    // Revert styles after a short moment
+    setTimeout(() => {
+        section.style.boxShadow = originalBoxShadow;
+        section.style.transform = '';
+		section.classList.remove('highlighting');
+    }, 1200);
 }
 
 // ========== Others Features

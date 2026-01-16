@@ -3,5 +3,16 @@
 		"options": {
 			"redirect": "/"
 		}
-	}
+	},
+
+    "/contact.html": {
+        "options": {
+            "redirect": "/#contact"
+        }
+    },
+    "/donate.html": {
+        "options": {
+            "redirect": "/#donate"
+        }
+    }
 }
