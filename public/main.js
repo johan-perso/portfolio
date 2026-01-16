@@ -32,27 +32,27 @@ window.onhashchange = function(event){
 
 // ========== Human/Machine Interface
 function switchInterface(mode) {
-    const humanBtn = document.getElementById('segmentedControl-button-human')
-    const machineBtn = document.getElementById('segmentedControl-button-machine')
-    const slider = document.getElementById('slider')
+	const humanBtn = document.getElementById('segmentedControl-button-human')
+	const machineBtn = document.getElementById('segmentedControl-button-machine')
+	const slider = document.getElementById('slider')
 
-    if(mode == 'machine') {
-        slider.style.left = `${machineBtn.offsetLeft}px`
-        slider.style.width = `${machineBtn.offsetWidth}px`
+	if(mode == 'machine') {
+		slider.style.left = `${machineBtn.offsetLeft}px`
+		slider.style.width = `${machineBtn.offsetWidth}px`
 
 		humanBtn.classList.add('hover:shadow-inner')
 		machineBtn.classList.remove('hover:shadow-inner')
-        machineBtn.setAttribute('disabled', 'true')
-        humanBtn.removeAttribute('disabled')
-    } else if(mode == 'human') {
-        slider.style.left = `${humanBtn.offsetLeft}px`
-        slider.style.width = `${humanBtn.offsetWidth}px`
+		machineBtn.setAttribute('disabled', 'true')
+		humanBtn.removeAttribute('disabled')
+	} else if(mode == 'human') {
+		slider.style.left = `${humanBtn.offsetLeft}px`
+		slider.style.width = `${humanBtn.offsetWidth}px`
 
 		machineBtn.classList.add('hover:shadow-inner')
 		humanBtn.classList.remove('hover:shadow-inner')
-        humanBtn.setAttribute('disabled', 'true')
-        machineBtn.removeAttribute('disabled')
-    }
+		humanBtn.setAttribute('disabled', 'true')
+		machineBtn.removeAttribute('disabled')
+	}
 }
 
 // ========== Dropdown
@@ -119,16 +119,16 @@ function showToast(message, duration = 0) {
 	text.textContent = message
 	text.classList = 'flex items-center justify-center'
 
-    const toast = document.createElement('div')
-    toast.className = `toast z-50 fixed bottom-4 ${isShortScreen ? '' : 'right-4'} bg-blur px-5 py-2 border-2 border-light-background-heavy bg-[rgba(248,248,248,0.4)] text-primary-content font-medium rounded-full bg-heavy-blur`
+	const toast = document.createElement('div')
+	toast.className = `toast z-50 fixed bottom-4 ${isShortScreen ? '' : 'right-4'} bg-blur px-5 py-2 border-2 border-light-background-heavy bg-[rgba(248,248,248,0.4)] text-primary-content font-medium rounded-full bg-heavy-blur`
 	toast.id = randomId
-    toast.style.opacity = '0'
-    toast.style.transform = 'translateY(100px)'
-    toast.style.transition = 'opacity 200ms ease-out, transform 200ms ease-out'
-    toast.style.boxShadow = '0px 4px 4px rgba(223,223,223,0.45);'
-    toast.appendChild(text)
+	toast.style.opacity = '0'
+	toast.style.transform = 'translateY(100px)'
+	toast.style.transition = 'opacity 200ms ease-out, transform 200ms ease-out'
+	toast.style.boxShadow = '0px 4px 4px rgba(223,223,223,0.45);'
+	toast.appendChild(text)
 
-    if(!isShortScreen) {
+	if(!isShortScreen) {
 		toast.style.width = `${myselfContainerWidth + 40}px`
 	} else {
 		toast.style.width = `${(screenWidth - 40) > 100 ? (screenWidth - 40) : screenWidth}px`
@@ -137,10 +137,10 @@ function showToast(message, duration = 0) {
 		toast.style.textAlign = 'center'
 	}
 
-    document.body.appendChild(toast)
-    void toast.offsetWidth // force trigger animation
+	document.body.appendChild(toast)
+	void toast.offsetWidth // force trigger animation
 	if(!isShortScreen) toast.style.transform = 'translateY(0)'
-    toast.style.opacity = '1'
+	toast.style.opacity = '1'
 
 	if(duration == 0) {
 		duration = (message.length * 90)
@@ -156,7 +156,7 @@ function showToast(message, duration = 0) {
 			try { document.getElementById(randomId).remove() } catch(e) {}
 		})
 	}
-    toastsTimeout[randomId] = setTimeout(() => {
+	toastsTimeout[randomId] = setTimeout(() => {
 		toastsClearFunctions[randomId]()
 		delete toastsTimeout[randomId]
 		delete toastsClearFunctions[randomId]
@@ -164,7 +164,7 @@ function showToast(message, duration = 0) {
 }
 
 // ========== Highlight Sections
-function highlightSection(section, smallShadow = false) {    
+function highlightSection(section, smallShadow = false) {
 	if(!section || !(section instanceof HTMLElement)) {
 		console.warn('highlightSection: Invalid section provided.')
 		return
@@ -174,35 +174,35 @@ function highlightSection(section, smallShadow = false) {
 		return
 	}
 
-    section.scrollIntoView({ 
-        behavior: 'smooth', 
-        block: 'center' 
-    });
+	section.scrollIntoView({ 
+		behavior: 'smooth', 
+		block: 'center' 
+	});
 
-    const originalBoxShadow = section.style.boxShadow; // store for later revert
+	const originalBoxShadow = section.style.boxShadow; // store for later revert
 
 	section.style.position = 'relative';
-    section.style.zIndex = '50';
-    section.style.borderRadius = '16px';
-    section.style.transition = 'box-shadow 500ms ease-out, transform 500ms ease-out';
+	section.style.zIndex = '50';
+	section.style.borderRadius = '16px';
+	section.style.transition = 'box-shadow 500ms ease-out, transform 500ms ease-out';
 	section.classList.add('highlighting');
 
-    setTimeout(() => { // wait for scroll to finish before applying highlight
-        section.style.boxShadow = `
+	setTimeout(() => { // wait for scroll to finish before applying highlight
+		section.style.boxShadow = `
 			0 0 0 6px rgba(255, 255, 255, 0.05),
 			0 0 0 ${smallShadow ? '6' : '7'}px rgba(59, 130, 246, 0.4),
 			0 0 40px 4px rgba(59, 130, 246, 0.2),
 			0 10px 30px rgba(0, 0, 0, 0.2)
 		`;
-        section.style.transform = 'scale(1.02)';
-    }, 500);
+		section.style.transform = 'scale(1.02)';
+	}, 500);
 
-    // Revert styles after a short moment
-    setTimeout(() => {
-        section.style.boxShadow = originalBoxShadow;
-        section.style.transform = '';
+	// Revert styles after a short moment
+	setTimeout(() => {
+		section.style.boxShadow = originalBoxShadow;
+		section.style.transform = '';
 		section.classList.remove('highlighting');
-    }, 1200);
+	}, 1200);
 }
 
 // ========== Others Features
