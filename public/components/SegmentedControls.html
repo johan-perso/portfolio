@@ -1,8 +1,8 @@
 <div class="bg-light-background text-primary-content w-fit flex items-center place-items-center space-x-1.5 p-1.5 rounded-xl border box-border border-[rgba(231, 231, 231, 0.9)] transition-all duration-300" style="box-shadow: 0px 4px 4px rgba(223, 223, 223, 0.45);">
-	<button id="{{ $firstChoiceId }}" class="rounded-lg px-2.5 py-1.5 border box-border border-[rgba(200, 200, 200, 0.9)]" style="box-shadow: 0px 4px 4px rgba(223, 223, 223, 0.45);">
+	<button onclick="{{ $firstChoiceOnclick }}" id="{{ $firstChoiceId }}" class="rounded-lg px-2.5 py-1.5 border box-border border-[rgba(200, 200, 200, 0.9)]" style="box-shadow: 0px 4px 4px rgba(223, 223, 223, 0.45);">
 		<p class="font-medium text-[13px] px-2">{{ $firstChoiceLabel }}</p>
 	</button>
-	<button id="{{ $secondChoiceId }}" class="rounded-lg px-2.5 py-1.5 hover:shadow hover:shadow-[rgba(223, 223, 223, 0.25)] border box-border border-transparent hover:border-[rgba(200, 200, 200, 0.9)] hover:bg-light-background-heavy transition-all duration-200">
+	<button onclick="{{ $secondChoiceOnclick }}" id="{{ $secondChoiceId }}" class="rounded-lg px-2.5 py-1.5 hover:shadow hover:shadow-[rgba(223, 223, 223, 0.25)] border box-border border-transparent hover:border-[rgba(200, 200, 200, 0.9)] hover:bg-light-background-heavy transition-all duration-200">
 		<p class="font-medium text-[13px] px-2">{{ $secondChoiceLabel }}</p>
 	</button>
 </div>

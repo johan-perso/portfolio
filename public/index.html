@@ -58,11 +58,16 @@
 						<SegmentedControls
 							firstChoiceLabel="Humain"
 							firstChoiceId="segmentedControl-button-human"
+							firstChoiceOnclick="switchInterface('human')"
 							secondChoiceLabel="Machine"
-							secondChoiceAction="segmentedControl-button-machine"
+							secondChoiceId="segmentedControl-button-machine"
+							secondChoiceOnclick="switchInterface('machine')"
 						></SegmentedControls>
 
-						<DropdownButton label="Ouvrir dans"></DropdownButton>
+						<DropdownButton
+							onclick="alert('test')"
+							label="Ouvrir dans"
+						></DropdownButton>
 					</div>
 				</div>
 			</div>
