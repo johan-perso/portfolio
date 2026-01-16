@@ -7,7 +7,8 @@
   height: 100dvh;
 
   display: grid;
-  grid-template-columns: 40% 60%;
+  grid-template-columns: 90% 10%;
+  /* grid-template-columns: 40% 60%; */
   grid-template-rows: 1fr;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
