@@ -2,6 +2,10 @@
 window.onload = async function(){
 	switchInterface('human') // performs initial width math operations
 	initDropdown()
+
+	const myselfContainerWidth = `${document.getElementById('myselfContainer').clientWidth}px`
+	document.getElementById('newsBannerContainer').style.width = myselfContainerWidth
+	setTimeout(() => document.getElementById('newsBannerContainer').classList.remove('opacity-0'), 50) // hide resizing weird rendering at page loading
 }
 
 // ========== Human/Machine Interface

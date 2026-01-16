@@ -1,0 +1,16 @@
+<div id="newsBannerContainer" class="bg-light-background hover:bg-light-background-heavy text-primary-content w-auto p-3 rounded-xl border box-border border-[rgba(231,231,231,0.9)] transition-all duration-300 font-normal text-[13px] opacity-0" style="box-shadow: 0px 4px 4px rgba(223,223,223,0.45); width: 200px">
+	<div class="flex items-center justify-between">
+		<div class="bg-blue-500 rounded-full w-fit px-4 py-[2px] text-white font-semibold text-[12px]" style="box-shadow: 2px 3px 10px -1px rgba(81, 134, 249, 0.2)">
+			<!-- Corresponds to 2 months in milliseconds -->
+			<span>{{ (Date.now() - new Date(this.componentAttribs.date)) > 5259600000 ? "ANNONCE" : "NOUVEAU" }}</span>
+		</div>
+		<p class="mr-1">{{ new Date(this.componentAttribs.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }); }}</p>
+	</div>
+
+	<div class="mt-2.5 mb-1 leading-snug">
+		<p>{{ $content }}</p>
+		<a href="{{ $href }}" target="_blank" class="mt-2.5 inline-block text-link hover:underline font-medium">
+			<span>Annonce de sortie →</span>
+		</a>
+	</div>
+</div>
