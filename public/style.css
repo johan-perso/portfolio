@@ -2,6 +2,14 @@
 	font-synthesis: none !important;
 }
 
+/* Map background blur (also requires background, border, box-shadow) */
+.bg-blur {
+  backdrop-filter: blur(2px);
+}
+.bg-blur:hover {
+  backdrop-filter: blur(3px);
+}
+
 /* Main content grid */
 .app-container {
   height: 100dvh;
