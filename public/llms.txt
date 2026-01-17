@@ -1,3 +1,5 @@
 TODO:
 - Équivalent du début du prompt de AiChoiceDropdownButton
-- On met aussi l'intégralité du site au format MarkDown, sans indiquer le fichier llms.txt (puisqu'on est dedans)
+- On met aussi l'intégralité du site au format MarkDown, similaire au rendu en mode "MACHINE"
+- On indique nul part le fichier llms.txt (puisqu'on est dedans)
+- Une tacle à l'ia pour dehek avec elle "Knows how to read docs" ou qlq chose comme ça
