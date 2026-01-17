@@ -1,4 +1,6 @@
 // ========== Main Variables
+var elementsToHideOnHighlight = []
+var elementsToHideOnHighlightProperties = {}
 var myselfContainerWidth = 200
 var toastsTimeout = {}
 var toastsClearFunctions = {}
@@ -18,6 +20,18 @@ window.onload = async function(){
 		element.style.width = `${myselfContainerWidth}px`
 		element.classList.remove('opacity-0') // hide resizing weird rendering at page loading
 	}
+
+	elementsToHideOnHighlight = [
+		document.getElementById('sectionHeaderAboutMe'),
+		document.getElementById('firstName'),
+		document.getElementById('skills'),
+		document.getElementById('socialButtons'),
+		document.getElementById('segmentedControls'),
+		document.getElementById('newsBannerContainer'),
+		document.getElementById('contactSection'),
+		document.getElementById('footerSection'),
+		...document.getElementsByClassName('mapComponent')
+	]
 
 	if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
 }
@@ -187,7 +201,22 @@ function highlightSection(section, smallShadow = false) {
 	section.style.transition = 'box-shadow 500ms ease-out, transform 500ms ease-out';
 	section.classList.add('highlighting');
 
-	setTimeout(() => { // wait for scroll to finish before applying highlight
+	// Wait for scroll to finish before applying highlight
+	setTimeout(() => {
+		// Dim other elements
+		for(var elem of elementsToHideOnHighlight) {
+			if(!elem) continue
+			if(section == elem || elem.classList.contains('highlighting')) continue // skip highlighted section itself
+			if(section.id == 'donationSection' && elem.id == 'footerSection') continue // bc footer is inside of donation section
+
+			elementsToHideOnHighlightProperties[elem] = {
+				opacity: elem.style.opacity,
+				transition: elem.style.transition
+			}
+			elem.style.transition = 'opacity 500ms ease-out'
+			elem.style.opacity = 0.25
+		}
+
 		section.style.boxShadow = `
 			0 0 0 6px rgba(255, 255, 255, 0.05),
 			0 0 0 ${smallShadow ? '6' : '7'}px rgba(59, 130, 246, 0.4),
@@ -199,6 +228,15 @@ function highlightSection(section, smallShadow = false) {
 
 	// Revert styles after a short moment
 	setTimeout(() => {
+		for(var elem of elementsToHideOnHighlight) {
+			if(!elem) continue
+			if(section == elem || elem.classList.contains('highlighting')) continue // skip highlighted section itself
+			if(section.id == 'donationSection' && elem.id == 'footerSection') continue // bc footer is inside of donation section
+
+			elem.style.opacity = elementsToHideOnHighlightProperties[elem].opacity;
+			setTimeout(() => elem.style.transition = elementsToHideOnHighlightProperties[elem].transition, 600);
+		}
+
 		section.style.boxShadow = originalBoxShadow;
 		section.style.transform = '';
 		section.classList.remove('highlighting');
