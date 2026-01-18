@@ -1,0 +1,16 @@
+<a
+	href="{{ $href }}"
+	target="_blank"
+	class="bentoCard rounded-[18px] w-full h-full relative transform hover:scale-[1.01] transition-all duration-300 {{ $class }}"
+>
+	<div class="absolute inset-0 p-5 flex flex-col justify-between text-primary-content font-normal text-sm leading-snug">
+		<div class="overflow-hidden">
+			<p class="font-medium truncate">{{ $projectName }}</p>
+			<p class="mt-0.5 font-normal text-primary-content-light overflow-hidden dynamic-ellipsis">{{ $projectDescription }}</p>
+		</div>
+
+		<div class="flex-shrink-0">
+			<p class="font-light text-primary-content-light truncate">{{ $projectSource }}</p>
+		</div>
+	</div>
+</a>

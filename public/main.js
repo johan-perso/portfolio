@@ -47,6 +47,7 @@ window.onload = async function(){
 
 window.onresize = function(){
 	switchInterface(currentInterfaceMode) // readjust segmented control slider when font size changes
+	applyDynamicEllipsis()
 
 	myselfContainerWidth = document.getElementById('myselfContainer').clientWidth
 	if(window.innerWidth < 1500) { // min width based on screen width
@@ -281,6 +282,20 @@ function highlightSection(section, smallShadow = false) {
 }
 
 // ========== Others Features
+function applyDynamicEllipsis() {
+    document.querySelectorAll('.dynamic-ellipsis').forEach(el => {
+        // Get original text, in case we already truncated it before
+        let text = (el.getAttribute('original-text') || el.textContent).trim();
+        if(!el.hasAttribute('original-text')) el.setAttribute('original-text', text);
+        el.textContent = text; // reset to original text for measurement
+        
+        // Reduce text, character by character, until it fits in the parent
+        while (el.scrollHeight > (el.parentElement.clientHeight - 10) && text.length > 0) { // 10px padding buffer (6-20 also works)
+            text = text.slice(0, -1);
+            el.textContent = text + '...';
+        }
+    });
+}
 function copyLlmsTxt() {
 	var AiBrandIcon = document.getElementById('aidropdown-copymarkdown').querySelector('.AiBrandIcon')
 	AiBrandIcon.classList.add('text-green-600')
