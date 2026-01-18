@@ -32,7 +32,7 @@ window.onresize = function(){
 	switchInterface(currentInterfaceMode) // readjust segmented control slider when font size changes
 
 	myselfContainerWidth = document.getElementById('myselfContainer').clientWidth
-	if(window.innerWidth < 1500 && myselfContainerWidth < 300) { // min width based on screen width
+	if(window.innerWidth < 1500) { // min width based on screen width
 		var _myselfContainerWidth = window.innerWidth - document.getElementById('mainContent').clientWidth - 130
 		// var _myselfContainerWidth = (window.innerWidth * 0.3) - 100 // the main content section takes 70%, so 30% is left for the sidebar
 		if(_myselfContainerWidth < 170) _myselfContainerWidth = 170 // absolute min width
