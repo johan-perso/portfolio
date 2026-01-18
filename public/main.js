@@ -26,6 +26,22 @@ window.onload = async function(){
 		...document.getElementsByClassName('bentoCard')
 	]
 
+	const isUsingSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 && navigator.userAgent && navigator.userAgent.indexOf('CriOS') == -1 && navigator.userAgent.indexOf('FxiOS') == -1;
+	if(isUsingSafari) Array.from(document.getElementsByClassName('browserSvgIcon')).forEach(el => {
+		el.setAttribute('viewBox', '0 0 14 14')
+		el.setAttribute('fill', 'none')
+		el.innerHTML = `<g clip-path="url(#clip0_20_1012)">
+			<path d="M9.47334 4.52667L8.42101 7.68309C8.36373 7.85493 8.26723 8.01107 8.13915 8.13915C8.01107 8.26723 7.85493 8.36373 7.68309 8.42101L4.52667 9.47334L5.57901 6.31692C5.63628 6.14508 5.73278 5.98894 5.86086 5.86086C5.98894 5.73278 6.14508 5.63628 6.31692 5.57901L9.47334 4.52667Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+			<path d="M7.00002 12.8334C10.2217 12.8334 12.8334 10.2217 12.8334 7.00002C12.8334 3.77836 10.2217 1.16669 7.00002 1.16669C3.77836 1.16669 1.16669 3.77836 1.16669 7.00002C1.16669 10.2217 3.77836 12.8334 7.00002 12.8334Z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+			</g>
+			<defs>
+			<clipPath id="clip0_20_1012">
+			<rect width="14" height="14" fill="currentColor"/>
+			</clipPath>
+			</defs>
+		`
+	})
+
 	if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
 }
 
