@@ -11,6 +11,12 @@
               0px 0px 120px 10px rgba(0, 0, 0, 0.15); /* subtle glow effect */
 }
 
+/* Reveal bento card video on hover */
+.bentoCard:hover video,
+.bentoCard:focus-within video {
+  opacity: 1;
+}
+
 /* Reveal icons inside of bento card when hovering */
 .bentoCard .bentoCardIconsContainer {
   opacity: 0;
