@@ -36,7 +36,7 @@
 					></Skill>
 				</div>
 
-				<div id="socialButtons" class="mt-8 flex gap-2 [&>*]:flex-auto">
+				<div id="socialButtons" class="mt-8 flex gap-2 [&>*]:flex-auto max-[1590px]:flex-col max-[1590px]:[&>*]:w-full">
 					<SocialButton
 						label="Twitter"
 						href="https://x.com/Johan_Stickman"
@@ -56,17 +56,19 @@
 					></SocialButton>
 				</div>
 
-				<div id="segmentedControls" class="mt-2.5 flex gap-2">
-					<SegmentedControls
-						firstChoiceLabel="Humain"
-						firstChoiceId="segmentedControl-button-human"
-						firstChoiceOnclick="switchInterface('human')"
-						secondChoiceLabel="Machine"
-						secondChoiceId="segmentedControl-button-machine"
-						secondChoiceOnclick="switchInterface('machine')"
-					></SegmentedControls>
+				<div id="aiOptionsSections" class="mt-2.5 flex gap-2 [&>*]:flex-auto max-[1345px]:flex-col max-[1345px]:[&>*]:w-full">
+					<div class="max-[1345px]:hidden w-fit">
+						<SegmentedControls
+							firstChoiceLabel="Humain"
+							firstChoiceId="segmentedControl-button-human"
+							firstChoiceOnclick="switchInterface('human')"
+							secondChoiceLabel="Machine"
+							secondChoiceId="segmentedControl-button-machine"
+							secondChoiceOnclick="switchInterface('machine')"
+						></SegmentedControls>
+					</div>
 
-					<OpenInAiDropdownButton label="Ouvrir dans"></OpenInAiDropdownButt>
+					<OpenInAiDropdownButton></OpenInAiDropdownButt>
 				</div>
 
 				<div class="mt-3">
@@ -131,8 +133,19 @@
 		</div>
 
 		<!-- Main page content -->
-		<div class="content">
-			<p>test2</p>
+		<div id="mainContent" class="grid grid-cols-6 gap-4 auto-rows-[180px] pr-8 2xl:pr-4">
+			<LargeProjectBentoCard width="4" height="2"></LargeProjectBentoCard>
+			<div class="col-span-2 row-span-2 rounded-2xl bg-red-400"></div>
+
+			<div class="col-span-4 row-span-2 rounded-2xl bg-red-400"></div>
+			<div class="col-span-2 row-span-2 rounded-2xl bg-red-400"></div>
+
+			<div class="col-span-2 row-span-1 rounded-2xl bg-red-400"></div>
+			<div class="col-span-2 row-span-2 rounded-2xl bg-red-400"></div>
+			<div class="col-span-2 row-span-1 rounded-2xl bg-red-400"></div>
+
+			<div class="col-span-2 row-span-1 rounded-2xl bg-red-400"></div>
+			<div class="col-span-2 row-span-1 rounded-2xl bg-red-400"></div>
 		</div>
 	</div>
 </body>

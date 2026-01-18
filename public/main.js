@@ -1,17 +1,45 @@
 // ========== Main Variables
+const constrainedWidthContainersIds = ['newsBannerContainer', 'othersTextualAboutMeSections']
 var elementsToHideOnHighlight = []
 var elementsToHideOnHighlightProperties = {}
 var myselfContainerWidth = 200
 var toastsTimeout = {}
 var toastsClearFunctions = {}
+var currentInterfaceMode = 'human'
 
 // ========== Main Events
 window.onload = async function(){
 	switchInterface('human') // performs initial width math operations
+	window.onresize() // perform initial width adjustments
 	initDropdown()
 
+	elementsToHideOnHighlight = [
+		document.getElementById('sectionHeaderAboutMe'),
+		document.getElementById('firstName'),
+		document.getElementById('skills'),
+		document.getElementById('socialButtons'),
+		document.getElementById('aiOptionsSections'),
+		document.getElementById('newsBannerContainer'),
+		document.getElementById('contactSection'),
+		document.getElementById('footerSection'),
+		...document.getElementsByClassName('mapComponent')
+	]
+
+	if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
+}
+
+window.onresize = function(){
+	switchInterface(currentInterfaceMode) // readjust segmented control slider when font size changes
+
 	myselfContainerWidth = document.getElementById('myselfContainer').clientWidth
-	for(var id of ['segmentedControls', 'newsBannerContainer', 'othersTextualAboutMeSections']) {
+	if(window.innerWidth < 1500 && myselfContainerWidth < 300) { // min width based on screen width
+		var _myselfContainerWidth = window.innerWidth - document.getElementById('mainContent').clientWidth - 130
+		// var _myselfContainerWidth = (window.innerWidth * 0.3) - 100 // the main content section takes 70%, so 30% is left for the sidebar
+		if(_myselfContainerWidth < 170) _myselfContainerWidth = 170 // absolute min width
+		myselfContainerWidth = _myselfContainerWidth
+	}
+	if(myselfContainerWidth < 170) myselfContainerWidth = 170 // absolute min width
+	for(var id of constrainedWidthContainersIds) {
 		var element = document.getElementById(id)
 		if(!element) {
 			console.warn(`Element with id "${id}" not found for width adjustment.`)
@@ -21,19 +49,9 @@ window.onload = async function(){
 		element.classList.remove('opacity-0') // hide resizing weird rendering at page loading
 	}
 
-	elementsToHideOnHighlight = [
-		document.getElementById('sectionHeaderAboutMe'),
-		document.getElementById('firstName'),
-		document.getElementById('skills'),
-		document.getElementById('socialButtons'),
-		document.getElementById('segmentedControls'),
-		document.getElementById('newsBannerContainer'),
-		document.getElementById('contactSection'),
-		document.getElementById('footerSection'),
-		...document.getElementsByClassName('mapComponent')
-	]
-
-	if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
+	setTimeout(() => { // readjust segmented control slider when font size changes
+		switchInterface(currentInterfaceMode)
+	}, 300)
 }
 
 window.onhashchange = function(event){
@@ -67,6 +85,8 @@ function switchInterface(mode) {
 		humanBtn.setAttribute('disabled', 'true')
 		machineBtn.removeAttribute('disabled')
 	}
+
+	currentInterfaceMode = mode
 }
 
 // ========== Dropdown
