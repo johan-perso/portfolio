@@ -17,7 +17,7 @@
         <source src="{{ this.componentAttribs.projectbannervideo || '' }}" type="video/mp4">
     </video>
 
-	<div class="absolute bottom-2.5 mt-2.5 right-2.5 ml-2.5 flex flex-col items-end gap-2">
+	<div class="absolute bottom-2.5 mt-2.5 right-2.5 ml-2.5 flex flex-col gap-2">
 		<div class="bentoCardIconsContainer flex flex-row items-end gap-2">
 			<a href="{{ $linkDocs }}" target="_blank" class="{{ this.componentAttribs.linkdocs ? '' : 'hidden' }} p-1.5 text-light-background font-normal text-xs border-[1.25px] {{ this.componentAttribs.backgroundtheme == 'dark' ? 'border-[rgba(95,95,95,0.3)] bg-[rgba(95,95,95,0.3)] hover:bg-[rgba(95,95,95,0.5)]' : 'border-[rgba(180,180,180,0.5)] bg-[rgba(95,95,95,0.5)] hover:bg-[rgba(95,95,95,0.55)]' }} transform hover:scale-[1.08] rounded-lg bg-heavy-blur transition-all duration-300" style="box-shadow: 1px 4px 12px 0.5px rgba(0, 0, 0, 0.3);">
 				<svg width="16" height="16" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +51,7 @@
 			</a>
 		</div>
 
-		<div class="{{ this.componentAttribs.projectname && this.componentAttribs.projectdescription ? '' : 'hidden' }} px-3 py-1.5 text-light-background font-normal text-xs border-[1.25px] {{ this.componentAttribs.backgroundtheme == 'dark' ? 'border-[rgba(95,95,95,0.25)] bg-[rgba(95,95,95,0.25)]' : 'border-[rgba(180,180,180,0.25)] bg-[rgba(95,95,95,0.5)]' }} rounded-lg bg-heavy-blur transition-all duration-300" style="box-shadow: 1px 4px 12px 0.5px rgba(0, 0, 0, 0.3);">
+		<div class="{{ this.componentAttribs.projectname && this.componentAttribs.projectdescription ? '' : 'hidden' }} px-3 py-1.5 text-light-background font-normal text-xs text-center border-[1.25px] {{ this.componentAttribs.backgroundtheme == 'dark' ? 'border-[rgba(95,95,95,0.25)] bg-[rgba(95,95,95,0.25)]' : 'border-[rgba(180,180,180,0.25)] bg-[rgba(95,95,95,0.5)]' }} rounded-lg bg-heavy-blur transition-all duration-300" style="box-shadow: 1px 4px 12px 0.5px rgba(0, 0, 0, 0.3);">
 			<p><span class="font-medium">{{ $projectName }} –</span> {{ $projectDescription }}</p>
 		</div>
 	</div>
