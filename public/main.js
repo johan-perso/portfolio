@@ -22,7 +22,8 @@ window.onload = async function(){
 		document.getElementById('newsBannerContainer'),
 		document.getElementById('contactSection'),
 		document.getElementById('footerSection'),
-		...document.getElementsByClassName('mapComponent')
+		...document.getElementsByClassName('mapComponent'),
+		...document.getElementsByClassName('bentoCard')
 	]
 
 	if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()

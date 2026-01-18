@@ -1,6 +1,8 @@
 <div
-	class="col-span-{{ $width }} row-span-{{ $height }} rounded-[18px] w-full h-full bg-center bg-cover bg-no-repeat relative"
-	style="background-image: url('/medias/projects/banners/fwl.png'); box-shadow: 0px 6px 12px 0.5px rgba(0, 0, 0, 0.3);"
+	class="bentoCard col-span-{{ $width }} row-span-{{ $height }} rounded-[18px] w-full h-full bg-center bg-cover bg-no-repeat relative transform hover:scale-[1.01] transition-all duration-300 cursor-pointer"
+	style="background-image: url('{{ $projectBannerImg }}');"
+	onclick="if(event.target.tagName !== 'A' && !event.target.closest('a')) { window.open('{{ $projectLink }}', '_blank'); }"
+	onauxclick="if(event.target.tagName !== 'A' && !event.target.closest('a')) { window.open('{{ $projectLink }}', '_blank'); }"
 >
 	<div class="absolute bottom-2.5 right-2.5 flex flex-col items-end gap-2">
 		<div class="flex flex-row items-end gap-2">
@@ -15,7 +17,7 @@
 		</div>
 
 		<div class="px-3 py-1.5 text-light-background font-normal text-xs border-[1.25px] border-[rgba(95,95,95,0.3)] bg-[rgba(95,95,95,0.3)] rounded-lg bg-blur transition-all duration-300" style="box-shadow: 1px 4px 12px 0.5px rgba(0, 0, 0, 0.3);">
-			<p><span class="font-medium">File Weight Loss –</span> Faites perdre du poids à vos fichiers</p>
+			<p><span class="font-medium">{{ $projectName }} –</span> {{ $projectDescription }}</p>
 		</div>
 	</div>
 </div>
