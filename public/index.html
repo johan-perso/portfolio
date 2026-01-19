@@ -56,8 +56,8 @@
 					></SocialButton>
 				</div>
 
-				<div id="aiOptionsSections" class="mt-2.5 flex gap-2 [&>*]:flex-auto min-[1220px]:max-[1345px]:flex-col min-[1220px]:max-[1345px]:[&>*]:w-full">
-					<div class="min-[1220px]:max-[1345px]:hidden max-[490px]:hidden w-fit">
+				<div id="aiOptionsSections" class="mt-2.5 flex gap-2 [&>*:first-child]:flex-none [&>*:last-child]:flex-1 min-[1220px]:max-[1345px]:flex-col min-[1220px]:max-[1345px]:[&>*]:w-full">
+					<div class="min-[1220px]:max-[1345px]:hidden max-[490px]:hidden justify-self-start">
 						<SegmentedControls
 							firstChoiceLabel="Humain"
 							firstChoiceId="segmentedControl-button-human"
@@ -68,7 +68,7 @@
 						></SegmentedControls>
 					</div>
 
-					<OpenInAiDropdownButton></OpenInAiDropdownButt>
+					<OpenInAiDropdownButton></OpenInAiDropdownButton>
 				</div>
 
 				<div class="mt-3">
