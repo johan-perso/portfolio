@@ -21,7 +21,7 @@
 				></SectionHeader>
 			</div>
 
-			<div id="myselfContainer" class="mt-12 max-[1220px]:w-3/5">
+			<div id="myselfContainer" class="mt-12 max-[1220px]:w-3/5 max-[1000px]:w-4/5 max-[600px]:w-full">
 				<h2 id="firstName" class="font-header font-extrabold text-5xl">Johan</h2>
 
 				<div id="skills" class="mt-6 space-y-3">
@@ -36,7 +36,7 @@
 					></Skill>
 				</div>
 
-				<div id="socialButtons" class="mt-8 flex gap-2 [&>*]:flex-auto max-[1450px]:flex-col max-[1450px]:[&>*]:w-full">
+				<div id="socialButtons" class="mt-8 flex gap-2 [&>*]:flex-auto min-[1221px]:max-[1450px]:flex-col min-[1221px]:max-[1450px]:[&>*]:w-full">
 					<SocialButton
 						label="Twitter"
 						href="https://x.com/Johan_Stickman"
@@ -56,8 +56,8 @@
 					></SocialButton>
 				</div>
 
-				<div id="aiOptionsSections" class="mt-2.5 flex gap-2 [&>*]:flex-auto max-[1345px]:flex-col max-[1345px]:[&>*]:w-full">
-					<div class="max-[1345px]:hidden w-fit">
+				<div id="aiOptionsSections" class="mt-2.5 flex gap-2 [&>*]:flex-auto min-[1221px]:max-[1345px]:flex-col min-[1221px]:max-[1345px]:[&>*]:w-full">
+					<div class="min-[1221px]:max-[1345px]:hidden w-fit">
 						<SegmentedControls
 							firstChoiceLabel="Humain"
 							firstChoiceId="segmentedControl-button-human"
@@ -85,7 +85,7 @@
 			</div>
 
 			<div class="mt-2.5 leading-snug text-primary-content text-[14.5px]" id="othersTextualAboutMeSections" style="width: 100px">
-				<div id="contactSection">
+				<div id="contactSection" class="max-[1220px]:w-3/5 max-[1000px]:w-4/5 max-[600px]:w-full">
 					<SectionHeader
 						title="CONTACT"
 						class="mt-8"
@@ -97,7 +97,7 @@
 					</div>
 				</div>
 
-				<div id="footerSection">
+				<div id="footerSection" class="max-[1220px]:w-3/5 max-[1000px]:w-4/5 max-[600px]:w-full">
 					<SectionHeader
 						title="FOOTER"
 						class="mt-8"
@@ -135,10 +135,10 @@
 		<!-- Main page content -->
 		<div id="mainContent" class="pr-8 2xl:pr-4 pb-16 max-[1220px]:px-40 max-[1186px]:px-24 max-[900px]:px-12">
 			<!-- Currents projects -->
-			<div class="grid grid-cols-3 xl:grid-cols-5 max-[1220px]:grid-cols-5 min-[1451px]:grid-cols-6 gap-4 auto-rows-[180px]">
+			<div class="grid grid-cols-2 max-[900px]:grid-cols-3 xl:grid-cols-5 max-[1220px]:grid-cols-5 min-[1451px]:grid-cols-6 gap-4 auto-rows-[180px]">
 				<!-- 1st row -->
 				<LargeProjectBentoCard
-					class="col-span-2 xl:col-span-3 max-[1220px]:col-span-3 min-[1451px]:col-span-4 row-span-2"
+					class="col-span-1 max-[900px]:col-span-2 xl:col-span-3 max-[1220px]:col-span-3 min-[1451px]:col-span-4 row-span-2"
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"

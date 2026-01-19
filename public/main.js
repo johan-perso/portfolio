@@ -49,22 +49,34 @@ window.onresize = function(){
 	switchInterface(currentInterfaceMode) // readjust segmented control slider when font size changes
 	applyDynamicEllipsis()
 
-	myselfContainerWidth = document.getElementById('myselfContainer').clientWidth
-	if(window.innerWidth < 1500) { // min width based on screen width
-		var _myselfContainerWidth = window.innerWidth - document.getElementById('mainContent').clientWidth - 130
-		// var _myselfContainerWidth = (window.innerWidth * 0.3) - 100 // the main content section takes 70%, so 30% is left for the sidebar
-		if(_myselfContainerWidth < 170) _myselfContainerWidth = 170 // absolute min width
-		myselfContainerWidth = _myselfContainerWidth
-	}
-	if(myselfContainerWidth < 170) myselfContainerWidth = 170 // absolute min width
-	for(var id of constrainedWidthContainersIds) {
-		var element = document.getElementById(id)
-		if(!element) {
-			console.warn(`Element with id "${id}" not found for width adjustment.`)
-			continue
+	if(window.innerWidth > 1220) {
+		myselfContainerWidth = document.getElementById('myselfContainer').clientWidth
+		if(window.innerWidth < 1500) { // min width based on screen width
+			var _myselfContainerWidth = window.innerWidth - document.getElementById('mainContent').clientWidth - 130
+			// var _myselfContainerWidth = (window.innerWidth * 0.3) - 100 // the main content section takes 70%, so 30% is left for the sidebar
+			if(_myselfContainerWidth < 170) _myselfContainerWidth = 170 // absolute min width
+			myselfContainerWidth = _myselfContainerWidth
 		}
-		element.style.width = `${myselfContainerWidth}px`
-		element.classList.remove('opacity-0') // hide resizing weird rendering at page loading
+		if(myselfContainerWidth < 170) myselfContainerWidth = 170 // absolute min width
+		for(var id of constrainedWidthContainersIds) {
+			var element = document.getElementById(id)
+			if(!element) {
+				console.warn(`Element with id "${id}" not found for width adjustment.`)
+				continue
+			}
+			element.style.width = `${myselfContainerWidth}px`
+			element.classList.remove('opacity-0') // hide resizing weird rendering at page loading
+		}
+	} else { // ignore resizes on screen smaller than 1200px
+		for(var id of constrainedWidthContainersIds) {
+			var element = document.getElementById(id)
+			if(!element) {
+				console.warn(`Element with id "${id}" not found for width (un?)adjustment.`)
+				continue
+			}
+			element.style.width = `auto`
+			element.classList.remove('opacity-0')
+		}
 	}
 
 	setTimeout(() => { // readjust segmented control slider when font size changes
