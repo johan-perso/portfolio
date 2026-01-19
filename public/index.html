@@ -10,9 +10,9 @@
 <body class="font-body text-sm leading-5">
 	<JsRequired></JsRequired>
 
-	<div class="app-container 2xl:px-12 pt-14 max-xl:grid-cols-1">
+	<div class="app-container 2xl:px-12 pt-14 max-[1220px]:grid-cols-1">
 		<!-- Description about myself -->
-		<div class="myself px-14 pb-14 md:max-xl:px-20">
+		<div class="myself px-14 pb-14 max-[1220px]:px-40 max-[1186px]:px-24 max-[900px]:px-12">
 			<div id="sectionHeaderAboutMe">
 				<SectionHeader
 					title="À PROPOS"
@@ -21,7 +21,7 @@
 				></SectionHeader>
 			</div>
 
-			<div id="myselfContainer" class="mt-12 xl:w-fit max-xl:w-3/5">
+			<div id="myselfContainer" class="mt-12 max-[1220px]:w-3/5">
 				<h2 id="firstName" class="font-header font-extrabold text-5xl">Johan</h2>
 
 				<div id="skills" class="mt-6 space-y-3">
@@ -133,12 +133,12 @@
 		</div>
 
 		<!-- Main page content -->
-		<div id="mainContent" class="pr-8 max-xl:pl-8 2xl:pr-4 md:max-xl:px-20 pb-16">
+		<div id="mainContent" class="pr-8 2xl:pr-4 pb-16 max-[1220px]:px-40 max-[1186px]:px-24 max-[900px]:px-12">
 			<!-- Currents projects -->
-			<div class="grid grid-cols-6 gap-4 auto-rows-[180px]">
+			<div class="grid grid-cols-3 xl:grid-cols-5 max-[1220px]:grid-cols-5 min-[1451px]:grid-cols-6 gap-4 auto-rows-[180px]">
 				<!-- 1st row -->
 				<LargeProjectBentoCard
-					class="col-span-4 row-span-2"
+					class="col-span-2 xl:col-span-3 max-[1220px]:col-span-3 min-[1451px]:col-span-4 row-span-2"
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
@@ -152,7 +152,7 @@
 				></LargeProjectBentoCard>
 
 				<LargeProjectBentoCard
-					class="col-span-2 row-span-2"
+					class="col-span-1 xl:col-span-2 max-[1220px]:col-span-2 row-span-2"
 					backgroundTheme="dark"
 					backgroundPositionX="top"
 					backgroundPositionY="center"
@@ -166,7 +166,7 @@
 
 				<!-- 2nd row -->
 				<LargeProjectBentoCard
-					class="col-span-4 row-span-2"
+					class="col-span-2 xl:col-span-3 max-[1220px]:col-span-3 min-[1451px]:col-span-4 row-span-2"
 					backgroundTheme="light"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
@@ -178,7 +178,7 @@
 					linkGithub="https://github.com/johan-perso/escive"
 				></LargeProjectBentoCard>
 				<LargeProjectBentoCard
-					class="col-span-2 row-span-2"
+					class="col-span-1 xl:col-span-2 max-[1220px]:col-span-2 row-span-2"
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
@@ -191,7 +191,7 @@
 
 				<!-- 3rd (and 4th) row -->
 				<LargeProjectBentoCard
-					class="col-span-2 row-span-1"
+					class="col-span-1 xl:col-span-2 max-[1220px]:col-span-2 row-span-1"
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
@@ -201,7 +201,7 @@
 					linkGithub="https://github.com/hoststend"
 				></LargeProjectBentoCard>
 				<LargeProjectBentoCard
-					class="col-span-2 row-span-2"
+					class="col-span-1 xl:col-span-2 max-[1220px]:col-span-2 row-span-1 xl:row-span-2 max-[1220px]:row-span-2"
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
@@ -213,7 +213,7 @@
 					linkGithub="https://github.com/johan-perso/magic-command"
 				></LargeProjectBentoCard>
 				<SmallProjectBentoCard
-					class="col-span-2 row-span-1"
+					class="col-span-1 min-[1451px]:col-span-2 row-span-1"
 					projectName="YourDownloader"
 					projectDescription="Téléchargez des vidéos et fichiers audios de plusieurs plateformes et réseaux sociaux connus, comme YouTube ou SoundCloud, depuis votre bot Telegram privé (self-hosted)"
 					projectSource="github.com"
@@ -222,7 +222,7 @@
 
 				<!-- 4th row -->
 				<LargeProjectBentoCard
-					class="col-span-2 row-span-1"
+					class="col-span-1 xl:col-span-2 max-[1220px]:col-span-2 row-span-1"
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
@@ -278,48 +278,48 @@
 			</div>
 
 			<!-- Others Sections -->
-			<div class="grid grid-cols-6 gap-4 mt-14">
-				<div class="col-span-2">
+			<div class="grid grid-cols-3 xl:grid-cols-5 max-[1220px]:grid-cols-5 min-[1451px]:grid-cols-6 gap-4 mt-14">
+				<div class="col-span-1 xl:col-span-2 max-[1220px]:col-span-2">
 					<!-- Past projects -->
 					<h3 class="font-semibold text-2xl 2xl:text-3xl antialiased" style="text-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2)">Anciennes réalisations</h3>
 					<div class="grid grid-cols-2 gap-4 auto-rows-[180px] mt-4">
 						<SmallProjectBentoCard
-							class="col-span-1 row-span-1"
+							class="col-span-2 xl:col-span-1 max-[1220px]:col-span-1 row-span-1"
 							projectName="MCP Shop Server"
 							projectDescription="Donner à une IA la capacité de vous dénicher des offres et des bons plans"
 							projectSource="github.com"
 							href="https://github.com/johan-perso/mcp-shop-server"
 						></SmallProjectBentoCard>
 						<SmallProjectBentoCard
-							class="col-span-1 row-span-1"
+							class="col-span-2 xl:col-span-1 max-[1220px]:col-span-1 row-span-1"
 							projectName="VSCode Control"
 							projectDescription="Une extension Raycast pour contrôler votre éditeur de code rapidement"
 							projectSource="github.com"
 							href="https://github.com/johan-perso/vscode-control"
 						></SmallProjectBentoCard>
 						<SmallProjectBentoCard
-							class="col-span-1 row-span-1"
+							class="col-span-2 xl:col-span-1 max-[1220px]:col-span-1 row-span-1"
 							projectName="Teable to JSON"
 							projectDescription="Un CLI pour extraire des données depuis le service Teable, vers un fichier JSON"
 							projectSource="github.com"
 							href="https://github.com/johan-perso/teable-to-json"
 						></SmallProjectBentoCard>
 						<SmallProjectBentoCard
-							class="col-span-1 row-span-1"
+							class="col-span-2 xl:col-span-1 max-[1220px]:col-span-1 row-span-1"
 							projectName="InfoScreen"
 							projectDescription="Un écran d'informations intelligent et toujours actif"
 							projectSource="github.com"
 							href="https://github.com/johan-perso/infoscreen"
 						></SmallProjectBentoCard>
 						<SmallProjectBentoCard
-							class="col-span-1 row-span-1"
+							class="col-span-2 xl:col-span-1 max-[1220px]:col-span-1 row-span-1"
 							projectName="screenshothtml"
 							projectDescription="Générez une capture d'écran d'une page HTML depuis votre code côté serveur"
 							projectSource="github.com"
 							href="https://github.com/johan-perso/screenshothtml"
 						></SmallProjectBentoCard>
 						<SmallProjectBentoCard
-							class="col-span-1 row-span-1"
+							class="col-span-2 xl:col-span-1 max-[1220px]:col-span-1 row-span-1"
 							projectName="discordflutter"
 							projectDescription="Tentative d'interagir avec l'API de Discord dans une app faite avec Flutter / Dart"
 							projectSource="github.com"
@@ -327,8 +327,8 @@
 						></SmallProjectBentoCard>
 					</div>
 				</div>
-				<div class="col-span-1"></div>
-				<div class="col-span-3">
+				<div class="max-[1450px]:hidden col-span-1"></div>
+				<div class="col-span-2 xl:col-span-3 max-[1220px]:col-span-3">
 					<!-- Articles to read on the blog -->
 					<h3 class="font-semibold text-2xl 2xl:text-3xl antialiased" style="text-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2)">Articles à lire</h3>
 					<div class="grid gap-4 mt-4">
