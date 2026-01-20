@@ -2,17 +2,17 @@
 	class="bentoCard rounded-[18px] w-full h-full bg-cover bg-no-repeat relative transform hover:scale-[1.01] transition-all duration-300 cursor-pointer {{ $class }}"
 	style="background-image: url('{{ $projectBannerImg }}'); background-position: '{{ $backgroundPositionX }}' '{{ $backgroundPositionY }}';"
 	onclick="if(event.target.tagName !== 'A' && !event.target.closest('a')) { window.open('{{ $linkDefault }}', '_blank'); }"
-	onauxclick="if(event.target.tagName !== 'A' && !event.target.closest('a')) { window.open('{{ $linkDefault }}', '_blank'); }"
-	onmouseenter="this.querySelector('video')?.play()"
-	onmouseleave="this.querySelector('video')?.pause()"
+    onauxclick="if(event.target.tagName !== 'A' && !event.target.closest('a')) { window.open('{{ $linkDefault }}', '_blank'); }"
+    onmouseenter="this.querySelector('video')?.play()"
+    onmouseleave="this.querySelector('video')?.pause()"
+    ontouchstart="this.querySelector('video')?.play()"
+    ontouchend="this.querySelector('video')?.pause()"
 >
 	<video 
         muted 
         playsinline
         class="{{ this.componentAttribs.projectbannervideo ? '' : 'hidden' }} absolute inset-0 w-full h-full object-cover rounded-[18px] opacity-0 transition-opacity duration-300"
         style="pointer-events: none; object-position: '{{ $backgroundPositionX }}' '{{ $backgroundPositionY }}';"
-		onfocus="this.play()"
-		onblur="this.pause()"
     >
         <source src="{{ this.componentAttribs.projectbannervideo || '' }}" type="video/mp4">
     </video>
