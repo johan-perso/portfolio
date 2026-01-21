@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	console.log('DOM fully loaded and parsed')
 	document.getElementById('loader__progressContainer').classList.remove('opacity-0')
+	document.getElementById('loader__background').classList.add('duration-700')
 	incrementLoader(2)
 
 	setTimeout(() => {
