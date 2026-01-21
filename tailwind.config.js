@@ -20,6 +20,7 @@ module.exports = {
 
 				'light-background': '#F8F8F8',
 				'light-background-heavy': '#F1F1F1', // 60% #F8F8F8
+				'light-background-heavier': '#E7E7E7',
 				'light-content': '#98A2B3',
 
 				'link': '#2563EB',

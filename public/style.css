@@ -2,6 +2,14 @@
 	font-synthesis: none !important;
 }
 
+/* Shadow for loading progression bar */
+#loader__progressContainer {
+  box-shadow: 0px 5px 14px 0.25px rgba(0, 0, 0, 0.15);
+}
+#loader__progressContainer > div {
+  box-shadow: 0px 8px 12px 0.25px rgba(0, 0, 0, 0.3);
+}
+
 /* Shadow transition on bento card */
 .bentoCard {
   box-shadow: 0px 6px 12px 0.5px rgba(0, 0, 0, 0.3);
