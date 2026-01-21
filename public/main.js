@@ -267,6 +267,14 @@ function toggleDropdown() {
 
 	if (dropdownMenu.classList.contains('hidden')) {
 		dropdownMenu.classList.remove('hidden')
+		dropdownMenu.style.opacity = '0'
+		dropdownMenu.style.transform = 'scaleY(0.95)'
+
+		requestAnimationFrame(() => {
+			dropdownMenu.style.opacity = '1'
+			dropdownMenu.style.transform = 'scaleY(1)'
+		})
+
 		dropdownChevron.style.transform = 'rotate(180deg)'
 	} else closeDropdown()
 }
@@ -275,7 +283,13 @@ function closeDropdown() {
 	const dropdownMenu = document.getElementById('dropdown-menu')
 	const dropdownChevron = document.getElementById('dropdown-chevron')
 
-	dropdownMenu.classList.add('hidden')
+	dropdownMenu.style.opacity = '0'
+	dropdownMenu.style.transform = 'scaleY(0.95)'
+
+	setTimeout(() => {
+		dropdownMenu.classList.add('hidden')
+	}, 200)
+
 	dropdownChevron.style.transform = 'rotate(0deg)'
 }
 
