@@ -25,16 +25,104 @@ var elementsToHideOnHighlight = []
 var elementsToHideOnHighlightProperties = {}
 var myselfContainerWidth = 200
 var isLoadingPage = true
+var mainResourcesLoaded = false
+var hasMainLoadFunctionsRun = false
+var loadingCurrentIncrement = 0
 var toastsTimeout = {}
 var toastsClearFunctions = {}
 var currentInterfaceMode = 'human'
 
 // ========== Main Events
+document.addEventListener('DOMContentLoaded', async () => {
+	const startTime = Date.now()
+	var loadingIncrementInterval
+	var finishedLoading = false
+	var intervalDelay = 50
+	var incrementLevel = 1.5
+
+	console.log('DOM fully loaded and parsed')
+	document.getElementById('loader__progressContainer').classList.remove('opacity-0')
+	incrementLoader(2)
+
+	function updateInterval() {
+		if(loadingIncrementInterval) clearInterval(loadingIncrementInterval)
+
+		loadingIncrementInterval = setInterval(() => {
+			if(!isLoadingPage) return clearInterval(loadingIncrementInterval)
+			incrementLoader(incrementLevel)
+
+			// If we are close to finishing but we still don't have main resources, halt the loader
+			if(!finishedLoading && loadingCurrentIncrement >= 90 && !mainResourcesLoaded) {
+				incrementLevel = 0
+				console.log(`Halting loader increment (waiting for main resources)`)
+				updateInterval()
+			}
+
+			// Slow down the loading (even more) if we are still loading
+			else if(!finishedLoading && loadingCurrentIncrement > 20 && !mainResourcesLoaded) {
+				intervalDelay += 15
+				incrementLevel = loadingCurrentIncrement > 80 ? 0.25 : 0.75
+				console.log(`Slowing down loader interval to ${intervalDelay}ms (waiting for main resources)`)
+				updateInterval()
+			}
+
+			// Slow down the loading if we are still loading
+			else if(!finishedLoading && loadingCurrentIncrement > 60 && mainResourcesLoaded) {
+				intervalDelay += 7
+				if(loadingCurrentIncrement > 80) intervalDelay += 15
+				if(loadingCurrentIncrement > 90) intervalDelay += 25
+				if(loadingCurrentIncrement > 95) intervalDelay += 400
+				if(loadingCurrentIncrement > 98) intervalDelay += 1000
+
+				console.log(`Slowing down loader interval to ${intervalDelay}ms`)
+				updateInterval()
+			}
+
+			// If we finished loading, speed up the loading
+			else if(finishedLoading && intervalDelay > 5 && mainResourcesLoaded) {
+				intervalDelay = 45
+				incrementLevel = 2.5
+				console.log(`Speeding up loader interval to ${intervalDelay}ms`)
+				updateInterval()
+			}
+		}, intervalDelay)
+	}
+	updateInterval() // call once, recursive calls will be made inside
+
+	// Wait for fonts to load
+	if(document.fonts && document.fonts.ready) {
+		console.log('Waiting for fonts to load...')
+		await document.fonts.ready
+		console.log('Fonts loaded.')
+	} else {
+		console.warn('document.fonts API not supported, skipping font load wait.')
+	}
+
+	// Wait for additional main load functions
+	while(!hasMainLoadFunctionsRun) {
+		console.log('Waiting for main load functions to complete...')
+		await new Promise(resolve => setTimeout(resolve, 200))
+	}
+
+	console.log(`Started loading at ${new Date(startTime).toLocaleTimeString()}`)
+	console.log(`It was ${Date.now() - startTime} ms since DOMContentLoaded`)
+	finishedLoading = true
+
+	while(loadingCurrentIncrement < 95) {
+		await new Promise(resolve => setTimeout(resolve, 100))
+	}
+
+	if(loadingIncrementInterval) clearInterval(loadingIncrementInterval)
+	await hideLoader()
+})
 window.onload = async function(){
+	mainResourcesLoaded = true
+	console.log('All resources finished loading! (event onload called)')
+
 	setTimeout(() => {
 		console.log("15sec after first page load, hiding loader if still here")
 		if(isLoadingPage){
-			console.log("Confirming that we're hiding loader after 15sec")
+			console.warn("Confirming that we're hiding loader after 15sec")
 			hideLoader()
 		}
 	}, 15000)
@@ -72,21 +160,7 @@ window.onload = async function(){
 		`
 	})
 
-	document.getElementById('loader__progressContainer').classList.remove('opacity-0')
-	for(var i = 0; i < 101; i++) { // simulate loading progress
-		await new Promise(resolve => setTimeout(resolve, 20 + (i * 2)))
-		var up = i * 2
-		if(i > 20) up += 0.85
-		if(i > 30) up += 1.5
-		var progressBar = document.getElementById('loader__progressBar')
-		if(progressBar) progressBar.style.width = up + '%'
-		if(up > 99) break
-	}
-	await new Promise(resolve => setTimeout(resolve, 180))
-	console.log(progressBar.style.width)
-
-	if(isLoadingPage) hideLoader()
-	if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
+	hasMainLoadFunctionsRun = true
 }
 
 window.onresize = function(){
@@ -337,20 +411,41 @@ function highlightSection(section, smallShadow = false) {
 	}, 1200);
 }
 
+// ========== Loader Functions
+function incrementLoader(percentage) {
+	loadingCurrentIncrement += percentage
+	console.log(`Incrementing loader to ${loadingCurrentIncrement}% (+${percentage}%)`)
+	// var adjustedPercentage = (loadingCurrentIncrement / 70) * 100 // adjust to max 70% for visual effect
+	if(loadingCurrentIncrement > 100) loadingCurrentIncrement = 100
+	document.getElementById('loader__progressBar').style.width = `${loadingCurrentIncrement}%`
+}
+async function hideLoader(instant = false){
+	if(!isLoadingPage) return console.warn("hideLoader called but page is already marked as not loading.")
+
+	console.log("Hiding loader...")
+	isLoadingPage = false
+	document.getElementById('loader__progressContainer').style.opacity = 0
+	if(!instant) await new Promise(resolve => setTimeout(resolve, 250))
+	document.getElementById('loader__background').style.opacity = 0
+	setTimeout(() => { document.getElementById('loader__background').remove() }, instant ? 100 : 1000)
+
+	if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
+}
+
 // ========== Others Features
 function applyDynamicEllipsis() {
-    document.querySelectorAll('.dynamic-ellipsis').forEach(el => {
-        // Get original text, in case we already truncated it before
-        let text = (el.getAttribute('original-text') || el.textContent).trim();
-        if(!el.hasAttribute('original-text')) el.setAttribute('original-text', text);
-        el.textContent = text; // reset to original text for measurement
-        
-        // Reduce text, character by character, until it fits in the parent
-        while (el.scrollHeight > (el.parentElement.clientHeight - 10) && text.length > 0) { // 10px padding buffer (6-20 also works)
-            text = text.slice(0, -1);
-            el.textContent = text + '...';
-        }
-    });
+	document.querySelectorAll('.dynamic-ellipsis').forEach(el => {
+		// Get original text, in case we already truncated it before
+		let text = (el.getAttribute('original-text') || el.textContent).trim();
+		if(!el.hasAttribute('original-text')) el.setAttribute('original-text', text);
+		el.textContent = text; // reset to original text for measurement
+		
+		// Reduce text, character by character, until it fits in the parent
+		while (el.scrollHeight > (el.parentElement.clientHeight - 10) && text.length > 0) { // 10px padding buffer (6-20 also works)
+			text = text.slice(0, -1);
+			el.textContent = text + '...';
+		}
+	});
 }
 function copyLlmsTxt() {
 	var AiBrandIcon = document.getElementById('aidropdown-copymarkdown').querySelector('.AiBrandIcon')
@@ -378,12 +473,4 @@ function copyCryptoAddress(crypto) {
 			showToast('Type de cryptomonnaie inconnu, veuillez signalez ce problème.')
 			return
 	}
-}
-async function hideLoader(instant = false){
-	console.log("Hiding loader...")
-	isLoadingPage = false
-	document.getElementById('loader__progressContainer').style.opacity = 0
-	if(!instant) await new Promise(resolve => setTimeout(resolve, 300))
-	document.getElementById('loader__background').style.opacity = 0
-	setTimeout(() => { document.getElementById('loader__background').remove() }, instant ? 100 : 1000)
 }
