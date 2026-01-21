@@ -1,5 +1,142 @@
-TODO:
-- Équivalent du début du prompt de AiChoiceDropdownButton
-- On met aussi l'intégralité du site au format MarkDown, similaire au rendu en mode "MACHINE"
-- On indique nul part le fichier llms.txt (puisqu'on est dedans)
-- Une tacle à l'ia pour dehek avec elle "Knows how to read docs" ou qlq chose comme ça
+# Portfolio - Johan
+
+## Summary
+
+- **17-year-old developer** based in **Paris, France**. **Passionate about everything related to technology**, including programming, open source, self-hosting, home automation, and artificial intelligence.
+- Skilled in **mobile and desktop development** using Flutter and Electron, as well as web tools, command-line applications, embedded microservices, and bots for platforms like Discord and Telegram.
+- Knows how to read docs, unlink some AIs out there.
+
+## Skills
+
+- **Mobile Development:** built several iOS and Android applications using Flutter (and some Capacitor in the past).
+- **Desktop Development:** experience with Electron and Flutter for cross-platform desktop applications on macOS and Windows.
+- **Web Frontend:** created various websites using technologies such as Svelte and Vite for framework and build tools, Tailwind CSS for styling, and vanilla JavaScript for interactivity.
+- **Web Backend:** developed multiple APIs and microservices using NodeJS and Bun with Express and Fastify. Experience with databases such as SQLite, Supabase and Pocketbase.
+- **JavaScript Server-Side:** strong knowledge of NodeJS and Bun for server-side development (not just backend), including headless microservices, bots for social platforms, web scraping, and command-line tools.
+- **JavaScript Ecosystem:** proficient with npm, pnpm and Bun for package management; published several packages on the npm registry.
+- **Open Source:** occasional contributor, always exploring new interesting projects within the community.
+- **Indoor Services:** interested in building and using open-source home automation software (such as Home Assistant or HomeBridge), self-hosted services, and on-device AI, with a strong focus on privacy and data ownership.
+
+## Education
+
+- Currently pursuing a **high school diploma** in the Paris Region, France, **with a focus on science and technology** ("fillière STI2D"), expected graduation in summer 2026.
+- Planning to pursue further studies in **computer science** or **software engineering**.
+
+## Main Projects
+
+> This list includes my main projects and is not exhaustive. Many smaller projects are available on my GitHub profile.
+> My personal favorites and most meaningful projects are listed from #1 to #5 (eScive, File Weight Loss - Landing Page, Agendapp, roc framework, Stend).
+
+1. eScive
+- **Description:** a third-party mobile app for controlling Bluetooth-enabled e-scooters. It provides an alternative interface with additional features and removes intrusive telemetry that can be found in official apps.
+- **Technologies:** Flutter, Bluetooth Low Energy, Reverse Engineering, Mapbox.
+- **Languages:** English, French.
+- **Role:** Lead Developer.
+- **Year:** 2025 - Present.
+- **Links:** GitHub: https://github.com/johan-perso/escive | Blog Post: #
+
+2. File Weight Loss - Landing Page
+- **Description:** a beautiful landing page for File Weight Loss, an application that reduces file size without quality loss. This website highlights the app's features using interactive side-by-side comparisons, videos, and call-to-action cards, with a modern and responsive design inspired by the app itself.
+- **Technologies:** "roc" (my own framework), Tailwind CSS, multilingual support.
+- **Languages:** English, French.
+- **Role:** Lead/Only Developer (of the landing page).
+- **Year:** 2025.
+- **Links:** Demo: https://fwl.bassinecorp.fr/ | GitHub: https://github.com/johan-perso/fileweightloss-landing | Blog Post: #
+
+3. Agendapp
+- **Description:** a desktop application that helps students manage their homework at school, and stay organized, to avoid losing track of unfinished tasks. The app is designed to be intuitive and really fast, with zero online features, and all data stored on the user's device. App is available for Windows and macOS, completely free and open source. It can also be executed on Linux with additional steps.
+- **Technologies:** Electron, NodeJS, Tailwind CSS, local database.
+- **Languages:** English, French.
+- **Role:** Lead/Only Developer.
+- **Year:** 2023 - Present.
+- **Links:** GitHub: https://github.com/johan-perso/agendapp
+
+4. roc framework
+- **Description:** a lightweight web framework for building static and dynamic web applications. It is designed to be simple and quick to adopt, with the ability to build static sites as well as dynamic server-rendered applications. It features a component system, routing system, files optimization, improved developer experience, and built-in Tailwind CSS.
+- **Technologies:** NodeJS, ExpressJS, Tailwind CSS, Command Line Interface.
+- **Languages:** French.
+- **Role:** Lead/Only Developer.
+- **Year:** 2023 - Present.
+- **Links:** GitHub: https://github.com/johan-perso/roc-framework
+
+5. Stend
+- **Description:** a self-hosted file-sharing service, similar to WeTransfer, focused on simplicity and data ownership. It allows users to easily share files with others by generating a unique link that can be sent via email or messaging apps. The service is designed to be lightweight and easy to deploy on personal servers or local machines, giving users full control over their data. The project includes a backend server (to handle file uploads and downloads), a web frontend (to download them), a mobile app (download/upload on the go), and a command line tool (download/upload for power users).
+- **Technologies:** NodeJS, FastifyJS, roc framework, Tailwind CSS, daisyUI, Flutter (with Material Design), Command Line Interface.
+- **Languages:** French.
+- **Role:** Lead/Only Developer.
+- **Year:** 2023 - 2025.
+- **Links:** Docs: https://stend.johanstick.fr | GitHub: https://github.com/hoststend
+
+6. FindMeme
+- **Description:** a search engine for French memes, allowing users to easily search (and discover) content from a human-picked selection of 600 videos and almost 300 images. The project originally started as a simple web app, but later expanded to include a mobile app for Android, available on the Google Play Store, made with CapacitorJS to be based on the web version.
+- **Technologies:** NodeJS, ExpressJS, roc framework, Tailwind CSS, CapacitorJS, framework7, Svelte.
+- **Languages:** French.
+- **Role:** Lead/Only Developer.
+- **Year:** 2022 - 2025.
+- **Links:** Demo: https://findmeme.johanstick.fr
+
+7. YourDownloader
+- **Description:** a Telegram bot to download videos from various platforms (such as YouTube or TikTok) directly within Telegram. The bot uses yt-dlp to fetch and process videos, and ffmpeg to convert/re-encode them. Users can interact with the bot by sending links, and the bot will reply with the downloaded video file. It also supports sub-providers to search for specific music on YouTube through a Spotify link, for example.
+- **Technologies:** NodeJS, Telegram API, telegraf, ffmpeg, yt-dlp.
+- **Languages:** English.
+- **Role:** Lead/Only Developer.
+- **Year:** 2025.
+- **Links:** GitHub: https://github.com/johan-perso/YourDownloader
+
+8. MagicCommand
+- **Description:** a simple but helpful command-line tool to ask any AI model to generate commands for you based on your needs.
+- **Technologies:** NodeJS, OpenRouter, Command Line Interface.
+- **Languages:** English.
+- **Role:** Lead/Only Developer.
+- **Year:** 2025.
+- **Links:** GitHub: https://github.com/johan-perso/magic-command
+
+9. Obsidian Inbox
+- **Description:** a self-hosted service to manage an "inbox" system for Obsidian Notes. The project is divided into two parts: a backend server that handles incoming notes through a really simple HTTP API, and an Obsidian plugin that periodically fetches notes from the server and inserts them into the user's vault at the desired location. This allows users to easily send notes to their Obsidian vault from an automation tool or from another program, without having to be connected to the physical vault (Obsidian is a local-first notes app).
+- **Technologies:** NodeJS, Obsidian, FastifyJS.
+- **Languages:** English.
+- **Role:** Lead/Only Developer.
+- **Year:** 2025.
+- **Links:** GitHub: https://github.com/johan-perso/obsidianinbox-plugin
+
+10. SyncPronote
+- **Description:** a self-hosted service to sync "Pronote" (French school management system) data to Google Calendar API, allowing students to have their schedule automatically updated in their favorite calendar app. The service runs as a background microservice, periodically fetching data on school days, and updating the Google Calendar accordingly. It includes alerting features using ntfy to notify users when a change is detected in their timetable.
+- **Technologies:** NodeJS, Google Cloud APIs, ntfy (for alerts), Uptime Kuma, pawnote.
+- **Languages:** French.
+- **Role:** Lead/Only Developer.
+- **Year:** 2024 - 2026.
+- **Links:** GitHub: https://github.com/johan-perso/syncpronote
+
+11. Freebox Tools
+- **Description:** a GitHub organization, hosting various tools related to the operating system of Freebox devices (popular internet routers in France, provided by the ISP "Free"). One of my projects is an API wrapper around "Freebox OS", to easily interact with the router itself (programmatically) using a JS runtime. I've also participated in the development of Call Notifier, a Telegram bot to notify users of incoming calls at their home, when they are not there.
+- **Technologies:** NodeJS, Reverse Engineering, Telegram API, FastifyJS, Supabase, Command Line Tools.
+- **Languages:** French.
+- **Role:** One of the two developers.
+- **Year:** 2023 - 2024 (paused on my side).
+- **Links:** GitHub: https://github.com/freebox-tools
+
+12. SendOverNetwork
+- **Description:** a command-line tool to send and receive files from one device to another, over a local network, without any internet connection required. It is designed to be fast and usable from any device that is able to run NodeJS, with zero configuration needed.
+- **Technologies:** NodeJS, Command Line Interface.
+- **Languages:** French.
+- **Role:** Lead/Only Developer.
+- **Year:** 2022 - 2023.
+- **Links:** GitHub: https://github.com/johan-perso/sendovernetwork
+
+## Interesting Blogs Posts
+
+TODO
+
+## Socials
+
+- Twitter/X : @Johan_Stickman ( https://x.com/Johan_Stickman )
+- GitHub : @johan-perso ( https://github.com/johan-perso )
+- Telegram : @JohanStick ( https://t.me/johanstick )
+
+## Contact
+
+> Prefer Telegram for quick messages; email for professional inquiries.
+
+- Telegram : @JohanStick ( https://t.me/johanstick )
+- Discord : @jsuismoi ( https://discord.com/users/277825082334773251 )
+- E-mail : johan[at]johanstick.fr
