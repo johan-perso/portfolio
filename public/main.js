@@ -79,9 +79,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 			}
 
 			// If we finished loading, speed up the loading
-			else if(finishedLoading && intervalDelay > 5 && mainResourcesLoaded) {
+			else if(finishedLoading && intervalDelay > 5 && mainResourcesLoaded && incrementLevel != 2.5 && incrementLevel != 4) {
 				intervalDelay = 45
-				incrementLevel = 2.5
+				incrementLevel = Date.now() - startTime > 500 ? 2.5 : 4
 				console.log(`Speeding up loader interval to ${intervalDelay}ms`)
 				updateInterval()
 			}
@@ -429,7 +429,9 @@ async function hideLoader(instant = false){
 	document.getElementById('loader__background').style.opacity = 0
 	setTimeout(() => { document.getElementById('loader__background').remove() }, instant ? 100 : 1000)
 
-	if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
+	setTimeout(() => {
+		if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
+	}, 100)
 }
 
 // ========== Others Features
