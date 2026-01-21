@@ -1,14 +1,44 @@
+// ========== Catch Global Errors
+window.onerror = async function(error){
+	console.error("(Error Grabber) Grabbed: ", error)
+	console.error("(Error Grabber) document.readyState ==", document.readyState)
+
+	if(document.readyState != 'complete'){
+		console.log("(Error Grabber) Page not loaded yet, waiting for it to load")
+		await new Promise(resolve => {
+			window.addEventListener('load', resolve)
+		})
+		console.log("(Error Grabber) Page is now loaded, showing error message on loader")
+	}
+
+	if(document.getElementById('loader__error')){
+		document.getElementById('loader__error').innerText = error.message || error.stack || error
+		document.getElementById('loader__error').classList.remove('hidden')
+	} else {
+		console.log("(Error Grabber) Loader isn't present on page.")
+	}
+}
+
 // ========== Main Variables
 const constrainedWidthContainersIds = ['newsBannerContainer', 'othersTextualAboutMeSections']
 var elementsToHideOnHighlight = []
 var elementsToHideOnHighlightProperties = {}
 var myselfContainerWidth = 200
+var isLoadingPage = true
 var toastsTimeout = {}
 var toastsClearFunctions = {}
 var currentInterfaceMode = 'human'
 
 // ========== Main Events
 window.onload = async function(){
+	setTimeout(() => {
+		console.log("15sec after first page load, hiding loader if still here")
+		if(isLoadingPage){
+			console.log("Confirming that we're hiding loader after 15sec")
+			hideLoader()
+		}
+	}, 15000)
+
 	switchInterface('human') // performs initial width math operations
 	window.onresize() // perform initial width adjustments
 	initDropdown()
@@ -42,6 +72,20 @@ window.onload = async function(){
 		`
 	})
 
+	document.getElementById('loader__progressContainer').classList.remove('opacity-0')
+	for(var i = 0; i < 101; i++) { // simulate loading progress
+		await new Promise(resolve => setTimeout(resolve, 20 + (i * 2)))
+		var up = i * 2
+		if(i > 20) up += 0.85
+		if(i > 30) up += 1.5
+		var progressBar = document.getElementById('loader__progressBar')
+		if(progressBar) progressBar.style.width = up + '%'
+		if(up > 99) break
+	}
+	await new Promise(resolve => setTimeout(resolve, 180))
+	console.log(progressBar.style.width)
+
+	if(isLoadingPage) hideLoader()
 	if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
 }
 
@@ -334,4 +378,12 @@ function copyCryptoAddress(crypto) {
 			showToast('Type de cryptomonnaie inconnu, veuillez signalez ce problème.')
 			return
 	}
+}
+async function hideLoader(instant = false){
+	console.log("Hiding loader...")
+	isLoadingPage = false
+	document.getElementById('loader__progressContainer').style.opacity = 0
+	if(!instant) await new Promise(resolve => setTimeout(resolve, 300))
+	document.getElementById('loader__background').style.opacity = 0
+	setTimeout(() => { document.getElementById('loader__background').remove() }, instant ? 100 : 1000)
 }
