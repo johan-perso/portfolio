@@ -44,6 +44,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 	document.getElementById('loader__progressContainer').classList.remove('opacity-0')
 	incrementLoader(2)
 
+	setTimeout(() => {
+		if(isLoadingPage){
+			console.warn("15sec since DOMContentLoaded, partially hiding loader.")
+			document.getElementById('loader__error').innerText = "Le chargement prend plus de temps que prévu, vous pouvez peut-être actualiser la page ou vérifier votre connexion internet."
+			document.getElementById('loader__error').classList.remove('hidden')
+			document.getElementById('loader__background').style.opacity = 0.8
+		}
+	}, 15000)
+
 	function updateInterval() {
 		if(loadingIncrementInterval) clearInterval(loadingIncrementInterval)
 
@@ -118,14 +127,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 window.onload = async function(){
 	mainResourcesLoaded = true
 	console.log('All resources finished loading! (event onload called)')
-
-	setTimeout(() => {
-		console.log("15sec after first page load, hiding loader if still here")
-		if(isLoadingPage){
-			console.warn("Confirming that we're hiding loader after 15sec")
-			hideLoader()
-		}
-	}, 15000)
 
 	switchInterface('human') // performs initial width math operations
 	window.onresize() // perform initial width adjustments
