@@ -5,7 +5,11 @@
 
 	<script src="/main.js"></script>
 
+	<link rel="preload" href="/fonts/bricolage-grotesque-v9-latin-300.woff2" as="font" type="font/woff2" crossorigin>
 	<link rel="preload" href="/fonts/bricolage-grotesque-v9-latin-regular.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="/fonts/bricolage-grotesque-v9-latin-500.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="/fonts/bricolage-grotesque-v9-latin-600.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="/fonts/schibsted-grotesk-v7-latin-800.woff2" as="font" type="font/woff2" crossorigin>
 </head>
 <body class="font-body text-sm leading-5">
 	<JsRequired></JsRequired>
@@ -16,7 +20,7 @@
 		<MyselfSidebar></MyselfSidebar>
 
 		<!-- Main page content -->
-		<div id="mainContent" class="pr-8 2xl:pr-4 pb-16 max-[1219px]:px-40 max-[1186px]:px-24 max-[900px]:px-12">
+		<div id="mainContent" class="pr-8 2xl:pr-4 pb-16 max-[1219px]:px-40 max-[1186px]:px-24 max-[900px]:px-12" role="main">
 			<!-- Currents projects -->
 			<div class="grid grid-cols-2 min-[901px]:grid-cols-3 min-[1220px]:grid-cols-5 min-[1451px]:grid-cols-6 gap-4 auto-rows-[180px]">
 				<!-- 1st row -->
@@ -27,7 +31,7 @@
 					backgroundPositionY="center"
 					projectName="File Weight Loss"
 					projectDescription="Faites perdre du poids à vos fichiers"
-					projectBannerImg="/medias/projects/banners/fwl2.png"
+					projectBannerImg="/medias/projects/banners/fwl2.webp"
 					linkDefault="#"
 					linkDocs="#"
 					linkDemo="https://fwl.bassinecorp.fr"
@@ -55,7 +59,7 @@
 					backgroundPositionY="center"
 					projectName="eScive"
 					projectDescription="Roulez mieux en trottinette électrique"
-					projectBannerImg="/medias/projects/banners/escive.png"
+					projectBannerImg="/medias/projects/banners/escive.jpg"
 					linkDefault="#"
 					linkDocs="#"
 					linkGithub="https://github.com/johan-perso/escive"
@@ -67,7 +71,7 @@
 					backgroundPositionY="center"
 					projectName="roc"
 					projectDescription="Générateur de sites statiques et dynamiques"
-					projectBannerImg="/medias/projects/banners/roc.jpg"
+					projectBannerImg="/medias/projects/banners/roc.svg"
 					linkDefault="https://github.com/johan-perso/roc-framework"
 					linkGithub="https://github.com/johan-perso/roc-framework"
 				></LargeProjectBentoCard>
