@@ -31,6 +31,7 @@ var loadingCurrentIncrement = 0
 var toastsTimeout = {}
 var toastsClearFunctions = {}
 var currentInterfaceMode = 'human'
+var preloaded = {}
 
 // ========== Main Events
 document.addEventListener('DOMContentLoaded', async () => {
@@ -160,6 +161,14 @@ window.onload = async function(){
 			</clipPath>
 			</defs>
 		`
+	})
+
+	preloaded.llmsTxt = await fetch('/llms.txt').then(response => {
+		if(!response.ok) throw new Error(`Failed to prefetch llms.txt: ${response.status} ${response.statusText}`)
+		return response.text()
+	}).catch(error => {
+		console.error(error)
+		return null
 	})
 
 	hasMainLoadFunctionsRun = true
@@ -469,8 +478,17 @@ function copyLlmsTxt() {
 	var AiBrandIcon = document.getElementById('aidropdown-copymarkdown').querySelector('.AiBrandIcon')
 	AiBrandIcon.classList.add('text-green-600')
 
-	// TODO: prefetch and copy llms.txt
-	// TODO: turn button default-color again
+	if(!preloaded.llmsTxt) {
+		showToast("La page est toujours en cours de chargement, veuillez réessayer dans un instant.")
+		console.warn("llms.txt is not preloaded, cannot copy.")
+	} else {
+		navigator.clipboard.writeText(preloaded.llmsTxt)
+		showToast("Le résumé du site au format Markdown a été copié !")
+	}
+
+	setTimeout(() => {
+		AiBrandIcon.classList.remove('text-green-600')
+	}, 3000)
 }
 function copyCryptoAddress(crypto) {
 	switch(crypto) {
