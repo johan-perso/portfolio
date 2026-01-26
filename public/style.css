@@ -53,13 +53,21 @@
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
 }
-.bg-heavy-blur {
+.bg-blur-lg {
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
 }
-.bg-heavy-blur:hover {
+.bg-blur-lg:hover {
   backdrop-filter: blur(5.75px);
   -webkit-backdrop-filter: blur(5.75px);
+}
+.bg-blur-xl {
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+.bg-blur-xl:hover {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
 }
 
 /* Main content grid */

@@ -318,12 +318,12 @@ function showToast(message, duration = 0) {
 	text.classList = 'flex items-center justify-center'
 
 	const toast = document.createElement('div')
-	toast.className = `toast z-50 fixed bottom-4 ${isShortScreen ? '' : 'right-4'} bg-blur px-5 py-2 border-2 border-light-background-heavy bg-[rgba(248,248,248,0.4)] text-primary-content font-medium rounded-full bg-heavy-blur`
+	toast.className = `toast z-50 fixed bottom-4 ${isShortScreen ? '' : 'right-4'} px-5 py-2 border-2 border-light-background-heavy bg-[rgba(248,248,248,0.4)] text-primary-content font-medium rounded-full bg-blur-xl`
 	toast.id = randomId
 	toast.style.opacity = '0'
 	toast.style.transform = 'translateY(100px)'
 	toast.style.transition = 'opacity 200ms ease-out, transform 200ms ease-out'
-	toast.style.boxShadow = '0px 4px 4px rgba(223,223,223,0.45);'
+	toast.style.boxShadow = '0px 2px 6px rgba(0,0,0,0.2)'
 	toast.appendChild(text)
 
 	if(!isShortScreen) {
