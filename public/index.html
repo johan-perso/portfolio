@@ -217,7 +217,13 @@
 				<div class="max-[1450px]:hidden col-span-1"></div>
 				<div class="col-span-1 min-[590px]:col-span-2 min-[1220px]:col-span-3 max-[540px]:mt-10">
 					<!-- Articles to read on the blog -->
-					<h3 class="font-semibold text-2xl 2xl:text-3xl antialiased" style="text-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2)">Articles à lire</h3>
+					<div class="min-[350px]:inline-flex items-center justify-between w-full">
+						<h3 class="font-semibold text-2xl 2xl:text-3xl antialiased max-[349px]:mb-0.5" style="text-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2)">Articles à lire</h3>
+						<a href="#" aria-label="Accéder à la liste d'articles disponibles" class="text-primary-content-light max-[349px]:text-link max-[349px]:hover:underline hover:text-link transition-colors duration-300 font-medium mr-1">
+							<span class="max-[349px]:hidden">Voir tout</span>
+							<span class="min-[350px]:hidden">Voir tous les articles</span>
+						</a>
+					</div>
 					<div class="grid gap-4 mt-4">
 						<BlogPostCard
 							date="2026-01-08"
