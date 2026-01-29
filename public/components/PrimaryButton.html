@@ -1,0 +1,12 @@
+<div
+	href="{{ $href }}"
+	target="_blank"
+	onclick="try { window.open('{{ $href }}', '_blank').focus() } catch(e) { window.location.href = '{{ $href }}' }"
+	class="text-white text-[14px] font-light rounded-full px-5 py-2 box-border w-fit transform hover:scale-[1.02] transition-all duration-300 cursor-pointer select-none user-select-none flex flex-row items-center justify-center gap-2 shadow-lg"
+	style="background: linear-gradient(90deg, #4D91FE 0%, #4684FD 100%); border: 1px solid rgba(50, 112, 242, 0.8);"
+>
+	<svg width="18" height="18" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+		{{ $svgPath }}
+	</svg>
+	<p>{{ $label }}</p>
+</div>
