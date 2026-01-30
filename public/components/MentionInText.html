@@ -1,0 +1,4 @@
+<a href="{{ $href }}" target="_blank" class="inline-flex align-middle w-fit rounded-full bg-light-background border border-light-background-heavier/80 items-center mx-0.5 pr-1.5 duration-150 transition-all text-xs shadow-sm hover:shadow hover:border-link/70 hover:bg-link/10">
+	<img class="{{ this.componentAttribs.avatarurl?.length ? '' : 'hidden' }} w-4 h-4 rounded-full mr-1" src="{{ $avatarUrl }}" alt="Photo de profil de {{ $username }}" />
+	<span>{{ this.componentAttribs.avatarurl?.length ? '' : '@' }}{{ $username }}</span>
+</a>
