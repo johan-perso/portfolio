@@ -515,3 +515,10 @@ function copyCryptoAddress(crypto) {
 			return
 	}
 }
+function copyHeaderLink(event) {
+	event.stopPropagation()
+	const hash = event.target.getAttribute('href') || `#${event.currentTarget.id}`
+	location.hash = hash
+	navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}${hash}`)
+	showToast('Lien vers cette section copié dans le presse-papier !')
+}

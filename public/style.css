@@ -2,6 +2,22 @@
 	font-synthesis: none !important;
 }
 
+/* Hide section link until hover */
+.blogHeader > a {
+  opacity: 0%;
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+.blogHeader:hover > a {
+  opacity: 100%;
+}
+
+/* Increase decimals in ordered list markers */
+ul.marker-medium li::marker {
+  font-weight: 500;
+}
+
 /* Shadow for loading progression bar */
 #loader__progressContainer {
   box-shadow: 0px 5px 14px 0.25px rgba(0, 0, 0, 0.15);

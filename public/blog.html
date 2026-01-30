@@ -25,11 +25,11 @@
 
 			<div class="flex flex-row row-span-2 gap-6 max-md:flex-col w-full justify-between">
 				<!-- Article content -->
-				<div role="article" class="leading-normal">
-					<h1 class="font-semibold text-primary-content-heavy antialiased text-xl" role="heading">eScive : roulez mieux en trottinette électrique</h1>
-					<img src="/medias/projects/banners/escive2.jpg" alt="eScive app banner" class="w-full h-auto rounded-lg mt-6 mb-8 shadow-md" />
+				<div role="article" class="leading-normal w-full max-w-[50rem]">
+					<h1 class="font-semibold text-primary-content-heavy antialiased text-[27px] leading-8" role="heading">eScive : roulez mieux en trottinette électrique</h1>
+					<img src="/medias/projects/banners/escive2.jpg" alt="eScive app banner" class="w-full h-auto rounded-lg mt-6 shadow-md" />
 
-					<p>L'application eScive est disponible ! Elle offre une meilleure expérience de conduite pour les utilisateurs de trottinettes électriques de certaines marques dotées de capacités Bluetooth. Elle remplace les apps officielles en offrant plus de fonctionnalités, dans une meilleure interface, sans tracking, et sans publicités.</p>
+					<p class="mt-6">L'application eScive est disponible ! Elle offre une meilleure expérience de conduite pour les utilisateurs de trottinettes électriques de certaines marques dotées de capacités Bluetooth. Elle remplace les apps officielles en offrant plus de fonctionnalités, dans une meilleure interface, sans tracking, et sans publicités.</p>
 					<div class="mt-4 flex gap-3 max-[600px]:gap-2.5 max-[600px]:flex-col max-[600px]:[&>*]:w-full">
 						<PrimaryButton
 							label="Télécharger pour Android"
@@ -41,6 +41,82 @@
 							href="#"
 							svgPath="<g clip-path='url(#clip0_25_76)'><path d='M8.60768 4.88467C7.93618 4.88467 6.89706 4.12108 5.80268 4.148C4.35768 4.16712 3.0331 4.98596 2.28864 6.28292C0.789101 8.88604 1.90189 12.7309 3.3646 14.8467C4.08214 15.8766 4.9286 17.0354 6.0506 16.9993C7.12727 16.9532 7.53102 16.3002 8.83789 16.3002C10.1349 16.3002 10.5025 16.9993 11.6429 16.9717C12.8024 16.9532 13.5384 15.9233 14.2467 14.8835C15.0656 13.6878 15.4056 12.5283 15.424 12.4645C15.3964 12.4553 13.1701 11.5997 13.1431 9.02417C13.1247 6.87083 14.8998 5.84092 14.9827 5.79487C13.9705 4.31446 12.4164 4.14871 11.8731 4.11187C10.4564 4.00137 9.26998 4.88467 8.60768 4.88467ZM11.0004 2.71292C11.5976 1.99608 11.9921 0.993792 11.8823 0C11.0274 0.0368333 9.99673 0.570208 9.38048 1.28775C8.82798 1.92242 8.35056 2.94383 8.47877 3.9185C9.42652 3.99217 10.4019 3.43117 10.9997 2.71362' fill='currentColor'/></g><defs><clipPath id='clip0_25_76'><rect width='17' height='17' fill='white'/></clipPath></defs>"
 						></PrimaryButton>
+					</div>
+
+					<div>
+						<div class="flex gap-1.5 mt-8 blogHeader" id="testLink">
+							<h1 class="font-semibold text-primary-content-heavy antialiased text-2xl">Téléchargement de l'app</h1>
+							<a href="#testLink" onclick="copyHeaderLink(event)" class="mt-0.5 text-link text-xl hover:underline transition-opacity duration-100 opacity-0 hover:opacity-100">#</a>
+						</div>
+						<p class="mt-3.5">
+							Étant donné que ce concept d’application n’intéresse pas assez d’utilisateurs (peut-être dû au faible nombre de marques supportés pour le moment, peut-être un peu trop niche aussi), l’équipe du Google Play Store a refusé deux fois la publication de l’app. Quant à Apple, les frais de publication sont bien trop importants pour un projet de ce style.
+						</p>
+						<p class="mt-3.5">
+							Cependant, vous pouvez tout de même l’utiliser sur Android via un <a href="#" class="text-link hover:underline">fichier APK</a>, et sur iOS, à condition d’effectuer quelques étapes complexes à l’aide d’outils de sideloading et du fichier d’installation (IPA) d’eScive.
+						</p>
+						<div class="mt-5 ml-[-1px] mr-0.5">
+							<BlogPostCard
+								date="2026-01-08"
+								title="eScive : roulez mieux en trottinette électrique"
+								content="L'application eScive est disponible ! Elle offre une meilleure expérience de conduite pour les utilisateurs de trottinettes électriques de certaines marques dotées de capacités Bluetooth. Elle remplace les apps officielles en offrant plus de fonctionnalités, dans une meilleure interface."
+								href="/read/"
+							></BlogPostCard>
+						</div>
+					</div>
+
+					<div>
+						<div class="flex gap-1.5 mt-8 blogHeader" id="testLink">
+							<h1 class="font-semibold text-primary-content-heavy antialiased text-2xl">Compatibilité</h1>
+							<a href="#testLink" onclick="copyHeaderLink(event)" class="mt-0.5 text-link text-xl hover:underline transition-opacity duration-100 opacity-0 hover:opacity-100">#</a>
+						</div>
+						<p class="mt-3.5">
+							Pour l’instant, eScive n’est compatible qu’avec la gamme "i10" de chez iScooter (aucune affiliation, j’en pouvais juste plus de l’app officiel). Le code étant conçu avec une facilité d’ajout d’autres modèles à l’esprit, la liste d’appareils supportés pourrait venir à évoluer au fil du temps.
+						</p>
+						<p class="mt-3.5">
+							Il est possible de développer ses propres "bridges", permettant de relier un appareil à l’app en utilisant le Bluetooth, à condition d’être suffisamment motivé dans le reverse engineer.
+						</p>
+					</div>
+
+					<div>
+						<div class="flex gap-1.5 mt-8 blogHeader" id="testLink">
+							<h1 class="font-semibold text-primary-content-heavy antialiased text-2xl">Automatisation</h1>
+							<a href="#testLink" onclick="copyHeaderLink(event)" class="mt-0.5 text-link text-xl hover:underline opacity-0 hover:opacity-100">#</a>
+						</div>
+						<p class="mt-3.5">
+							L’app possède deux fonctionnalités pour vous aider à implémenter vos propres automatisations, afin de rendre votre expérience encore plus pratique.
+						</p>
+						<ul class="mt-3 list-decimal list-outside marker-medium pl-5 space-y-1">
+							<li>"Protocole" : effectuer des actions au sein de l’app, depuis une autre app ou un tag NFC.</li>
+							<li>"Variables Kustom" : afficher des informations tirées d’eScive dans vos propres widgets (uniquement sur Android).</li>
+						</ul>
+						<p class="mt-3.5">
+							Ces deux éléments vous permettent, par exemple, de configurer un tag NFC posé sur votre guidon, prêt à activer ou désactiver le verrouillage intégré de la trottinette lorsque vous passez votre téléphone près de celui-ci.
+						</p>
+						<div class="mt-5 ml-[-1px] mr-0.5">
+							<Callout content="🤓 Vous pouvez en apprendre davantage à travers ce lien blabla"></Callout>
+						</div>
+					</div>
+
+					<div>
+						<div class="flex gap-1.5 mt-8 blogHeader" id="testLink">
+							<h1 class="font-semibold text-primary-content-heavy antialiased text-2xl">Contexte / motivation, fonctionnalités</h1>
+							<a href="#testLink" onclick="copyHeaderLink(event)" class="mt-0.5 text-link text-xl hover:underline opacity-0 hover:opacity-100">#</a>
+						</div>
+						<p class="mt-3.5">
+							En concevant eScive, j’ai voulu offrir à moi et aux autres utilisateurs une expérience beaucoup plus pratique qu’avec n’importe quelle app officielle.
+						</p>
+						<p class="mt-3.5">
+							D’abord, l’app est faite pour être utilisée très peu de temps : l’ouvrir un court instant pour afficher les statistiques du dernier parcours, ou pour déverrouiller sa trottinette.
+						</p>
+						<p class="mt-1">
+							Mais, elle est également faite pour être affichée à l’écran tout le long d’un parcours, lorsque le téléphone est attachée au guidon : l’affichage principal inclut un compteur de vitesse en temps réel, une représentation des alentours, et des détails sur la musique en cours de lecture. Le mode paysage est capable de tout afficher à l’écran, sans aucune interaction.
+						</p>
+						<p class="mt-3.5">
+							Pour vous faire perdre le moins de temps possible, eScive s’ouvre et se connecte rapidement à votre appareil, en vous laissant la possibilité d’en configurer plusieurs, et vous laisse configurer vos propres automatisations pour accélérer chacune de vos actions avec votre véhicule.
+						</p>
+						<p class="mt-3.5">
+							Également, l’app officielle iScooter plante une fois sur trois sur Android, demande un accès à la localisation exacte de votre téléphone, vous force à attendre dix secondes avant de vous autoriser à déverrouiller votre véhicule, et dispose de contrôles vraiment pas intuitifs.
+						</p>
 					</div>
 				</div>
 
