@@ -2,12 +2,22 @@
     "private": true,
     "name": "portfolio",
     "version": "4.0.0",
+    "main": "index.js",
     "scripts": {
-        "start": "roc start",
-        "dev": "roc dev",
-        "build": "roc build"
+        "start": "cross-env NODE_ENV=production bun run index.js",
+        "dev": "cross-env NODE_ENV=dev bun run --watch index.js"
     },
+    "author": "JohanStickman",
+    "license": "MIT",
     "dependencies": {
         "roc-framework": "^4.0.5"
+    },
+    "devDependencies": {
+        "cross-env": "^10.1.0",
+        "eslint": "^9.39.2"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/johan-perso/portfolio.git"
     }
 }
