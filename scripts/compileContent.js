@@ -1,5 +1,6 @@
 const fs = require("fs")
 const path = require("path")
+const compileMarkdown = require("./compileMarkdown")
 
 // TODO: Dans le parser, on remplace « , » dans un titre d'article de blog par « : » prcq un nom de fichier peut pas l'avoir mais dcp on perd l'info de base
 
@@ -7,7 +8,11 @@ const contentDir = {
 	base: path.join(__dirname, "..", "content"),
 	raw: path.join(__dirname, "..", "content", "raw"),
 	compiled: path.join(__dirname, "..", "content", "compiled"),
+	attachments: path.join(__dirname, "..", "content", "attachments"),
 }
+const publicAssetsPath = "/medias/content/"
+
+const compiledFiles = {}
 
 function readFilesRecursively(dir){
 	var files = fs.readdirSync(dir)
@@ -30,6 +35,7 @@ async function main(){
 		const content = fs.readFileSync(file, "utf-8")
 		const ext = path.extname(file).slice(1)
 
+		// Read frontmatter of Markdown files
 		const frontMatter = {}
 		if(ext == "md") {
 			const match = content.match(/^---\n([\s\S]+?)\n---\n/)
@@ -37,8 +43,9 @@ async function main(){
 				const unparsedFrontMatter = match[1]
 				const frontMatterLines = unparsedFrontMatter.split("\n")
 				frontMatterLines.forEach(line => {
-					const [key, value] = line.split(":").map(s => s.trim())
-					if(key && value) frontMatter[key] = value
+					const key = line.split(":")[0].trim()
+					const value = line.split(":").slice(1).join(":").trim()
+					if(key && value) frontMatter[key.toLowerCase()] = value
 				})
 			}
 		}
@@ -48,6 +55,7 @@ async function main(){
 			ext: ext,
 			type: ext == "md" && frontMatter?.["excel-pro-plugin"] == "parsed" ? "excel" : ext == "md" ? "document" : "asset",
 			path: file,
+			frontMatter,
 			content,
 		}
 	})
@@ -56,17 +64,42 @@ async function main(){
 - ${rawFilesContent.filter(f => f.type == "excel").length} excel files
 - ${rawFilesContent.filter(f => f.type == "asset").length} assets\n`)
 
-	rawFilesContent.forEach((file, i) => {
+	// Compile every file according to its type and save it to the compiled directory
+	await fs.promises.rm(contentDir.compiled, { recursive: true, force: true })
+	await Promise.all(rawFilesContent.map(async (file, i) => {
+		var originalFilenameTitle = path.basename(file.filename)
 		console.log(`Compiling content... (${i + 1}/${rawFilesContent.length} - ${file.filename})`)
-		const formattedFilename = path.basename(file.filename).toLowerCase()
+
+		var formattedFilename
+		if(file.type == "document" && file.content.trim().startsWith("---")) file.filename = file?.frontMatter?.slug?.toLowerCase()?.trim() || null
+		if(!formattedFilename) formattedFilename = path.basename(file.filename).toLowerCase()
+
 		const compiledPath = path.join(contentDir.compiled, formattedFilename)
-		const compiledPathJson = `${compiledPath.slice(0, -path.extname(file.filename).length)}.json`
-		fs.mkdirSync(path.dirname(compiledPath), { recursive: true })
+		const fileExt = path.extname(file.filename) ?? ""
+		const compiledPathHtml = `${!fileExt ? compiledPath : compiledPath.slice(0, -fileExt.length)}.html`
+		const compiledPathJson = `${!fileExt ? compiledPath : compiledPath.slice(0, -fileExt.length)}.json`
+		await fs.promises.mkdir(path.dirname(compiledPath), { recursive: true })
 
 		if(file.type == "document") {
-			// Goes on every line, parse frontmatter, differents tags, and organizes it in an array with each content
-			// Parsing will be similar to the one in MarkDocs, maybe the same code
+			const result = await compileMarkdown.convertMarkdown(file.content, {
+				filePath: file.path,
+				assetsPath: contentDir.attachments,
+				publicAssetsPath: publicAssetsPath,
+			})
+			if(fs.existsSync(compiledPathHtml)) throw new Error(`File ${compiledPathHtml} already exists. Please remove it before compiling.`)
+			await fs.promises.writeFile(compiledPathHtml, result.content, "utf-8")
+			compiledFiles[path.relative(contentDir.compiled, compiledPathHtml)] = {
+				type: "document",
+				slug: file.filename,
+				title: path.extname(originalFilenameTitle).length ? originalFilenameTitle.slice(0, -path.extname(originalFilenameTitle).length) : originalFilenameTitle,
+				frontmatter: {
+					...file.frontMatter,
+				},
+			}
+			console.log(compiledFiles)
 		} else if(file.type == "excel") {
+			if(fs.existsSync(compiledPathJson)) throw new Error(`File ${compiledPathJson} already exists. Please remove it before compiling.`)
+
 			// Parse content of the file to extract the sheet block
 			var sheetBlock = ""
 			var parsedSheetBlock = {}
@@ -76,6 +109,7 @@ async function main(){
 				else if(line.startsWith("```")) isReadingSheetBlock = false
 				else if(isReadingSheetBlock) sheetBlock += `${line}\n`
 			})
+
 			try {
 				parsedSheetBlock = JSON.parse(sheetBlock)
 			} catch (err) {
@@ -101,16 +135,18 @@ async function main(){
 					if(i != 0) compiledData.list[header].push(col)
 				})
 			})
-			fs.writeFileSync(compiledPathJson, JSON.stringify(compiledData, null, 2), "utf-8")
+
+			await fs.promises.writeFile(compiledPathJson, JSON.stringify(compiledData, null, 2), "utf-8")
+			compiledFiles[path.relative(contentDir.compiled, compiledPathJson)] = { type: "excel" }
 		} else {
 			// Copy asset file to compiled directory (for images, PDFs, ...)
 			try {
-				fs.copyFileSync(file.path, compiledPath)
+				await fs.promises.copyFile(file.path, compiledPath)
 			} catch (err) {
-				fs.writeFileSync(compiledPath, file.content, "utf-8")
+				await fs.promises.writeFile(compiledPath, file.content, "utf-8")
 			}
 		}
-	})
+	}))
 	console.log(`Compiled content saved to ${contentDir.compiled}`)
 }
 main()
