@@ -222,19 +222,17 @@ module.exports.convertMarkdown = async (
 			if(tempLine.startsWith("- ")) tempLine = tempLine.slice(2)
 			line = `${line.split("]")[0]}]${tempLine}`
 
-			// TODO: le système de callout est complètement différents
-			var original_calloutType = (line.split("[!")[1].split("]")[0]).toLowerCase()
-			var calloutTitle = line.split("]")[1]?.trim()
-			var calloutType = original_calloutType != "warn" && original_calloutType != "warning" && original_calloutType != "error" ? "info" : original_calloutType
+			// var original_calloutType = (line.split("[!")[1].split("]")[0]).toLowerCase()
+			// var calloutTitle = line.split("]")[1]?.trim()
+			// var calloutType = original_calloutType != "warn" && original_calloutType != "warning" && original_calloutType != "error" ? "info" : original_calloutType
 
-			// TODO: use checkForBasicMarkdownSyntax and escapeHtml
-			contentObject.content += `<Callout ${calloutTitle ? `title=${JSON.stringify(calloutTitle)} ` : ""}type="${calloutType.replace("warning", "warn")}">\n`
+			contentObject.content += "<blockquote class=\"border-l-4 border-gray-300 pl-4 italic my-3\">\n"
 			continue
 		} else if(currentAction == "callout"){
 			if(!line){
 				currentAction_precedent()
-				contentObject.content += "\n</Callout>\n\n"
-			} else contentObject.content += `${line.startsWith(">") ? line.slice(1).trim() : line.trim()}<br/>\n`
+				contentObject.content += "\n</blockquote>\n\n"
+			} else contentObject.content += `${checkForBasicMarkdownSyntax(escapeHtml(line.startsWith(">") ? line.slice(1).trim() : line.trim()))}<br/>\n`
 			continue
 		}
 
@@ -343,7 +341,7 @@ module.exports.convertMarkdown = async (
 				const splitFileContent = fileContent.split("\n")
 
 				const releaseDate = splitFileContent.find(line => line.trim().toLowerCase().startsWith("post_releasedate:"))?.split(":").slice(1).join(":").trim() || "UNKNOWN"
-				const title = path.parse(searchResult.path)?.name?.replaceAll(", ", " : ").replace(/"/g, "\\\"")
+				const title = path.parse(searchResult.path)?.name?.replace(", ", " : ").replace(/"/g, "\\\"")
 				var content = stripMarkdown(fileContent)
 				if(content.length > 400) content = `${content.slice(0, 400)}...`
 				if(![".", "!", "?"].includes(content[content.length - 1])) content += "." // add trailing dot if not present

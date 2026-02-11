@@ -2,8 +2,6 @@ const fs = require("fs")
 const path = require("path")
 const compileMarkdown = require("./compileMarkdown")
 
-// TODO: Dans le parser, on remplace « , » dans un titre d'article de blog par « : » prcq un nom de fichier peut pas l'avoir mais dcp on perd l'info de base
-
 const contentDir = {
 	base: path.join(__dirname, "..", "content"),
 	raw: path.join(__dirname, "..", "content", "raw"),
@@ -91,12 +89,11 @@ async function main(){
 			compiledFiles[path.relative(contentDir.compiled, compiledPathHtml)] = {
 				type: "document",
 				slug: file.filename,
-				title: path.extname(originalFilenameTitle).length ? originalFilenameTitle.slice(0, -path.extname(originalFilenameTitle).length) : originalFilenameTitle,
+				title: (path.extname(originalFilenameTitle).length ? originalFilenameTitle.slice(0, -path.extname(originalFilenameTitle).length) : originalFilenameTitle).replace(", ", " : "),
 				frontmatter: {
 					...file.frontMatter,
 				},
 			}
-			console.log(compiledFiles)
 		} else if(file.type == "excel") {
 			if(fs.existsSync(compiledPathJson)) throw new Error(`File ${compiledPathJson} already exists. Please remove it before compiling.`)
 
@@ -147,6 +144,9 @@ async function main(){
 			}
 		}
 	}))
+
+	await fs.promises.writeFile(path.join(contentDir.compiled, "_index.json"), JSON.stringify(compiledFiles, null, 2), "utf-8")
+
 	console.log(`Compiled content saved to ${contentDir.compiled}`)
 }
 main()
