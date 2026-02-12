@@ -10,7 +10,7 @@
     "author": "JohanStickman",
     "license": "MIT",
     "dependencies": {
-        "roc-framework": "^4.0.5"
+        "roc-framework": "^4.1.0"
     },
     "devDependencies": {
         "cross-env": "^10.1.0",
