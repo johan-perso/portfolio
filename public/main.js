@@ -3,24 +3,24 @@ window.onerror = async function(error){
 	console.error("(Error Grabber) Grabbed: ", error)
 	console.error("(Error Grabber) document.readyState ==", document.readyState)
 
-	if(document.readyState != 'complete'){
+	if(document.readyState != "complete"){
 		console.log("(Error Grabber) Page not loaded yet, waiting for it to load")
 		await new Promise(resolve => {
-			window.addEventListener('load', resolve)
+			window.addEventListener("load", resolve)
 		})
 		console.log("(Error Grabber) Page is now loaded, showing error message on loader")
 	}
 
-	if(document.getElementById('loader__error')){
-		document.getElementById('loader__error').innerText = error.message || error.stack || error
-		document.getElementById('loader__error').classList.remove('hidden')
+	if(document.getElementById("loader__error")){
+		document.getElementById("loader__error").innerText = error.message || error.stack || error
+		document.getElementById("loader__error").classList.remove("hidden")
 	} else {
 		console.log("(Error Grabber) Loader isn't present on page.")
 	}
 }
 
 // ========== Main Variables
-const constrainedWidthContainersIds = ['newsBannerContainer', 'othersTextualAboutMeSections']
+const constrainedWidthContainersIds = ["newsBannerContainer", "othersTextualAboutMeSections"]
 var elementsToHideOnHighlight = []
 var elementsToHideOnHighlightProperties = {}
 var myselfContainerWidth = 200
@@ -30,28 +30,28 @@ var hasMainLoadFunctionsRun = false
 var loadingCurrentIncrement = 0
 var toastsTimeout = {}
 var toastsClearFunctions = {}
-var currentInterfaceMode = 'human'
+var currentInterfaceMode = "human"
 var preloaded = {}
 
 // ========== Main Events
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener("DOMContentLoaded", async () => {
 	const startTime = Date.now()
 	var loadingIncrementInterval
 	var finishedLoading = false
 	var intervalDelay = 50
 	var incrementLevel = 1.5
 
-	console.log('DOM fully loaded and parsed')
-	document.getElementById('loader__progressContainer').classList.remove('opacity-0')
-	document.getElementById('loader__background').classList.add('duration-700')
+	console.log("DOM fully loaded and parsed")
+	document.getElementById("loader__progressContainer").classList.remove("opacity-0")
+	document.getElementById("loader__background").classList.add("duration-700")
 	incrementLoader(2)
 
 	setTimeout(() => {
 		if(isLoadingPage){
 			console.warn("15sec since DOMContentLoaded, partially hiding loader.")
-			document.getElementById('loader__error').innerText = "Le chargement prend plus de temps que prévu, vous pouvez peut-être actualiser la page ou vérifier votre connexion internet."
-			document.getElementById('loader__error').classList.remove('hidden')
-			document.getElementById('loader__background').style.opacity = 0.8
+			document.getElementById("loader__error").innerText = "Le chargement prend plus de temps que prévu, vous pouvez peut-être actualiser la page ou vérifier votre connexion internet."
+			document.getElementById("loader__error").classList.remove("hidden")
+			document.getElementById("loader__background").style.opacity = 0.8
 		}
 	}, 15000)
 
@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 			// If we are close to finishing but we still don't have main resources, halt the loader
 			if(!finishedLoading && loadingCurrentIncrement >= 90 && !mainResourcesLoaded) {
 				incrementLevel = 0
-				console.log(`Halting loader increment (waiting for main resources)`)
+				console.log("Halting loader increment (waiting for main resources)")
 				updateInterval()
 			}
 
@@ -102,16 +102,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 	// Wait for fonts to load
 	if(document.fonts && document.fonts.ready) {
-		console.log('Waiting for fonts to load...')
+		console.log("Waiting for fonts to load...")
 		await document.fonts.ready
-		console.log('Fonts loaded.')
+		console.log("Fonts loaded.")
 	} else {
-		console.warn('document.fonts API not supported, skipping font load wait.')
+		console.warn("document.fonts API not supported, skipping font load wait.")
 	}
 
 	// Wait for additional main load functions
 	while(!hasMainLoadFunctionsRun) {
-		console.log('Waiting for main load functions to complete...')
+		console.log("Waiting for main load functions to complete...")
 		await new Promise(resolve => setTimeout(resolve, 200))
 	}
 
@@ -128,32 +128,32 @@ document.addEventListener('DOMContentLoaded', async () => {
 })
 window.onload = async function(){
 	mainResourcesLoaded = true
-	console.log('All resources finished loading! (event onload called)')
+	console.log("All resources finished loading! (event onload called)")
 
-	switchInterface('human') // performs initial width math operations
+	switchInterface("human") // performs initial width math operations
 	window.onresize() // perform initial width adjustments
 	initDropdown()
 
 	elementsToHideOnHighlight = [
-		document.getElementById('sectionHeaderAboutMe'),
-		document.getElementById('firstName'),
-		document.getElementById('skills'),
-		document.getElementById('socialButtons'),
-		document.getElementById('aiOptionsSections'),
-		document.getElementById('newsBannerContainer'),
-		document.getElementById('contactSection'),
-		document.getElementById('footerSection'),
-		...document.getElementsByClassName('mapComponent'),
-		...document.getElementsByClassName('bentoCard')
+		document.getElementById("sectionHeaderAboutMe"),
+		document.getElementById("firstName"),
+		document.getElementById("skills"),
+		document.getElementById("socialButtons"),
+		document.getElementById("aiOptionsSections"),
+		document.getElementById("newsBannerContainer"),
+		document.getElementById("contactSection"),
+		document.getElementById("footerSection"),
+		...document.getElementsByClassName("mapComponent"),
+		...document.getElementsByClassName("bentoCard")
 	]
 
-	const isUsingSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 && navigator.userAgent && navigator.userAgent.indexOf('CriOS') == -1 && navigator.userAgent.indexOf('FxiOS') == -1;
-	if(isUsingSafari) Array.from(document.getElementsByClassName('browserSvgIcon')).forEach(el => {
-		const strokeWidth = el.querySelectorAll('path')?.[0]?.getAttribute('stroke-width') || '1.2'
-		const strokeColor = el.querySelectorAll('path')?.[0]?.getAttribute('stroke') || 'currentColor'
+	const isUsingSafari = navigator.vendor && navigator.vendor.indexOf("Apple") > -1 && navigator.userAgent && navigator.userAgent.indexOf("CriOS") == -1 && navigator.userAgent.indexOf("FxiOS") == -1
+	if(isUsingSafari) Array.from(document.getElementsByClassName("browserSvgIcon")).forEach(el => {
+		const strokeWidth = el.querySelectorAll("path")?.[0]?.getAttribute("stroke-width") || "1.2"
+		const strokeColor = el.querySelectorAll("path")?.[0]?.getAttribute("stroke") || "currentColor"
 
-		el.setAttribute('viewBox', '0 0 14 14')
-		el.setAttribute('fill', 'none')
+		el.setAttribute("viewBox", "0 0 14 14")
+		el.setAttribute("fill", "none")
 		el.innerHTML = `<g clip-path="url(#clip0_20_1012)">
 			<path d="M9.47334 4.52667L8.42101 7.68309C8.36373 7.85493 8.26723 8.01107 8.13915 8.13915C8.01107 8.26723 7.85493 8.36373 7.68309 8.42101L4.52667 9.47334L5.57901 6.31692C5.63628 6.14508 5.73278 5.98894 5.86086 5.86086C5.98894 5.73278 6.14508 5.63628 6.31692 5.57901L9.47334 4.52667Z" stroke="${strokeColor}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round"/>
 			<path d="M7.00002 12.8334C10.2217 12.8334 12.8334 10.2217 12.8334 7.00002C12.8334 3.77836 10.2217 1.16669 7.00002 1.16669C3.77836 1.16669 1.16669 3.77836 1.16669 7.00002C1.16669 10.2217 3.77836 12.8334 7.00002 12.8334Z" stroke="${strokeColor}" stroke-width="${strokeWidth}" stroke-linecap="round" stroke-linejoin="round"/>
@@ -166,8 +166,8 @@ window.onload = async function(){
 		`
 	})
 
-	if(['/', '/index', '/index.html'].includes(window.location.pathname)) {
-		preloaded.llmsTxt = await fetch('/llms.txt').then(response => {
+	if(["/", "/index", "/index.html"].includes(window.location.pathname)) {
+		preloaded.llmsTxt = await fetch("/llms.txt").then(response => {
 			if(!response.ok) throw new Error(`Failed to prefetch llms.txt: ${response.status} ${response.statusText}`)
 			return response.text()
 		}).catch(error => {
@@ -184,9 +184,9 @@ window.onresize = function(){
 	applyDynamicEllipsis()
 
 	if(window.innerWidth > 1220) {
-		myselfContainerWidth = document.getElementById('myselfContainer').clientWidth
+		myselfContainerWidth = document.getElementById("myselfContainer").clientWidth
 		if(window.innerWidth < 1000) { // min width based on screen width
-			var _myselfContainerWidth = window.innerWidth - document.getElementById('mainContent').clientWidth - 130
+			var _myselfContainerWidth = window.innerWidth - document.getElementById("mainContent").clientWidth - 130
 			// var _myselfContainerWidth = (window.innerWidth * 0.3) - 100 // the main content section takes 70%, so 30% is left for the sidebar
 			if(_myselfContainerWidth < 170) _myselfContainerWidth = 170 // absolute min width
 			myselfContainerWidth = _myselfContainerWidth
@@ -199,7 +199,7 @@ window.onresize = function(){
 				continue
 			}
 			element.style.width = `${myselfContainerWidth}px`
-			element.classList.remove('opacity-0') // hide resizing weird rendering at page loading
+			element.classList.remove("opacity-0") // hide resizing weird rendering at page loading
 		}
 	} else { // ignore resizes on screen smaller than 1200px
 		for(var id of constrainedWidthContainersIds) {
@@ -208,8 +208,8 @@ window.onresize = function(){
 				console.warn(`Element with id "${id}" not found for width (un?)adjustment.`)
 				continue
 			}
-			element.style.width = `auto`
-			element.classList.remove('opacity-0')
+			element.style.width = "auto"
+			element.classList.remove("opacity-0")
 		}
 	}
 
@@ -219,35 +219,35 @@ window.onresize = function(){
 }
 
 window.onhashchange = function(event){
-	if(window.location.hash == '#contact'){
-		highlightSection(document.getElementById('contactSection'))
-	} else if(window.location.hash == '#donate'){
-		highlightSection(document.getElementById('donationSection'), true)
+	if(window.location.hash == "#contact"){
+		highlightSection(document.getElementById("contactSection"))
+	} else if(window.location.hash == "#donate"){
+		highlightSection(document.getElementById("donationSection"), true)
 	}
 }
 
 // ========== Human/Machine Interface
 function switchInterface(mode) {
-	const humanBtn = document.getElementById('segmentedControl-button-human')
-	const machineBtn = document.getElementById('segmentedControl-button-machine')
-	const slider = document.getElementById('slider')
+	const humanBtn = document.getElementById("segmentedControl-button-human")
+	const machineBtn = document.getElementById("segmentedControl-button-machine")
+	const slider = document.getElementById("slider")
 
-	if(mode == 'machine') {
+	if(mode == "machine") {
 		slider.style.left = `${machineBtn.offsetLeft}px`
 		slider.style.width = `${machineBtn.offsetWidth}px`
 
-		humanBtn.classList.add('hover:shadow-inner')
-		machineBtn.classList.remove('hover:shadow-inner')
-		machineBtn.setAttribute('disabled', 'true')
-		humanBtn.removeAttribute('disabled')
-	} else if(mode == 'human') {
+		humanBtn.classList.add("hover:shadow-inner")
+		machineBtn.classList.remove("hover:shadow-inner")
+		machineBtn.setAttribute("disabled", "true")
+		humanBtn.removeAttribute("disabled")
+	} else if(mode == "human") {
 		slider.style.left = `${humanBtn.offsetLeft}px`
 		slider.style.width = `${humanBtn.offsetWidth}px`
 
-		machineBtn.classList.add('hover:shadow-inner')
-		humanBtn.classList.remove('hover:shadow-inner')
-		humanBtn.setAttribute('disabled', 'true')
-		machineBtn.removeAttribute('disabled')
+		machineBtn.classList.add("hover:shadow-inner")
+		humanBtn.classList.remove("hover:shadow-inner")
+		humanBtn.setAttribute("disabled", "true")
+		machineBtn.removeAttribute("disabled")
 	}
 
 	currentInterfaceMode = mode
@@ -255,58 +255,60 @@ function switchInterface(mode) {
 
 // ========== Dropdown
 function initDropdown() {
-	const dropdownButton = document.getElementById('dropdown-button')
-	const dropdownMenu = document.getElementById('dropdown-menu')
+	const dropdownButton = document.getElementById("dropdown-button")
+	const dropdownMenu = document.getElementById("dropdown-menu")
 	if (!dropdownButton || !dropdownMenu) return
 
-	dropdownButton.addEventListener('click', (e) => {
+	dropdownButton.addEventListener("click", (e) => {
 		e.stopPropagation()
 		toggleDropdown()
 	})
 
-	document.addEventListener('click', (e) => { // close menu by clicking outside
+	document.addEventListener("click", (e) => { // close menu by clicking outside
 		if (!dropdownMenu.contains(e.target) && !dropdownButton.contains(e.target)) {
 			closeDropdown()
 		}
 	})
 
-	document.addEventListener('keydown', (e) => { // close menu with Escape
-		if (e.key === 'Escape') {
+	document.addEventListener("keydown", (e) => { // close menu with Escape
+		if (e.key === "Escape") {
 			closeDropdown()
 		}
 	})
 }
 
 function toggleDropdown() {
-	const dropdownMenu = document.getElementById('dropdown-menu')
-	const dropdownChevron = document.getElementById('dropdown-chevron')
+	const dropdownMenu = document.getElementById("dropdown-menu")
+	const dropdownChevron = document.getElementById("dropdown-chevron")
 
-	if (dropdownMenu.classList.contains('hidden')) {
-		dropdownMenu.classList.remove('hidden')
-		dropdownMenu.style.opacity = '0'
-		dropdownMenu.style.transform = 'scaleY(0.95)'
+	if (dropdownMenu.classList.contains("hidden")) {
+		dropdownMenu.classList.remove("hidden")
+		dropdownMenu.style.opacity = "0"
+		dropdownMenu.style.transform = "scaleY(0.95)"
 
-		requestAnimationFrame(() => {
-			dropdownMenu.style.opacity = '1'
-			dropdownMenu.style.transform = 'scaleY(1)'
-		})
+		setTimeout(() => {
+			requestAnimationFrame(() => {
+				dropdownMenu.style.opacity = "1"
+				dropdownMenu.style.transform = "scaleY(1)"
+			})
+		}, 10)
 
-		dropdownChevron.style.transform = 'rotate(180deg)'
+		dropdownChevron.style.transform = "rotate(180deg)"
 	} else closeDropdown()
 }
 
 function closeDropdown() {
-	const dropdownMenu = document.getElementById('dropdown-menu')
-	const dropdownChevron = document.getElementById('dropdown-chevron')
+	const dropdownMenu = document.getElementById("dropdown-menu")
+	const dropdownChevron = document.getElementById("dropdown-chevron")
 
-	dropdownMenu.style.opacity = '0'
-	dropdownMenu.style.transform = 'scaleY(0.95)'
+	dropdownMenu.style.opacity = "0"
+	dropdownMenu.style.transform = "scaleY(0.95)"
 
 	setTimeout(() => {
-		dropdownMenu.classList.add('hidden')
-	}, 200)
+		dropdownMenu.classList.add("hidden")
+	}, 150)
 
-	dropdownChevron.style.transform = 'rotate(0deg)'
+	dropdownChevron.style.transform = "rotate(0deg)"
 }
 
 // ========== Toast Notification
@@ -327,32 +329,32 @@ function showToast(message, duration = 0) {
 	const randomId = `toast-${Math.random().toString(36)}${Date.now().toString(36)}`
 	console.log(`Showing toast (id=${randomId} ; isShortScreen = ${isShortScreen}): "${message}"`)
 
-	const text = document.createElement('p')
+	const text = document.createElement("p")
 	text.textContent = message
-	text.classList = 'flex items-center justify-center'
+	text.classList = "flex items-center justify-center"
 
-	const toast = document.createElement('div')
-	toast.className = `toast z-50 fixed bottom-4 ${isShortScreen ? '' : 'right-4'} px-5 py-2 border-2 border-light-background-heavy bg-[rgba(248,248,248,0.4)] text-primary-content font-medium rounded-full bg-blur-xl`
+	const toast = document.createElement("div")
+	toast.className = `toast z-50 fixed bottom-4 ${isShortScreen ? "" : "right-4"} px-5 py-2 border-2 border-light-background-heavy bg-[rgba(248,248,248,0.4)] text-primary-content font-medium rounded-full bg-blur-xl`
 	toast.id = randomId
-	toast.style.opacity = '0'
-	toast.style.transform = 'translateY(100px)'
-	toast.style.transition = 'opacity 200ms ease-out, transform 200ms ease-out'
-	toast.style.boxShadow = '0px 2px 6px rgba(0,0,0,0.2)'
+	toast.style.opacity = "0"
+	toast.style.transform = "translateY(100px)"
+	toast.style.transition = "opacity 200ms ease-out, transform 200ms ease-out"
+	toast.style.boxShadow = "0px 2px 6px rgba(0,0,0,0.2)"
 	toast.appendChild(text)
 
 	if(!isShortScreen) {
 		toast.style.width = `${myselfContainerWidth + 40}px`
 	} else {
 		toast.style.width = `${(screenWidth - 40) > 100 ? (screenWidth - 40) : screenWidth}px`
-		toast.style.left = '50%'
-		toast.style.transform = 'translate(-50%, 0)'
-		toast.style.textAlign = 'center'
+		toast.style.left = "50%"
+		toast.style.transform = "translate(-50%, 0)"
+		toast.style.textAlign = "center"
 	}
 
 	document.body.appendChild(toast)
 	void toast.offsetWidth // force trigger animation
-	if(!isShortScreen) toast.style.transform = 'translateY(0)'
-	toast.style.opacity = '1'
+	if(!isShortScreen) toast.style.transform = "translateY(0)"
+	toast.style.opacity = "1"
 
 	if(duration == 0) {
 		duration = (message.length * 90)
@@ -362,9 +364,9 @@ function showToast(message, duration = 0) {
 	if(duration > 15000) duration = 15000 // max 15s
 
 	toastsClearFunctions[randomId] = () => {
-		toast.style.opacity = '0'
-		if(!isShortScreen) toast.style.transform = 'translateY(100px)'
-		toast.addEventListener('transitionend', () => {
+		toast.style.opacity = "0"
+		if(!isShortScreen) toast.style.transform = "translateY(100px)"
+		toast.addEventListener("transitionend", () => {
 			try { document.getElementById(randomId).remove() } catch(e) {}
 		})
 	}
@@ -378,67 +380,67 @@ function showToast(message, duration = 0) {
 // ========== Highlight Sections
 function highlightSection(section, smallShadow = false) {
 	if(!section || !(section instanceof HTMLElement)) {
-		console.warn('highlightSection: Invalid section provided.')
+		console.warn("highlightSection: Invalid section provided.")
 		return
 	}
-	if(section.classList.contains('highlighting')) {
-		console.warn('highlightSection: Section is already being highlighted.')
+	if(section.classList.contains("highlighting")) {
+		console.warn("highlightSection: Section is already being highlighted.")
 		return
 	}
 
-	section.scrollIntoView({ 
-		behavior: 'smooth', 
-		block: 'center' 
-	});
+	section.scrollIntoView({
+		behavior: "smooth",
+		block: "center"
+	})
 
-	const originalBoxShadow = section.style.boxShadow; // store for later revert
+	const originalBoxShadow = section.style.boxShadow // store for later revert
 
-	section.style.position = 'relative';
-	section.style.zIndex = '50';
-	section.style.borderRadius = '16px';
-	section.style.transition = 'box-shadow 500ms ease-out, transform 500ms ease-out';
-	section.classList.add('highlighting');
+	section.style.position = "relative"
+	section.style.zIndex = "50"
+	section.style.borderRadius = "16px"
+	section.style.transition = "box-shadow 500ms ease-out, transform 500ms ease-out"
+	section.classList.add("highlighting")
 
 	// Wait for scroll to finish before applying highlight
 	setTimeout(() => {
 		// Dim other elements
 		for(var elem of elementsToHideOnHighlight) {
 			if(!elem) continue
-			if(section == elem || elem.classList.contains('highlighting')) continue // skip highlighted section itself
-			if(section.id == 'donationSection' && elem.id == 'footerSection') continue // bc footer is inside of donation section
+			if(section == elem || elem.classList.contains("highlighting")) continue // skip highlighted section itself
+			if(section.id == "donationSection" && elem.id == "footerSection") continue // bc footer is inside of donation section
 
 			elementsToHideOnHighlightProperties[elem] = {
 				opacity: elem.style.opacity,
 				transition: elem.style.transition
 			}
-			elem.style.transition = 'opacity 500ms ease-out'
+			elem.style.transition = "opacity 500ms ease-out"
 			elem.style.opacity = 0.25
 		}
 
 		section.style.boxShadow = `
 			0 0 0 6px rgba(255, 255, 255, 0.05),
-			0 0 0 ${smallShadow ? '6' : '7'}px rgba(59, 130, 246, 0.4),
+			0 0 0 ${smallShadow ? "6" : "7"}px rgba(59, 130, 246, 0.4),
 			0 0 40px 4px rgba(59, 130, 246, 0.2),
 			0 10px 30px rgba(0, 0, 0, 0.2)
-		`;
-		section.style.transform = 'scale(1.02)';
-	}, 500);
+		`
+		section.style.transform = "scale(1.02)"
+	}, 500)
 
 	// Revert styles after a short moment
 	setTimeout(() => {
 		for(var elem of elementsToHideOnHighlight) {
 			if(!elem) continue
-			if(section == elem || elem.classList.contains('highlighting')) continue // skip highlighted section itself
-			if(section.id == 'donationSection' && elem.id == 'footerSection') continue // bc footer is inside of donation section
+			if(section == elem || elem.classList.contains("highlighting")) continue // skip highlighted section itself
+			if(section.id == "donationSection" && elem.id == "footerSection") continue // bc footer is inside of donation section
 
-			elem.style.opacity = elementsToHideOnHighlightProperties[elem].opacity;
-			setTimeout(() => elem.style.transition = elementsToHideOnHighlightProperties[elem].transition, 600);
+			elem.style.opacity = elementsToHideOnHighlightProperties[elem].opacity
+			setTimeout(() => elem.style.transition = elementsToHideOnHighlightProperties[elem].transition, 600)
 		}
 
-		section.style.boxShadow = originalBoxShadow;
-		section.style.transform = '';
-		section.classList.remove('highlighting');
-	}, 1200);
+		section.style.boxShadow = originalBoxShadow
+		section.style.transform = ""
+		section.classList.remove("highlighting")
+	}, 1200)
 }
 
 // ========== Loader Functions
@@ -447,41 +449,41 @@ function incrementLoader(percentage) {
 	console.log(`Incrementing loader to ${loadingCurrentIncrement}% (+${percentage}%)`)
 	// var adjustedPercentage = (loadingCurrentIncrement / 70) * 100 // adjust to max 70% for visual effect
 	if(loadingCurrentIncrement > 100) loadingCurrentIncrement = 100
-	document.getElementById('loader__progressBar').style.width = `${loadingCurrentIncrement}%`
+	document.getElementById("loader__progressBar").style.width = `${loadingCurrentIncrement}%`
 }
 async function hideLoader(instant = false){
 	if(!isLoadingPage) return console.warn("hideLoader called but page is already marked as not loading.")
 
 	console.log("Hiding loader...")
 	isLoadingPage = false
-	document.getElementById('loader__progressContainer').style.opacity = 0
+	document.getElementById("loader__progressContainer").style.opacity = 0
 	if(!instant) await new Promise(resolve => setTimeout(resolve, 250))
-	document.getElementById('loader__background').style.opacity = 0
-	setTimeout(() => { document.getElementById('loader__background').remove() }, instant ? 100 : 1000)
+	document.getElementById("loader__background").style.opacity = 0
+	setTimeout(() => { document.getElementById("loader__background").remove() }, instant ? 100 : 1000)
 
 	setTimeout(() => {
-		if(window.location.hash == '#contact' || window.location.hash == '#donate') window.onhashchange()
+		if(window.location.hash == "#contact" || window.location.hash == "#donate") window.onhashchange()
 	}, 100)
 }
 
 // ========== Others Features
 function applyDynamicEllipsis() {
-	document.querySelectorAll('.dynamic-ellipsis').forEach(el => {
+	document.querySelectorAll(".dynamic-ellipsis").forEach(el => {
 		// Get original text, in case we already truncated it before
-		let text = (el.getAttribute('original-text') || el.textContent).trim();
-		if(!el.hasAttribute('original-text')) el.setAttribute('original-text', text);
-		el.textContent = text; // reset to original text for measurement
-		
+		let text = (el.getAttribute("original-text") || el.textContent).trim()
+		if(!el.hasAttribute("original-text")) el.setAttribute("original-text", text)
+		el.textContent = text // reset to original text for measurement
+
 		// Reduce text, character by character, until it fits in the parent
 		while (el.scrollHeight > (el.parentElement.clientHeight - 10) && text.length > 0) { // 10px padding buffer (6-20 also works)
-			text = text.slice(0, -1);
-			el.textContent = text + '...';
+			text = text.slice(0, -1)
+			el.textContent = `${text}...`
 		}
-	});
+	})
 }
-function copyLlmsTxt() {
-	var AiBrandIcon = document.getElementById('aidropdown-copymarkdown').querySelector('.AiBrandIcon')
-	AiBrandIcon.classList.add('text-green-600')
+function copyLlmsTxt() { // eslint-disable-line no-unused-vars
+	var AiBrandIcon = document.getElementById("aidropdown-copymarkdown").querySelector(".AiBrandIcon")
+	AiBrandIcon.classList.add("text-green-600")
 
 	if(!preloaded.llmsTxt) {
 		showToast("La page est toujours en cours de chargement, veuillez réessayer dans un instant.")
@@ -492,33 +494,33 @@ function copyLlmsTxt() {
 	}
 
 	setTimeout(() => {
-		AiBrandIcon.classList.remove('text-green-600')
+		AiBrandIcon.classList.remove("text-green-600")
 	}, 3000)
 }
-function copyCryptoAddress(crypto) {
+function copyCryptoAddress(crypto) { // eslint-disable-line no-unused-vars
 	switch(crypto) {
-		case 'eth':
-			navigator.clipboard.writeText('0x1e198e9Df0519bE9E759E8995518D1A5F8025F0a')
-			showToast('Adresse Ethereum copiée dans le presse-papier !')
-			break
-		case 'btc':
-			navigator.clipboard.writeText('bc1q4ghg2wve6yneadxy58fz5m77jmwyxxtk94jxfj')
-			showToast('Adresse Bitcoin copiée dans le presse-papier !')
-			break
-		case 'sol':
-			navigator.clipboard.writeText('CfCVJBGqsqiAJ7rDCkUwvMYsmkzSLcjL7CQ1RmBiwfoP')
-			showToast('Adresse Solana copiée dans le presse-papier !')
-			break
-		default:
-			console.warn(`Unknown crypto type: ${crypto}`)
-			showToast('Type de cryptomonnaie inconnu, veuillez signalez ce problème.')
-			return
+	case "eth":
+		navigator.clipboard.writeText("0x1e198e9Df0519bE9E759E8995518D1A5F8025F0a")
+		showToast("Adresse Ethereum copiée dans le presse-papier !")
+		break
+	case "btc":
+		navigator.clipboard.writeText("bc1q4ghg2wve6yneadxy58fz5m77jmwyxxtk94jxfj")
+		showToast("Adresse Bitcoin copiée dans le presse-papier !")
+		break
+	case "sol":
+		navigator.clipboard.writeText("CfCVJBGqsqiAJ7rDCkUwvMYsmkzSLcjL7CQ1RmBiwfoP")
+		showToast("Adresse Solana copiée dans le presse-papier !")
+		break
+	default:
+		console.warn(`Unknown crypto type: ${crypto}`)
+		showToast("Type de cryptomonnaie inconnu, veuillez signalez ce problème.")
+
 	}
 }
-function copyHeaderLink(event) {
+function copyHeaderLink(event) { // eslint-disable-line no-unused-vars
 	event.stopPropagation()
-	const hash = event.target.getAttribute('href') || `#${event.currentTarget.id}`
+	const hash = event.target.getAttribute("href") || `#${event.currentTarget.id}`
 	location.hash = hash
 	navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}${hash}`)
-	showToast('Lien vers cette section copié dans le presse-papier !')
+	showToast("Lien vers cette section copié dans le presse-papier !")
 }
