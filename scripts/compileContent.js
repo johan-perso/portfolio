@@ -125,7 +125,7 @@ async function main(){
 					var header = headers[j] || `column${j + 1}`
 					// Add values according to the key-value structure (using the header as key with value of this line)
 					cellContentCompiledKeyValue[header] = col
-					if(j == cellCols.length - 1) compiledData.keyValue.push(cellContentCompiledKeyValue)
+					if(i != 0 && j == cellCols.length - 1) compiledData.keyValue.push(cellContentCompiledKeyValue)
 
 					// Add all values of this column to the list of values for this header
 					if(!compiledData.list[header]) compiledData.list[header] = []
