@@ -12,7 +12,13 @@ const contentDir = {
 const publicAssetsPath = "/medias/content/"
 
 const contentFiles = {
-	redirections: {}
+	redirections: {},
+	_index: {}
+}
+
+const cachesEligibleExt = [".png", ".jpg", ".svg", ".webp", ".gif", ".mp4", ".ttf", ".woff2", ".json", ".css", ".js"]
+function isEligibleForCache(filePath) {
+	return cachesEligibleExt.includes(path.extname(filePath))
 }
 
 // Main function, prepare and start the server
@@ -41,8 +47,13 @@ async function main(){
 	}
 
 	// Add some compiled content files to memory
-	contentFiles.redirections = JSON.parse(fs.readFileSync(path.join(contentDir.compiled, "redirections.json"), "utf-8"))
-	if(!contentFiles.redirections || typeof contentFiles.redirections != "object") throw new Error("Redirections content file is not valid. Found:", contentFiles.redirections)
+	["redirections", "_index"].forEach(fileName => {
+		const filePath = path.join(contentDir.compiled, `${fileName}.json`)
+		if(!fs.existsSync(filePath)) throw new Error(`Required content file "${fileName}.json" not found in compiled content folder.`)
+		const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"))
+		if(!fileContent || typeof fileContent != "object") throw new Error(`Content file "${fileName}.json" is not valid. Found:`, fileContent)
+		contentFiles[fileName] = fileContent
+	})
 
 	console.log(`Starting the server...          (took ${(Math.round(performance.now() - perfNow) / 1000).toFixed(3)}s)`)
 	startRocServer()
@@ -62,9 +73,9 @@ async function startRocServer(){
 		serversideCodeExecution: true,
 		liveReload: true // only when isDev = true
 	})
+	const cacheControlHeader = server.isDev ? "no-cache" : "max-age=7200" // 7200sec = 2h
 
-	var cacheControlHeader = server.isDev ? "no-cache" : "max-age=7200" // 7200sec = 2h
-
+	// Register routes from content files
 	server.registerRoutes(contentFiles.redirections.keyValue.map(redirection => {
 		return {
 			method: "get",
@@ -74,17 +85,43 @@ async function startRocServer(){
 			}
 		}
 	}))
+	server.registerRoutes(Object.values(contentFiles._index)
+		.filter(content => content.type == "document")
+		.map(content => {
+			return {
+				method: "get",
+				path: content.slug || content.url,
+			}
+		}))
 
-	server.on("request", (req, res) => {
+	// Listen for incoming requests
+	server.on("request", async (req, res) => {
 		if(req.method == "GET" && req.path == "/version") return res.send(200, mainVersion, { headers: { "Content-Type": "text/plain" } })
 
+		// Serve blog documents
+		const foundBlogDocument = contentFiles._index[`${req.path.startsWith("/") ? req.path.substring(1) : req.path}.html`]
+		if(req.method == "GET" && foundBlogDocument) {
+			// TODO: on rajoute une fonction dans roc pour render un html à partir d'un html, on lui passe en paramètre le html de base du blog, mais avec quelques remplacements en fonction du foundBlogDocument
+			// const htmlResponse = fs.readFileSync(path.join("public", "blog.html"), "utf-8")
+			return res.send(200, htmlResponse, { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
+		}
+
 		// Redirections from content file, should not be used but still here as a fallback
-		var foundRedirection = contentFiles?.redirections?.keyValue?.find(r => r?.origine == req?.path || r?.origine == `${req?.path}/` || `/${r?.origine}` == req?.path)
+		const foundRedirection = contentFiles?.redirections?.keyValue?.find(r => r?.origine == req?.path || r?.origine == `${req?.path}/` || `/${r?.origine}` == req?.path)
 		if(req.method == "GET" && foundRedirection) return res.redirect(302, foundRedirection.destination)
+
+		// Serve attachments from content folder
+		if(req.method == "GET" && req.path.startsWith(publicAssetsPath) && res.initialAction.type == "404") {
+			var requestedFilePath = path.join(contentDir.attachments, req.path.substring(publicAssetsPath.length))
+			if(fs.existsSync(requestedFilePath) && fs.statSync(requestedFilePath).isFile()) {
+				return res.sendFile(200, requestedFilePath, { headers: { "Cache-Control": isEligibleForCache(requestedFilePath) ? cacheControlHeader : "no-cache" } })
+			}
+			else return res.send(404, "Not Found", { headers: { "Content-Type": "text/plain" } })
+		}
 
 		if(res.initialAction.type == "sendHtml") res.send(200, res.initialAction.content, { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
 		else if(res.initialAction.type == "sendJs") res.send(200, res.initialAction.content, { headers: { "Content-Type": "application/javascript", "Cache-Control": cacheControlHeader } })
-		else if(res.initialAction.type == "sendFile") res.sendFile(200, res.initialAction.content, { headers: { "Cache-Control": [".png", ".jpg", ".svg", ".webp", ".gif", ".mp4", ".ttf", ".woff2", ".json", ".css", ".js"].includes(path.extname(req.path)) ? cacheControlHeader : "no-cache" } })
+		else if(res.initialAction.type == "sendFile") res.sendFile(200, res.initialAction.content, { headers: { "Cache-Control": isEligibleForCache(req.path) ? cacheControlHeader : "no-cache" } })
 		else if(res.initialAction.type == "redirect") res.redirect(302, res.initialAction.content)
 		else if(res.initialAction.type == "404") res.redirect(302, "/")
 		else res.send(500, "Internal Server Error", { headers: { "Content-Type": "text/plain" } })
