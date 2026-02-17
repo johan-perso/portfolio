@@ -112,7 +112,6 @@ async function startRocServer(){
 			console.log("=".repeat(50))
 			console.log(`Got a request to ${req.path} - Serving blog document with slug: ${foundBlogDocument.slug || foundBlogDocument.url}`)
 			console.log(foundBlogDocument)
-			console.log("=".repeat(50))
 
 			const originalBlogHtml = fs.readFileSync(path.join("public", "blog.html"), "utf-8")
 			const blogContent = fs.readFileSync(path.join(contentDir.compiled, `${foundBlogDocument.slug}.html`), "utf-8")
@@ -129,7 +128,23 @@ async function startRocServer(){
 				.replaceAll("%%BLOG_DETAILS_RELEASE_DATE%%", getAbsoluteDate("fr-FR", new Date(foundBlogDocument?.frontmatter?.post_releasedate)))
 				.replaceAll("%%BLOG_DETAILS_RELEASE_RELATIVE_DATE%%", getRelativeTime("fr-FR", new Date(foundBlogDocument?.frontmatter?.post_releasedate), "ago"))
 
+				.replaceAll("%%BLOG_DETAILS_PROJECT_PERIOD%%", foundBlogDocument?.frontmatter?.post_date || "")
+				.replaceAll("%%BLOG_DETAILS_PROJECT_THEME%%", foundBlogDocument?.frontmatter?.post_theme || "")
+				.replaceAll("%%BLOG_DETAILS_PROJECT_AUTHOR%%", foundBlogDocument?.frontmatter?.post_author || "")
+				.replaceAll("%%BLOG_DETAILS_PROJECT_COAUTHORS%%", foundBlogDocument?.frontmatter?.post_coauthors || "")
+
+				.replaceAll("%%BLOG_DETAILS_LINK_SOURCECODE%%", foundBlogDocument?.frontmatter?.post_link_sourcecode || "")
+				.replaceAll("%%BLOG_DETAILS_LINK_DEMO%%", foundBlogDocument?.frontmatter?.post_link_demo || "")
+				.replaceAll("%%BLOG_DETAILS_LINK_ANDROID%%", foundBlogDocument?.frontmatter?.download_android || "")
+				.replaceAll("%%BLOG_DETAILS_LINK_IOS%%", foundBlogDocument?.frontmatter?.download_ios || "")
+				.replaceAll("%%BLOG_DETAILS_LINK_WINDOWS%%", foundBlogDocument?.frontmatter?.download_windows || "")
+				.replaceAll("%%BLOG_DETAILS_LINK_MACOS%%", foundBlogDocument?.frontmatter?.download_macos || "")
+				.replaceAll("%%BLOG_DETAILS_LINK_LINUX%%", foundBlogDocument?.frontmatter?.download_linux || "")
+
+				.replace("%%BLOG_CONTENT%%", blogContent)
+
 			const htmlResponse = await server.renderPage(editedBlogHtml, { route: { file: null, path: req.path } })
+			console.log("=".repeat(50))
 			return res.send(200, htmlResponse, { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
 		}
 
