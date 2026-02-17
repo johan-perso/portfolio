@@ -13,7 +13,7 @@ function escapeHtml(text){
 	if(!text) return text
 	if(typeof text != "string") return text
 	text = normalizeText(text)
-	return text?.replace(/&/g, "&amp;")?.replace(/</g, "&lt;")?.replace(/>/g, "&gt;")?.replace(/"/g, "&quot;")?.replace(/'/g, "&#039;")
+	return text?.replace(/&(?!(?:amp|lt|gt|quot|apos);)/g, "&amp")?.replace(/</g, "&lt;")?.replace(/>/g, "&gt;")?.replace(/"/g, "&quot;")?.replace(/'/g, "&apos;")
 }
 
 function checkForBasicMarkdownSyntax(text){ // check for bold, italic, strikethrough and underline
@@ -106,6 +106,7 @@ module.exports.convertMarkdown = async (
 	}
 
 	const lines = content.split("\n")
+	let lastLineType = ""
 	let currentAction = ""
 	let currentActionHistory = []
 	let wentPastFirstParagraph = false
@@ -144,20 +145,24 @@ module.exports.convertMarkdown = async (
 		if(currentAction == "codeblock" && line.trim().startsWith("```")){
 			currentAction_precedent()
 			contentObject.content += "</code></pre>\n"
+			lastLineType = "codeblock"
 			continue
 		}
 
 		if(currentAction == "codeblock"){
 			contentObject.content += `${escapeHtml(line)}\n`
+			lastLineType = "codeblock"
 			continue
 		}
 
 		if(currentAction != "metadata" && line.trim() == "---" && !Object.keys(contentObject.metadata).length){
 			currentAction_set("metadata")
+			lastLineType = "metadata"
 			continue
 		}
 		if(currentAction == "metadata" && line.trim() == "---"){
 			currentAction_precedent()
+			lastLineType = "metadata"
 			continue
 		}
 
@@ -165,6 +170,7 @@ module.exports.convertMarkdown = async (
 			const key = line.split(":")[0].trim()
 			const value = line.split(":").slice(1).join(":").trim()
 			contentObject.metadata[key.toLowerCase()] = value
+			lastLineType = "metadata"
 			continue
 		}
 
@@ -197,6 +203,7 @@ module.exports.convertMarkdown = async (
 				} catch (error) {
 					contentObject.warns.push(`Attaching an image - Cannot read the file located at "${imagePath}".`)
 				}
+				lastLineType = "image"
 			})
 		}
 
@@ -220,12 +227,14 @@ module.exports.convertMarkdown = async (
 			// var calloutType = original_calloutType != "warn" && original_calloutType != "warning" && original_calloutType != "error" ? "info" : original_calloutType
 
 			contentObject.content += "<blockquote class=\"border-l-4 border-gray-300 pl-4 italic my-3\">\n"
+			lastLineType = "callout"
 			continue
 		} else if(currentAction == "callout"){
 			if(!line){
 				currentAction_precedent()
 				contentObject.content += "\n</blockquote>\n\n"
 			} else contentObject.content += `${checkForBasicMarkdownSyntax(escapeHtml(line.startsWith(">") ? line.slice(1).trim() : line.trim()))}<br/>\n`
+			lastLineType = "callout"
 			continue
 		}
 
@@ -254,6 +263,7 @@ module.exports.convertMarkdown = async (
 
 			contentObject.content += `<img class="w-full h-auto rounded-lg shadow-md" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
 			contentObject.images.push(image)
+			lastLineType = "image"
 
 			continue
 		}
@@ -272,9 +282,11 @@ module.exports.convertMarkdown = async (
 		// custom components (HTML inside of a codeblock)
 		else if(line.startsWith("```component")){
 			currentAction_set("custom-component")
+			lastLineType = "custom-component"
 			continue
 		} else if(currentAction == "custom-component" && line.startsWith("```")){
 			currentAction_precedent()
+			lastLineType = "custom-component"
 			continue
 		}
 
@@ -298,7 +310,11 @@ module.exports.convertMarkdown = async (
 
 			line = line.replace("#".repeat(titleLevel), "").trim()
 
-			contentObject.content += `<h${titleLevel}>${checkForBasicMarkdownSyntax(escapeHtml(line))} <a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="mt-0.5 text-link text-xl hover:underline transition-opacity duration-100 opacity-0 hover:opacity-100">#</a></h${titleLevel}>\n`
+			contentObject.content += `<div class="flex gap-1.5 mt-8 blogHeader" id="testLink">
+							<h${titleLevel} class="font-semibold text-primary-content-heavy antialiased ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
+							<a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="text-link hover:underline transition-opacity duration-100 opacity-0 hover:opacity-100 ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${(titleLevel > 4 ? 24 : 20) * Math.pow(0.9, titleLevel - 1)}px">#</a>
+						</div>`
+			lastLineType = "title"
 		}
 
 		// bullets points list
@@ -308,9 +324,11 @@ module.exports.convertMarkdown = async (
 				currentAction_set("ul")
 			}
 			contentObject.content += `<li>${checkForBasicMarkdownSyntax(escapeHtml(line.trim().slice(2)))}</li>\n`
+			lastLineType = "list"
 		} else if(currentAction == "ul"){
 			currentAction_precedent()
 			contentObject.content += "</ul>\n"
+			lastLineType = "list"
 		}
 
 		// numbered list
@@ -320,9 +338,11 @@ module.exports.convertMarkdown = async (
 				currentAction_set("ol")
 			}
 			contentObject.content += `<li>${checkForBasicMarkdownSyntax(escapeHtml(line.trim().replace(/^\d+\. /, "")))}</li>\n`
+			lastLineType = "list"
 		} else if(currentAction == "ol"){
 			currentAction_precedent()
 			contentObject.content += "</ul>\n"
+			lastLineType = "list"
 		}
 
 		// blockquote that includes blog post
@@ -343,6 +363,7 @@ module.exports.convertMarkdown = async (
 			} else {
 				contentObject.warns.push(`Blog Post Card - Cannot find the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)
 			}
+			lastLineType = "blogpostcard"
 		}
 
 		// blockquote
@@ -352,14 +373,18 @@ module.exports.convertMarkdown = async (
 				currentAction_set("blockquote")
 			}
 			contentObject.content += `${checkForBasicMarkdownSyntax(escapeHtml(line.trim().slice(1).trim()))}<br/>\n`
+			lastLineType = "blockquote"
 		} else if(currentAction == "blockquote"){
 			currentAction_precedent()
 			contentObject.content += "</blockquote>\n"
+			lastLineType = "blockquote"
 		}
 
 		// default behavior
 		else {
-			contentObject.content += line == "" ? "\n" : `<p>${checkForBasicMarkdownSyntax(escapeHtml(line))}</p>\n`
+			console.log("Processing line:", line)
+			console.log("    Previous line type:", lastLineType)
+			contentObject.content += line == "" ? "\n" : `<p class="${lastLineType == "image" ? "mt-6" : "mt-3.5"}">${checkForBasicMarkdownSyntax(escapeHtml(line))}</p>\n`
 			if(!wentPastFirstParagraph && line.trim() != "") {
 				const ctaButtons = []
 				if(contentObject.metadata?.download_android) ctaButtons.push({ platform: "Android", href: contentObject.metadata.download_android, svgPath: svgPaths.android })
@@ -372,6 +397,7 @@ module.exports.convertMarkdown = async (
 					${ctaButtons.map(button => `<PrimaryButton label="Télécharger pour ${button.platform.replace(/"/g, "\\\"")}" href="${button.href.replace(/"/g, "\\\"")}" svgPath="${button.svgPath.replace(/"/g, "\\\"")}"></PrimaryButton>`).join("\n")}
 				</div>`
 				wentPastFirstParagraph = true
+				lastLineType = "paragraph"
 			}
 		}
 	}
