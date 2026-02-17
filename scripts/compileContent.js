@@ -25,6 +25,12 @@ function readFilesRecursively(dir){
 	return filesList
 }
 
+function parseMarkdownLinks(content){
+	return content.replaceAll(/\[([^\]]+)\]\(([^)]+)\)/g, (match, text, link) => {
+		return `<a href='${link.replace(/"/g, "\\\"")}' class='text-link hover:underline'>${text}</a>`
+	})
+}
+
 async function main(){
 	const rawFilesList = readFilesRecursively(contentDir.raw)
 	console.log(`Found ${rawFilesList.length} raw content files. Reading content...`)
@@ -42,8 +48,9 @@ async function main(){
 				const frontMatterLines = unparsedFrontMatter.split("\n")
 				frontMatterLines.forEach(line => {
 					const key = line.split(":")[0].trim()
-					const value = line.split(":").slice(1).join(":").trim()
-					if(key && value) frontMatter[key.toLowerCase()] = value
+					var value = line.split(":").slice(1).join(":").trim()
+					if(value.startsWith("\"") && value.endsWith("\"")) value = value.slice(1, -1)
+					if(key && value) frontMatter[key.toLowerCase()] = parseMarkdownLinks(value)
 				})
 			}
 		}
