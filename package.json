@@ -10,6 +10,9 @@
     "author": "JohanStickman",
     "license": "MIT",
     "dependencies": {
+        "@mozilla/readability": "^0.6.0",
+        "jsdom": "^28.1.0",
+        "node-cache": "^5.1.2",
         "roc-framework": "^4.1.0"
     },
     "devDependencies": {

@@ -2,8 +2,12 @@ const fs = require("fs")
 const path = require("path")
 const childProcess = require("child_process")
 const { getRelativeTime, getAbsoluteDate } = require("./utils/dateFormatter")
+const getReadingTime = require("./utils/readingTime")
 // const roc = require("roc-framework")
 const roc = require("/Volumes/SSD256/MacMini/Developer/roc/index.js")
+
+const NodeCache = require("node-cache")
+const caches = new NodeCache({ stdTTL: 60 * 60 * 24 }) // cache with a default of one day
 
 const contentDir = {
 	base: path.join(__dirname, "content"),
@@ -111,9 +115,17 @@ async function startRocServer(){
 			console.log("=".repeat(50))
 
 			const originalBlogHtml = fs.readFileSync(path.join("public", "blog.html"), "utf-8")
+			const blogContent = fs.readFileSync(path.join(contentDir.compiled, `${foundBlogDocument.slug}.html`), "utf-8")
+			var readTime = caches.get(`readTime-${foundBlogDocument.slug}`)
+			if(!readTime) {
+				readTime = getReadingTime(blogContent).minutes
+				caches.set(`readTime-${foundBlogDocument.slug}`, readTime)
+				console.log(`Calculated reading time for blog "${foundBlogDocument.slug}": ${readTime} minutes (now cached)`)
+			}
+
 			const editedBlogHtml = originalBlogHtml
 				.replaceAll("%%BLOG_TITLE%%", foundBlogDocument?.title)
-				.replaceAll("%%BLOG_DETAILS_READ_TIME%%", 0) // TODO
+				.replaceAll("%%BLOG_DETAILS_READ_TIME%%", readTime)
 				.replaceAll("%%BLOG_DETAILS_RELEASE_DATE%%", getAbsoluteDate("fr-FR", new Date(foundBlogDocument?.frontmatter?.post_releasedate)))
 				.replaceAll("%%BLOG_DETAILS_RELEASE_RELATIVE_DATE%%", getRelativeTime("fr-FR", new Date(foundBlogDocument?.frontmatter?.post_releasedate), "ago"))
 
