@@ -5,8 +5,8 @@
 
 const fs = require("fs")
 const path = require("path")
-const stripMarkdown = require("./stripMarkdown")
-const { svgPaths } = require("./utils")
+const stripMarkdown = require("../utils/stripMarkdown")
+const { svgPaths } = require("../utils/svgPaths")
 const { getAbsoluteDate } = require("../utils/dateFormatter")
 
 function escapeHtml(text){
