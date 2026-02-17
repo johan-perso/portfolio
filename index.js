@@ -1,6 +1,7 @@
 const fs = require("fs")
 const path = require("path")
 const childProcess = require("child_process")
+const { getRelativeTime, getAbsoluteDate } = require("./utils/dateFormatter")
 // const roc = require("roc-framework")
 const roc = require("/Volumes/SSD256/MacMini/Developer/roc/index.js")
 
@@ -104,8 +105,19 @@ async function startRocServer(){
 		// Serve blog documents
 		const foundBlogDocument = contentFiles._index[`${req.path.startsWith("/") ? req.path.substring(1) : req.path}.html`]
 		if(req.method == "GET" && foundBlogDocument) {
-			// TODO: on rajoute une fonction dans roc pour render un html à partir d'un html, on lui passe en paramètre le html de base du blog, mais avec quelques remplacements en fonction du foundBlogDocument
-			// const htmlResponse = fs.readFileSync(path.join("public", "blog.html"), "utf-8")
+			console.log("=".repeat(50))
+			console.log(`Got a request to ${req.path} - Serving blog document with slug: ${foundBlogDocument.slug || foundBlogDocument.url}`)
+			console.log(foundBlogDocument)
+			console.log("=".repeat(50))
+
+			const originalBlogHtml = fs.readFileSync(path.join("public", "blog.html"), "utf-8")
+			const editedBlogHtml = originalBlogHtml
+				.replaceAll("%%BLOG_TITLE%%", foundBlogDocument?.title)
+				.replaceAll("%%BLOG_DETAILS_READ_TIME%%", 0) // TODO
+				.replaceAll("%%BLOG_DETAILS_RELEASE_DATE%%", getAbsoluteDate("fr-FR", new Date(foundBlogDocument?.frontmatter?.post_releasedate)))
+				.replaceAll("%%BLOG_DETAILS_RELEASE_RELATIVE_DATE%%", getRelativeTime("fr-FR", new Date(foundBlogDocument?.frontmatter?.post_releasedate), "ago"))
+
+			const htmlResponse = await server.renderPage(editedBlogHtml, { route: { file: null, path: req.path } })
 			return res.send(200, htmlResponse, { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
 		}
 

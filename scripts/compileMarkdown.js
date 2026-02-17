@@ -7,20 +7,13 @@ const fs = require("fs")
 const path = require("path")
 const stripMarkdown = require("./stripMarkdown")
 const { svgPaths } = require("./utils")
+const { getAbsoluteDate } = require("../utils/dateFormatter")
 
 function escapeHtml(text){
 	if(!text) return text
 	if(typeof text != "string") return text
 	text = normalizeText(text)
 	return text?.replace(/&/g, "&amp;")?.replace(/</g, "&lt;")?.replace(/>/g, "&gt;")?.replace(/"/g, "&quot;")?.replace(/'/g, "&#039;")
-}
-
-function formatDate(date){
-	try {
-		if(!(date instanceof Date)) date = new Date(date)
-		if(isNaN(date)) return "Invalid Date"
-	} catch (error) { date = "Invalid Date" }
-	return date.toLocaleString("fr-FR", { year: "numeric", month: "short", day: "numeric" })
 }
 
 function checkForBasicMarkdownSyntax(text){ // check for bold, italic, strikethrough and underline
@@ -346,7 +339,7 @@ module.exports.convertMarkdown = async (
 				if(content.length > 400) content = `${content.slice(0, 400)}...`
 				if(![".", "!", "?"].includes(content[content.length - 1])) content += "." // add trailing dot if not present
 
-				contentObject.content += `<BlogPostCard date="${formatDate(releaseDate)}" title="${escapeHtml(title)}" content="${escapeHtml(content)}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard>\n`
+				contentObject.content += `<BlogPostCard date="${getAbsoluteDate("fr-FR", releaseDate)}" title="${escapeHtml(title)}" content="${escapeHtml(content)}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard>\n`
 			} else {
 				contentObject.warns.push(`Blog Post Card - Cannot find the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)
 			}
