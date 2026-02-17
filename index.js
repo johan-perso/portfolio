@@ -1,7 +1,8 @@
 const fs = require("fs")
 const path = require("path")
 const childProcess = require("child_process")
-const roc = require("roc-framework")
+// const roc = require("roc-framework")
+const roc = require("/Volumes/SSD256/MacMini/Developer/roc/index.js")
 
 const contentDir = {
 	base: path.join(__dirname, "content"),
@@ -15,6 +16,7 @@ const contentFiles = {
 	redirections: {},
 	_index: {}
 }
+const mainVersion = require("./package.json").version
 
 const cachesEligibleExt = [".png", ".jpg", ".svg", ".webp", ".gif", ".mp4", ".ttf", ".woff2", ".json", ".css", ".js"]
 function isEligibleForCache(filePath) {
@@ -96,7 +98,8 @@ async function startRocServer(){
 
 	// Listen for incoming requests
 	server.on("request", async (req, res) => {
-		if(req.method == "GET" && req.path == "/version") return res.send(200, mainVersion, { headers: { "Content-Type": "text/plain" } })
+		if(req.method == "GET" && req.simplifiedPath == "version") return res.send(200, mainVersion, { headers: { "Content-Type": "text/plain" } })
+		if(req.method == "GET" && req.simplifiedPath == "blog") return res.redirect(302, "/") // hide template file
 
 		// Serve blog documents
 		const foundBlogDocument = contentFiles._index[`${req.path.startsWith("/") ? req.path.substring(1) : req.path}.html`]
