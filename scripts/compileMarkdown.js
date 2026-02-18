@@ -26,6 +26,7 @@ function checkForBasicMarkdownSyntax(text){ // check for bold, italic, strikethr
 		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<em>${escapeHtml(match.slice(1, -1))}</em>`) // italic
 		.replace(/~~(?:(?!~~|<[^>]*>)(.|\n))*?~~/g, match => `<del>${escapeHtml(match.slice(2, -2))}</del>`) // strikethrough
 		.replace(/__(?:(?!__|<[^>]*>)(.|\n))*?__/g, match => `<u>${escapeHtml(match.slice(2, -2))}</u>`) // underline
+		.replace(/`(?:(?!`|<[^>]*>)(.|\n))*?`/g, match => `<code>${escapeHtml(match.slice(1, -1))}</code>`) // inline code
 }
 
 function normalizeText(text){
@@ -360,11 +361,11 @@ module.exports.convertMarkdown = async (
 
 				const releaseDate = splitFileContent.find(line => line.trim().toLowerCase().startsWith("post_releasedate:"))?.split(":").slice(1).join(":").trim() || "UNKNOWN"
 				const title = path.parse(searchResult.path)?.name?.replace(", ", " : ").replace(/"/g, "\\\"")
-				var content = stripMarkdown(fileContent)
+				var content = stripMarkdown(fileContent, true)
 				if(content.length > 400) content = `${content.slice(0, 400)}...`
 				if(![".", "!", "?"].includes(content[content.length - 1])) content += "." // add trailing dot if not present
 
-				contentObject.content += `<div class="mt-5"><BlogPostCard date="${getAbsoluteDate("fr-FR", releaseDate)}" title="${escapeHtml(title)}" content="${escapeHtml(content)}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
+				contentObject.content += `<div class="mt-5"><BlogPostCard date="${getAbsoluteDate("fr-FR", releaseDate)}" title="${escapeHtml(title)}" content="${checkForBasicMarkdownSyntax(escapeHtml(content))}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
 			} else {
 				contentObject.warns.push(`Blog Post Card - Cannot find the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)
 			}
