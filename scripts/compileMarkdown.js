@@ -7,7 +7,6 @@ const fs = require("fs")
 const path = require("path")
 const stripMarkdown = require("../utils/stripMarkdown")
 const { svgPaths } = require("../utils/svgPaths")
-const { getAbsoluteDate } = require("../utils/dateFormatter")
 
 const components = {
 	"callout": fs.readFileSync(path.join(__dirname, "..", "public", "components", "Callout.html"), "utf-8"),
@@ -365,7 +364,7 @@ module.exports.convertMarkdown = async (
 				if(content.length > 400) content = `${content.slice(0, 400)}...`
 				if(![".", "!", "?"].includes(content[content.length - 1])) content += "." // add trailing dot if not present
 
-				contentObject.content += `<div class="mt-5"><BlogPostCard date="${getAbsoluteDate("fr-FR", releaseDate)}" title="${escapeHtml(title)}" content="${checkForBasicMarkdownSyntax(escapeHtml(content))}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
+				contentObject.content += `<div class="mt-5"><BlogPostCard date="${releaseDate}" title="${escapeHtml(title)}" content="${checkForBasicMarkdownSyntax(escapeHtml(content))}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
 			} else {
 				contentObject.warns.push(`Blog Post Card - Cannot find the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)
 			}
