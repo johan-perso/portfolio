@@ -9,6 +9,10 @@ const stripMarkdown = require("../utils/stripMarkdown")
 const { svgPaths } = require("../utils/svgPaths")
 const { getAbsoluteDate } = require("../utils/dateFormatter")
 
+const components = {
+	"callout": fs.readFileSync(path.join(__dirname, "..", "public", "components", "Callout.html"), "utf-8"),
+}
+
 function escapeHtml(text){
 	if(!text) return text
 	if(typeof text != "string") return text
@@ -107,6 +111,7 @@ module.exports.convertMarkdown = async (
 
 	const lines = content.split("\n")
 	let lastLineType = ""
+	let currentValue = ""
 	let currentAction = ""
 	let currentActionHistory = []
 	let wentPastFirstParagraph = false
@@ -197,8 +202,8 @@ module.exports.convertMarkdown = async (
 					line = line.replace(
 						imageMatch,
 						image.src.endsWith(".mp4")
-							? `<video class="w-full h-auto rounded-lg shadow-md" controls src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" aria-label="${image.alt.replace(/"/g, "\\\"")}" />`
-							: `<img class="w-full h-auto rounded-lg shadow-md" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
+							? `<video class="w-full h-auto rounded-lg shadow-md mt-4" controls src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" aria-label="${image.alt.replace(/"/g, "\\\"")}" />`
+							: `<img class="w-full h-auto rounded-lg shadow-md mt-4" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
 					)
 				} catch (error) {
 					contentObject.warns.push(`Attaching an image - Cannot read the file located at "${imagePath}".`)
@@ -226,14 +231,14 @@ module.exports.convertMarkdown = async (
 			// var calloutTitle = line.split("]")[1]?.trim()
 			// var calloutType = original_calloutType != "warn" && original_calloutType != "warning" && original_calloutType != "error" ? "info" : original_calloutType
 
-			contentObject.content += "<blockquote class=\"border-l-4 border-gray-300 pl-4 italic my-3\">\n"
 			lastLineType = "callout"
 			continue
 		} else if(currentAction == "callout"){
 			if(!line){
 				currentAction_precedent()
-				contentObject.content += "\n</blockquote>\n\n"
-			} else contentObject.content += `${checkForBasicMarkdownSyntax(escapeHtml(line.startsWith(">") ? line.slice(1).trim() : line.trim()))}<br/>\n`
+				contentObject.content += `<div class="mt-4">${components.callout.replaceAll("{{ $content }}", currentValue?.trim() || "")}</div>\n`
+				currentValue = ""
+			} else currentValue += `${checkForBasicMarkdownSyntax(escapeHtml(line.startsWith(">") ? line.slice(1).trim() : line.trim()))}<br>`
 			lastLineType = "callout"
 			continue
 		}
@@ -261,7 +266,7 @@ module.exports.convertMarkdown = async (
 				continue
 			}
 
-			contentObject.content += `<img class="w-full h-auto rounded-lg shadow-md" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
+			contentObject.content += `<img class="w-full h-auto rounded-lg shadow-md mt-4" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
 			contentObject.images.push(image)
 			lastLineType = "image"
 
@@ -311,16 +316,16 @@ module.exports.convertMarkdown = async (
 			line = line.replace("#".repeat(titleLevel), "").trim()
 
 			contentObject.content += `<div class="flex gap-1.5 mt-8 blogHeader" id="testLink">
-							<h${titleLevel} class="font-semibold text-primary-content-heavy antialiased ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
-							<a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="text-link hover:underline transition-opacity duration-100 opacity-0 hover:opacity-100 ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${(titleLevel > 4 ? 24 : 20) * Math.pow(0.9, titleLevel - 1)}px">#</a>
-						</div>`
-			lastLineType = "title"
+				<h${titleLevel} id="${escapeHtml(anchor)}" class="font-semibold text-primary-content-heavy antialiased ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
+				<a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="text-link hover:underline transition-opacity duration-100 opacity-0 hover:opacity-100 ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${(titleLevel > 4 ? 24 : 20) * Math.pow(0.9, titleLevel - 1)}px">#</a>
+			</div>`
+			lastLineType = `title-${titleLevel}`
 		}
 
 		// bullets points list
 		else if(line.trim().startsWith("- ")){
 			if(currentAction != "ul") {
-				contentObject.content += "<ul class=\"mt-3 list-disc list-outside marker-medium pl-5 space-y-1\">\n"
+				contentObject.content += "<ul class=\"mt-2.5 list-disc list-outside marker-medium pl-5 space-y-1\">\n"
 				currentAction_set("ul")
 			}
 			contentObject.content += `<li>${checkForBasicMarkdownSyntax(escapeHtml(line.trim().slice(2)))}</li>\n`
@@ -334,7 +339,7 @@ module.exports.convertMarkdown = async (
 		// numbered list
 		else if(line.trim().match(/^\d+\. /)){
 			if(currentAction != "ol") {
-				contentObject.content += "<ul class=\"mt-3 list-decimal list-outside marker-medium pl-5 space-y-1\">\n"
+				contentObject.content += "<ul class=\"mt-2.5 list-decimal list-outside marker-medium pl-5 space-y-1\">\n"
 				currentAction_set("ol")
 			}
 			contentObject.content += `<li>${checkForBasicMarkdownSyntax(escapeHtml(line.trim().replace(/^\d+\. /, "")))}</li>\n`
@@ -359,7 +364,7 @@ module.exports.convertMarkdown = async (
 				if(content.length > 400) content = `${content.slice(0, 400)}...`
 				if(![".", "!", "?"].includes(content[content.length - 1])) content += "." // add trailing dot if not present
 
-				contentObject.content += `<BlogPostCard date="${getAbsoluteDate("fr-FR", releaseDate)}" title="${escapeHtml(title)}" content="${escapeHtml(content)}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard>\n`
+				contentObject.content += `<div class="mt-5"><BlogPostCard date="${getAbsoluteDate("fr-FR", releaseDate)}" title="${escapeHtml(title)}" content="${escapeHtml(content)}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
 			} else {
 				contentObject.warns.push(`Blog Post Card - Cannot find the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)
 			}
@@ -368,23 +373,27 @@ module.exports.convertMarkdown = async (
 
 		// blockquote
 		else if(line.trim().startsWith(">")){
-			if(currentAction != "blockquote") {
-				contentObject.content += "<blockquote class=\"border-l-4 border-gray-300 pl-4 italic my-3\">\n"
-				currentAction_set("blockquote")
-			}
-			contentObject.content += `${checkForBasicMarkdownSyntax(escapeHtml(line.trim().slice(1).trim()))}<br/>\n`
+			if(currentAction != "blockquote") currentAction_set("blockquote")
+			currentValue += `${checkForBasicMarkdownSyntax(escapeHtml(line.trim().slice(1).trim()))}<br/>\n`
 			lastLineType = "blockquote"
 		} else if(currentAction == "blockquote"){
 			currentAction_precedent()
-			contentObject.content += "</blockquote>\n"
+			contentObject.content += `<div class="mt-4">${components.callout.replaceAll("{{ $content }}", currentValue?.trim() || "")}</div>\n`
+			currentValue = ""
 			lastLineType = "blockquote"
 		}
 
 		// default behavior
 		else {
-			console.log("Processing line:", line)
-			console.log("    Previous line type:", lastLineType)
-			contentObject.content += line == "" ? "\n" : `<p class="${lastLineType == "image" ? "mt-6" : "mt-3.5"}">${checkForBasicMarkdownSyntax(escapeHtml(line))}</p>\n`
+			const marginTop = lastLineType == "image" || !wentPastFirstParagraph
+				? "mt-6"
+				: lastLineType == "list"
+					? "mt-3.5"
+					: lastLineType.startsWith("title-") && lastLineType.split("-")[1] < 3
+						? "mt-3"
+						: "mt-2.5"
+
+			contentObject.content += line == "" ? "\n" : `<p class="${marginTop}">${checkForBasicMarkdownSyntax(escapeHtml(line))}</p>\n`
 			if(!wentPastFirstParagraph && line.trim() != "") {
 				const ctaButtons = []
 				if(contentObject.metadata?.download_android) ctaButtons.push({ platform: "Android", href: contentObject.metadata.download_android, svgPath: svgPaths.android })

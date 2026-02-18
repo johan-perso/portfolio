@@ -19,7 +19,7 @@ L'application eScive est disponible ! Elle offre une meilleure expérience de co
 
 Cependant, vous pouvez tout de même l'utiliser sur Android via un [fichier APK](https://dl.bassinecorp.fr/escive?os=android), et sur iOS, à condition d'effectuer quelques étapes complexes à l'aide d'outils de sideloading et du [fichier d'installation (IPA)](https://dl.bassinecorp.fr/escive?os=ios) d'eScive.
 
-> READ: [[eScive, roulez mieux en trottinette électrique]] %%TODO%%
+> READ: [[Sideloader une app sur iOS]]
 
 # Compatibilité ^compatibility
 

@@ -49,8 +49,8 @@ function checkDateValidity(dateTime) {
 }
 
 function getRelativeTime(locale, dateTime, additional) {
-	if(!checkDateValidity(dateTime)) return "Invalid Date"
 	if(!(dateTime instanceof Date)) dateTime = new Date(dateTime)
+	if(!checkDateValidity(dateTime)) return "Invalid Date"
 
 	const now = new Date()
 	const diffInMs = now - dateTime
@@ -114,8 +114,8 @@ function getRelativeTime(locale, dateTime, additional) {
 }
 
 function getAbsoluteDate(locale, dateTime) {
-	if(!checkDateValidity(dateTime)) return "Invalid Date"
 	if(!(dateTime instanceof Date)) dateTime = new Date(dateTime)
+	if(!checkDateValidity(dateTime)) return "Invalid Date"
 	return new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", year: "numeric" }).format(dateTime)
 }
 
