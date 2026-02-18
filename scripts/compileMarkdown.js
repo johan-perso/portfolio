@@ -10,6 +10,7 @@ const { svgPaths } = require("../utils/svgPaths")
 
 const components = {
 	"callout": fs.readFileSync(path.join(__dirname, "..", "public", "components", "Callout.html"), "utf-8"),
+	"primarybutton": fs.readFileSync(path.join(__dirname, "..", "public", "components", "PrimaryButton.html"), "utf-8")
 }
 
 function escapeHtml(text){
@@ -115,6 +116,7 @@ module.exports.convertMarkdown = async (
 	let currentAction = ""
 	let currentActionHistory = []
 	let wentPastFirstParagraph = false
+	let wentPastFirstTitle = false
 
 	function currentAction_set(action){
 		if(currentAction == action) return false
@@ -315,10 +317,24 @@ module.exports.convertMarkdown = async (
 
 			line = line.replace("#".repeat(titleLevel), "").trim()
 
+			if(!wentPastFirstTitle && line.trim() != "") {
+				const ctaButtons = []
+				if(contentObject.metadata?.download_android) ctaButtons.push({ platform: "Android", href: contentObject.metadata.download_android, svgPath: svgPaths.android, includeMb: true })
+				if(contentObject.metadata?.download_ios) ctaButtons.push({ platform: "iOS", href: contentObject.metadata.download_ios, svgPath: svgPaths.apple, includeMb: true })
+				if(contentObject.metadata?.download_windows) ctaButtons.push({ platform: "Windows", href: contentObject.metadata.download_windows, svgPath: svgPaths.windows, includeMb: false })
+				if(contentObject.metadata?.download_macos) ctaButtons.push({ platform: "macOS", href: contentObject.metadata.download_macos, svgPath: svgPaths.macos, includeMb: false })
+				if(contentObject.metadata?.download_linux) ctaButtons.push({ platform: "Linux", href: contentObject.metadata.download_linux, svgPath: svgPaths.linux, includeMb: true })
+
+				contentObject.content += `<div class="mt-4 flex gap-3 max-[600px]:gap-2.5 max-[600px]:flex-col max-[600px]:[&>*]:w-full">
+					${ctaButtons.map(button => components.primarybutton.replaceAll("{{ $label }}", `Télécharger pour ${button.platform}`).replaceAll("{{ $href }}", button.href).replaceAll("{{ $svgPath }}", button.svgPath).replace((button.includeMb ? "<svg " : "<svg class=\"mb-0.5\""), "<svg ")).join("\n")}
+				</div>`
+			}
+
 			contentObject.content += `<div class="flex gap-1.5 mt-8 blogHeader" id="testLink">
 				<h${titleLevel} id="${escapeHtml(anchor)}" class="font-semibold text-primary-content-heavy antialiased ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
 				<a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="text-link hover:underline transition-opacity duration-100 opacity-0 hover:opacity-100 ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${(titleLevel > 4 ? 24 : 20) * Math.pow(0.9, titleLevel - 1)}px">#</a>
 			</div>`
+			wentPastFirstTitle = true
 			lastLineType = `title-${titleLevel}`
 		}
 
@@ -394,20 +410,7 @@ module.exports.convertMarkdown = async (
 						: "mt-2.5"
 
 			contentObject.content += line == "" ? "\n" : `<p class="${marginTop}">${checkForBasicMarkdownSyntax(escapeHtml(line))}</p>\n`
-			if(!wentPastFirstParagraph && line.trim() != "") {
-				const ctaButtons = []
-				if(contentObject.metadata?.download_android) ctaButtons.push({ platform: "Android", href: contentObject.metadata.download_android, svgPath: svgPaths.android })
-				if(contentObject.metadata?.download_ios) ctaButtons.push({ platform: "iOS", href: contentObject.metadata.download_ios, svgPath: svgPaths.apple })
-				if(contentObject.metadata?.download_windows) ctaButtons.push({ platform: "Windows", href: contentObject.metadata.download_windows, svgPath: svgPaths.windows })
-				if(contentObject.metadata?.download_macos) ctaButtons.push({ platform: "macOS", href: contentObject.metadata.download_macos, svgPath: svgPaths.macos })
-				if(contentObject.metadata?.download_linux) ctaButtons.push({ platform: "Linux", href: contentObject.metadata.download_linux, svgPath: svgPaths.linux })
-
-				contentObject.content += `<div class="mt-4 flex gap-3 max-[600px]:gap-2.5 max-[600px]:flex-col max-[600px]:[&>*]:w-full">
-					${ctaButtons.map(button => `<PrimaryButton label="Télécharger pour ${button.platform.replace(/"/g, "\\\"")}" href="${button.href.replace(/"/g, "\\\"")}" svgPath="${button.svgPath.replace(/"/g, "\\\"")}"></PrimaryButton>`).join("\n")}
-				</div>`
-				wentPastFirstParagraph = true
-				lastLineType = "paragraph"
-			}
+			wentPastFirstParagraph = true
 		}
 	}
 
