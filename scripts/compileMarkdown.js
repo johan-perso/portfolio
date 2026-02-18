@@ -22,8 +22,8 @@ function escapeHtml(text){
 
 function checkForBasicMarkdownSyntax(text){ // check for bold, italic, strikethrough and underline
 	return text
-		.replace(/(\*\*|__)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong>${escapeHtml(match.slice(2, -2))}</strong>`) // bold
-		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<em>${escapeHtml(match.slice(1, -1))}</em>`) // italic
+		.replace(/(\*\*|__)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(2, -2))}</strong>`) // bold
+		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<em class="italic">${escapeHtml(match.slice(1, -1))}</em>`) // italic
 		.replace(/~~(?:(?!~~|<[^>]*>)(.|\n))*?~~/g, match => `<del>${escapeHtml(match.slice(2, -2))}</del>`) // strikethrough
 		.replace(/__(?:(?!__|<[^>]*>)(.|\n))*?__/g, match => `<u>${escapeHtml(match.slice(2, -2))}</u>`) // underline
 		.replace(/`(?:(?!`|<[^>]*>)(.|\n))*?`/g, match => `<code>${escapeHtml(match.slice(1, -1))}</code>`) // inline code
@@ -330,7 +330,7 @@ module.exports.convertMarkdown = async (
 				</div>`
 			}
 
-			contentObject.content += `<div class="flex gap-1.5 mt-8 blogHeader" id="testLink">
+			contentObject.content += `<div class="flex gap-1.5 ${lastLineType.startsWith("title") ? "mt-3" : "mt-8"} blogHeader" id="testLink">
 				<h${titleLevel} id="${escapeHtml(anchor)}" class="font-semibold text-primary-content-heavy antialiased ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
 				<a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="text-link hover:underline transition-opacity duration-100 opacity-0 hover:opacity-100 ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${(titleLevel > 4 ? 24 : 20) * Math.pow(0.9, titleLevel - 1)}px">#</a>
 			</div>`
