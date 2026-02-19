@@ -1,6 +1,6 @@
 ---
 slug: findmeme-mobile
-banner:
+banner: findmeme_mobileapp_banner.jpg
 Post_ReleaseDate: 2024-08-08
 Post_Date: 2022 - 2025
 Post_Theme: Svelte, Tailwind CSS, Capacitor JS, framework7
@@ -21,7 +21,7 @@ Si vous êtes sur Android, vous pouvez télécharger l'application depuis le [P
 
 Si vous êtes sur iOS, vous devrez encore être patient, ou [installer manuellement](https://johanstick.fr/sideload-ios/) l'app, à condition d’effectuer quelques étapes complexes à l’aide d’outils de sideloading et du [fichier d’installation IPA](https://dl.bassinecorp.fr/findmeme?os=ios).
 
-> READ: [[eScive, roulez mieux en trottinette électrique]] %%TODO%%
+> READ: [[Sideloader une app sur iOS]]
 
 > 💸 L'application a été conçue pour être cross-platform et pour fonctionner sur les deux systèmes principaux pour mobiles. En raison des frais de publication sur l'App Store, celle-ci n'est pas officiellement disponible sur iPhone et iPad.
 
