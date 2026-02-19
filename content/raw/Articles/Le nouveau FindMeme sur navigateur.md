@@ -1,5 +1,5 @@
 ---
-slug: findmeme-pwa
+slug: findmeme-web
 banner: findmeme_webapp_banner.jpg
 Post_ReleaseDate: 2024-10-06
 Post_Author: Johan
