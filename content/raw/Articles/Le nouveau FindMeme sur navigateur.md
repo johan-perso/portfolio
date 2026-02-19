@@ -1,6 +1,6 @@
 ---
 slug: findmeme-pwa
-banner:
+banner: findmeme_webapp_banner.jpg
 Post_ReleaseDate: 2024-10-06
 Post_Author: Johan
 Download_Android: https://play.google.com/store/apps/details?id=fr.johanstick.findmeme
@@ -17,7 +17,7 @@ Le design est adapté pour tous les types d'écrans, et les fonctionnalités, le
 
 Ce nouveau site, ainsi que l'application pour mobile, partagent la même base de code. Cela permet aux deux projets d'être mis à jour en même temps, et de partager les mêmes fonctionnalités, avec une interface familière quelle que soit la plateforme et l’appareil que vous utilisiez.
 
-> READ: [[eScive, roulez mieux en trottinette électrique]] %%TODO: article qui parle de l’app mobile%%
+> READ: [[FindMeme arrive sur téléphone]]
 
 # Nouvelles fonctionnalités ^features
 
