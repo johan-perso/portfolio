@@ -39,4 +39,4 @@ Une appli *"native"* débloque de nouvelles possibilités pour fournir une expé
 
 # Infos techniques ^technicals-details
 
-[Capacitor](https://capacitorjs.com) a été utilisé pour concevoir cette application, ainsi que [Svelte](https://svelte.dev/), [Tailwind CSS](https://tailwindcss.com/) et [Framework7](https://framework7.io/). Il aurait été préférable d'utiliser une technologie native, mais cela aurait augmenté le niveau d'efforts requis pour obtenir une base cross-platform et [compatible avec les navigateurs](https://johanstick.fr/findmeme-pwa).
+[Capacitor](https://capacitorjs.com) a été utilisé pour concevoir cette application, ainsi que [Svelte](https://svelte.dev/), [Tailwind CSS](https://tailwindcss.com/) et [Framework7](https://framework7.io/). Il aurait été préférable d'utiliser une technologie native, mais cela aurait augmenté le niveau d'efforts requis pour obtenir une base cross-platform et [compatible avec les navigateurs](https://johanstick.fr/findmeme-web).
