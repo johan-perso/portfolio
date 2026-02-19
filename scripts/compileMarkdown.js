@@ -411,8 +411,6 @@ module.exports.convertMarkdown = async (
 		// default behavior
 		else {
 			if(line.trim() != "") {
-				if(options.filePath.includes("eScive") && lastLineWasEmpty) console.log(line)
-
 				let marginTop = lastLineWasEmpty && lastLineType == "paragraph" ? "mt-2.5" : "mt-1"
 				if(lastLineType == "image" || !wentPastFirstParagraph) marginTop = "mt-6"
 				else if(lastLineType == "list") marginTop = "mt-3.5"

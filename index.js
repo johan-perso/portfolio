@@ -122,8 +122,17 @@ async function startRocServer(){
 				console.log(`Calculated reading time for blog "${foundBlogDocument.slug}": ${readTime} minutes (now cached)`)
 			}
 
+			const bannerPhysicalPath = foundBlogDocument?.frontmatter?.banner ? path.join(contentDir.attachments, foundBlogDocument.frontmatter.banner) : null
+			var bannerWebPath
+			if(foundBlogDocument?.frontmatter?.banner && !fs.existsSync(bannerPhysicalPath)) {
+				console.warn(`Banner image specified in frontmatter of blog post "${foundBlogDocument.slug}" not found at path: ${bannerPhysicalPath} - The banner will not be displayed.`)
+			} else if(foundBlogDocument?.frontmatter?.banner) {
+				bannerWebPath = foundBlogDocument?.frontmatter?.banner ? path.join(publicAssetsPath, foundBlogDocument.frontmatter.banner).replace(/\\/g, "/") : null
+			}
+
 			const editedBlogHtml = originalBlogHtml
 				.replaceAll("%%BLOG_TITLE%%", foundBlogDocument?.title)
+				.replaceAll("%%BLOG_BANNER%%", `<img src="${bannerWebPath}" alt="" class="w-full h-auto rounded-lg mt-6 bentoCard smallShadow transition-shadow" />`)
 				.replaceAll("%%BLOG_DETAILS_READ_TIME%%", readTime)
 				.replaceAll("%%BLOG_DETAILS_RELEASE_DATE%%", getAbsoluteDate("fr-FR", new Date(foundBlogDocument?.frontmatter?.post_releasedate)))
 				.replaceAll("%%BLOG_DETAILS_RELEASE_RELATIVE_DATE%%", getRelativeTime("fr-FR", new Date(foundBlogDocument?.frontmatter?.post_releasedate), "ago"))
