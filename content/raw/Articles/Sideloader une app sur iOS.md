@@ -2,6 +2,7 @@
 slug: sideload-ios
 banner:
 Post_ReleaseDate: 2026-02-15
+Post_Theme: Sideloading, Third Party Store, iOS
 Post_Author: Johan
 ---
 Il est possible d'installer des applications sur un iPhone même lorsqu’elles ne sont pas disponibles sur l'App Store, en utilisant un fichier d'installation `.ipa` fourni par le développeur ou par un tiers. Ici, nous verrons différentes méthodes pour installer ces apps sur votre téléphone.
@@ -35,7 +36,7 @@ Si vous êtes sur iOS 16 ou supérieur, vous aurez besoin d’activer le mode d�
 
 Une source est un moyen d’ajouter une liste d’applications dynamiques à un magasin d’apps tiers. Cette fonctionnalité permet notamment l’installation de mises à jour plus rapidement. Les magasins comme AltStore et SideStore permettent l’ajout de sources à partir d’une URL. Par exemple, vous pouvez [accéder à mes apps ici](https://stikstore.app/altdirect/?url=https://dl.bassinecorp.fr/altstore.json).
 
-![[147_1x_shots_so.png|960]]
+![[iossideloading_sources.png|960]]
 
 ## Limites d’apps et de temps ^limitations-def
 
@@ -104,7 +105,7 @@ SideStore est prêt à être utilisé ! Vous pouvez à présent installer les ap
 4. Quelques minutes plus tard, vous pourrez retrouver l’application sur l’écran d’accueil de votre iPhone. Dans le cas contraire, une erreur s’affichera sur le logiciel, libre à vous d’effectuer des recherches (ou de changer de méthode).
 5. Avant d’ouvrir l’app, vous devrez ouvrir les Réglages et vous rendre dans *Général → VPN et gestion de l’appareil → votre adresse mail* puis appuyer sur *Vérifier l’app*.
 
-> L’application expirera au bout de 7 jours. Passé ce délai, vous ne pourrez plus l’ouvrir sans la réinstaller avec Impactor ou un autre logiciel. Une fonctionnalité expérimentale est présente dans Impactor pour tenter un refresh automatique lorsque votre ordinateur est allumé et connecté à Internet, mais celle-ci ne garantit pas un renouvellement sûr.
+> ⚠️ L’application expirera au bout de 7 jours. Passé ce délai, vous ne pourrez plus l’ouvrir sans la réinstaller avec Impactor ou un autre logiciel. Une fonctionnalité expérimentale est présente dans Impactor pour tenter un refresh automatique lorsque votre ordinateur est allumé et connecté à Internet, mais celle-ci ne garantit pas un renouvellement sûr.
 
 ## Installer avec Sideloadly ^install-sideloadly
 
@@ -114,7 +115,7 @@ SideStore est prêt à être utilisé ! Vous pouvez à présent installer les ap
 4. Quelques minutes plus tard, l’application sera installée sur votre iPhone. Dans le cas contraire, une erreur s’affichera sur le logiciel Sideloadly, libre à vous d’effectuer des recherches (ou de changer de méthode).
 5. Avant d’ouvrir l’app, vous devrez ouvrir les Réglages et vous rendre dans *Général → VPN et gestion de l’appareil → votre adresse mail* puis appuyer sur *Vérifier l’app*.
 
-> L’application expirera au bout de 7 jours. Passé ce délai, vous ne pourrez plus l’ouvrir sans la réinstaller avec Sideloadly ou un autre logiciel.
+> ⚠️ L’application expirera au bout de 7 jours. Passé ce délai, vous ne pourrez plus l’ouvrir sans la réinstaller avec Sideloadly ou un autre logiciel.
 
 ## Installer AltStore ^install-altstore
 
@@ -126,4 +127,4 @@ SideStore est prêt à être utilisé ! Vous pouvez à présent installer les ap
 6. Patientez 30 secondes jusqu’à ce qu’AltStore s’affiche sur votre écran d’accueil. Laissez votre iPhone branché à votre ordinateur. Une fois que l’icône est visible, ouvrez l’app Réglages et rendez vous dans *Général → VPN et gestion de l’appareil → votre adresse mail → Vérifier l’app*.
 7. Vous allez désormais pouvoir ouvrir AltStore sur votre téléphone. À la première installation, l’app pourra vous redemander de vous connecter à votre compte Apple, le même que celui renseigné dans AltServer sur votre PC.
 
-> Au bout de 7 jours, il ne sera plus possible d’ouvrir les apps installées. Vous pouvez contrer cette limitation depuis l’app AltStore en utilisant le bouton Refresh sur la page « My Apps », à condition que votre PC soit toujours allumé et connecté au même réseau.
+> ⚠️ Au bout de 7 jours, il ne sera plus possible d’ouvrir les apps installées. Vous pouvez contrer cette limitation depuis l’app AltStore en utilisant le bouton Refresh sur la page « My Apps », à condition que votre PC soit toujours allumé et connecté au même réseau.
