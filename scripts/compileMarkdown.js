@@ -1,8 +1,6 @@
 // Based on MarkDocs CLI Markdown parser
 // https://github.com/johan-perso/MarkDocs/blob/main/utils/convertMd.js
 
-// TODO: permettre de sauter des lignes
-
 const fs = require("fs")
 const path = require("path")
 const stripMarkdown = require("../utils/stripMarkdown")
@@ -112,6 +110,7 @@ module.exports.convertMarkdown = async (
 
 	const lines = content.split("\n")
 	let lastLineType = ""
+	let lastLineWasEmpty = false
 	let currentValue = ""
 	let currentAction = ""
 	let currentActionHistory = []
@@ -139,7 +138,9 @@ module.exports.convertMarkdown = async (
 		var line = lines[i]
 
 		if(line == "----"){
+			lastLineType = "separator"
 			contentObject.content += "<hr>"
+			lastLineWasEmpty = false
 			continue
 		}
 
@@ -147,18 +148,21 @@ module.exports.convertMarkdown = async (
 			currentAction_set("codeblock")
 			const language = line.trim().slice(3).trim() || ""
 			contentObject.content += `<pre><code${language ? ` class="language-${escapeHtml(language.replace(/\s/g, "-"))}"` : ""}>`
+			lastLineWasEmpty = false
 			continue
 		}
 		if(currentAction == "codeblock" && line.trim().startsWith("```")){
 			currentAction_precedent()
 			contentObject.content += "</code></pre>\n"
 			lastLineType = "codeblock"
+			lastLineWasEmpty = false
 			continue
 		}
 
 		if(currentAction == "codeblock"){
 			contentObject.content += `${escapeHtml(line)}\n`
 			lastLineType = "codeblock"
+			lastLineWasEmpty = false
 			continue
 		}
 
@@ -204,13 +208,13 @@ module.exports.convertMarkdown = async (
 					line = line.replace(
 						imageMatch,
 						image.src.endsWith(".mp4")
-							? `<video class="w-full h-auto rounded-lg shadow-md mt-4" controls src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" aria-label="${image.alt.replace(/"/g, "\\\"")}" />`
-							: `<img class="w-full h-auto rounded-lg shadow-md mt-4" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
+							? `<video class="w-full h-auto rounded-lg shadow mt-5" controls src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" aria-label="${image.alt.replace(/"/g, "\\\"")}" />`
+							: `<img class="w-full h-auto rounded-lg bentoCard smallShadow transition-shadow mt-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
 					)
+					lastLineType = "image"
 				} catch (error) {
 					contentObject.warns.push(`Attaching an image - Cannot read the file located at "${imagePath}".`)
 				}
-				lastLineType = "image"
 			})
 		}
 
@@ -234,6 +238,7 @@ module.exports.convertMarkdown = async (
 			// var calloutType = original_calloutType != "warn" && original_calloutType != "warning" && original_calloutType != "error" ? "info" : original_calloutType
 
 			lastLineType = "callout"
+			lastLineWasEmpty = false
 			continue
 		} else if(currentAction == "callout"){
 			if(!line){
@@ -242,6 +247,7 @@ module.exports.convertMarkdown = async (
 				currentValue = ""
 			} else currentValue += `${checkForBasicMarkdownSyntax(escapeHtml(line.startsWith(">") ? line.slice(1).trim() : line.trim()))}<br>`
 			lastLineType = "callout"
+			lastLineWasEmpty = false
 			continue
 		}
 
@@ -268,9 +274,10 @@ module.exports.convertMarkdown = async (
 				continue
 			}
 
-			contentObject.content += `<img class="w-full h-auto rounded-lg shadow-md mt-4" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
+			contentObject.content += `<img class="w-full h-auto rounded-lg bentoCard smallShadow transition-shadow mt-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
 			contentObject.images.push(image)
 			lastLineType = "image"
+			lastLineWasEmpty = false
 
 			continue
 		}
@@ -290,10 +297,12 @@ module.exports.convertMarkdown = async (
 		else if(line.startsWith("```component")){
 			currentAction_set("custom-component")
 			lastLineType = "custom-component"
+			lastLineWasEmpty = false
 			continue
 		} else if(currentAction == "custom-component" && line.startsWith("```")){
 			currentAction_precedent()
 			lastLineType = "custom-component"
+			lastLineWasEmpty = false
 			continue
 		}
 
@@ -401,17 +410,24 @@ module.exports.convertMarkdown = async (
 
 		// default behavior
 		else {
-			const marginTop = lastLineType == "image" || !wentPastFirstParagraph
-				? "mt-6"
-				: lastLineType == "list"
-					? "mt-3.5"
-					: lastLineType.startsWith("title-") && lastLineType.split("-")[1] < 3
-						? "mt-3"
-						: "mt-2.5"
+			if(line.trim() != "") {
+				if(options.filePath.includes("eScive") && lastLineWasEmpty) console.log(line)
 
-			contentObject.content += line == "" ? "\n" : `<p class="${marginTop}">${checkForBasicMarkdownSyntax(escapeHtml(line))}</p>\n`
-			wentPastFirstParagraph = true
+				let marginTop = lastLineWasEmpty && lastLineType == "paragraph" ? "mt-2.5" : "mt-1"
+				if(lastLineType == "image" || !wentPastFirstParagraph) marginTop = "mt-6"
+				else if(lastLineType == "list") marginTop = "mt-3.5"
+				else if(lastLineType.startsWith("title-")) {
+					const titleLevel = parseInt(lastLineType.split("-")[1] ?? "1")
+					marginTop = titleLevel < 3 ? "mt-3" : "mt-2"
+				}
+
+				contentObject.content += `<p class="${marginTop}">${checkForBasicMarkdownSyntax(escapeHtml(line))}</p>\n`
+				lastLineType = "paragraph"
+				wentPastFirstParagraph = true
+			}
 		}
+
+		lastLineWasEmpty = line.trim() == ""
 	}
 
 	// Check links across the whole content
