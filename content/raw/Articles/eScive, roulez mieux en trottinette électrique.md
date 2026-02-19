@@ -1,6 +1,6 @@
 ---
 slug: escive
-banner: https://beta.johanstick.fr/medias/projects/banners/escive.jpg
+banner: escive_app_banner.jpg
 Post_ReleaseDate: 2025-08-17
 Post_Date: 2025 - Présent
 Post_Theme: Flutter, Bluetooth Low Energy, Reverse Engineer, Mapbox
@@ -9,7 +9,7 @@ Post_CoAuthors: "[el2zay](https://github.com/el2zay)"
 Download_Android: https://dl.bassinecorp.fr/escive?os=android
 Download_iOS: https://dl.bassinecorp.fr/escive?os=ios
 Link_Demo: https://escive-demo.johanstick.fr
-Link_GitHub: https://github.com/johan-perso/escive
+Link_SourceCode: https://github.com/johan-perso/escive
 ---
 L'application eScive est disponible ! Elle offre une meilleure expérience de conduite pour les utilisateurs de trottinettes électriques de certaines marques dotées de capacités Bluetooth. Elle remplace les apps officielles en offrant plus de fonctionnalités, avec une meilleure interface, sans tracking, et sans publicités.
 
@@ -46,7 +46,7 @@ L'app possède deux fonctionnalités pour vous aider à implémenter vos propres
 
 Ces deux éléments vous permettent, par exemple, de configurer un tag NFC posé sur votre guidon, prêt à activer ou désactiver le verrouillage intégré de la trottinette lorsque vous passez votre téléphone près de celui-ci.
 
-> 🤓 Vous pouvez en apprendre davantage dans le [fichier README](https://github.com/johan-perso/escive/blob/main/README.fr.md) disponible sur GitHub.
+> 🤓 Vous pouvez en apprendre davantage dans le [fichier README](https://github.com/johan-perso/escive/blob/main/README.fr.md#automatisation) disponible sur GitHub.
 
 # Design et développement ^design
 
