@@ -14,7 +14,11 @@ WORKDIR /usr/src/app
 # Install dependencies, and then copy all remaining source code
 COPY package.json .
 RUN bun install --minimum-release-age 259200 --frozen-lockfile --no-cache
-COPY --exclude=node_modules --exclude=.env --exclude=*.log --exclude=*.lock . .
+COPY --exclude=node_modules --exclude=content/compiled --exclude=.env --exclude=*.log --exclude=*.lock . .
+
+# Compile some files/contents to avoid compilation at runtime
+RUN bun run scripts/compileContent.js
+RUN bun -e "require('./scripts/getGitDetails.js').saveGitDetails(process.cwd(), 'content/compiled/git_repo_details.json')"
 
 # Expose the port that the application listens on
 ARG DEFAULT_PORT=80

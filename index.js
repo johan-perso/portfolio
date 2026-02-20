@@ -54,14 +54,16 @@ async function main(){
 	console.log("Preparing the server...")
 
 	// Check for compiled content, compile it if not found
-	if(!fs.existsSync(contentDir.compiled) || fs.readdirSync(contentDir.compiled).length < 1) {
+	const compiledContentFolder = fs.existsSync(contentDir.compiled) ? fs.readdirSync(contentDir.compiled) : []
+	if(!compiledContentFolder || compiledContentFolder.length < 1) {
 		console.log("Compiled content not found. Compiling content...")
 		await executeCommandInConsole(`${process.versions.bun ? "bun run" : "node"} scripts/compileContent.js`)
-		await require("./scripts/getGitDetails").saveGitDetails(process.cwd(), path.join(contentDir.compiled, "git_repo_details.json"))
+		if(!compiledContentFolder.includes("git_repo_details.json")) await require("./scripts/getGitDetails").saveGitDetails(process.cwd(), path.join(contentDir.compiled, "git_repo_details.json"))
 	}
 
 	// Add some compiled content files to memory
-	["redirections", "_index", "git_repo_details"].forEach(fileName => {
+	const requiredFiles = ["redirections", "_index", "git_repo_details"]
+	requiredFiles.forEach(fileName => {
 		const filePath = path.join(contentDir.compiled, `${fileName}.json`)
 		if(!fs.existsSync(filePath)) throw new Error(`Required content file "${fileName}.json" not found in compiled content folder.`)
 		const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"))

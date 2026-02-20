@@ -1,6 +1,3 @@
-// TODO: add this in Dockerfile:
-// node -e "require('/Users/Johan/Developer/portfolio/scripts/getGitDetails.js').saveGitDetails(process.cwd(), 'content/compiled/git_repo_details.json')"
-
 const fs = require("fs")
 const path = require("path")
 const childProcess = require("child_process")
