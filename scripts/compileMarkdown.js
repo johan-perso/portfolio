@@ -37,6 +37,12 @@ function normalizeText(text){
 	return text.normalize("NFC") // avoid issues wih some unicode characters such as emojis or weird chatgpt-ahh spaces
 }
 
+function addRefInUrl(url, ref){
+	if(!url) return url
+	if(url.includes("?")) return `${url}&ref=${ref}`
+	else return `${url}?ref=${ref}`
+}
+
 var lastRandomStrings = {}
 function randomString(length, ignoreDuplicateCheck = false, retryI = 0) {
 	var result = ""
@@ -446,6 +452,7 @@ module.exports.convertMarkdown = async (
 				if(!url || !content) continue
 
 				const isExtern = url.startsWith("http://") || url.startsWith("https://") || url.startsWith("mailto:")
+				if(isExtern) url = addRefInUrl(url, 'read.johanstick.fr')
 
 				if(content.startsWith("@") && isExtern) { // mention will use a specific component
 					var avatarUrl = url.startsWith("https://github.com/") ? `https://github.com/${content.replace("@", "").replace(/\s/g, "")}.png?size=200` : null
