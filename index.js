@@ -58,8 +58,8 @@ async function main(){
 	if(!compiledContentFolder || compiledContentFolder.length < 1) {
 		console.log("Compiled content not found. Compiling content...")
 		await executeCommandInConsole(`${process.versions.bun ? "bun run" : "node"} scripts/compileContent.js`)
-		if(!compiledContentFolder.includes("git_repo_details.json")) await require("./scripts/getGitDetails").saveGitDetails(process.cwd(), path.join(contentDir.compiled, "git_repo_details.json"))
 	}
+	if(!compiledContentFolder.includes("git_repo_details.json")) await require("./scripts/getGitDetails").saveGitDetails(process.cwd(), path.join(contentDir.compiled, "git_repo_details.json"))
 
 	// Add some compiled content files to memory
 	const requiredFiles = ["redirections", "_index", "git_repo_details"]

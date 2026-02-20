@@ -74,6 +74,9 @@ async function getGitDetails(cwd){
 	}
 
 	if(details.remoteUrl.endsWith("/")) details.remoteUrl = details.remoteUrl.slice(0, -1) // remove trailing slash if exists
+	if(details.remoteUrl.startsWith("git@")) details.remoteUrl = details.remoteUrl.replace(":", "/").replace("git@", "https://") // convert SSH URL to HTTPS URL
+	if(details.remoteUrl.includes("@github.com/")) details.remoteUrl = details.remoteUrl.replace(/.*@github\.com\//, "https://github.com/") // remove any user info before github.com
+	if(details.remoteUrl.endsWith(".git")) details.remoteUrl = details.remoteUrl.slice(0, -4) // remove trailing .git if exists
 	if(details.remoteUrl) details.commitUrl = `${details.remoteUrl}/commit/${details.hash}`
 
 	console.log("Git details retrieved:", details)
