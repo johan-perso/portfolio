@@ -1,10 +1,11 @@
+if(!process.versions.bun) console.warn("Warning: It is recommended to run this server using Bun for better library compatibility.")
+
 const fs = require("fs")
 const path = require("path")
 const childProcess = require("child_process")
 const { getRelativeTime, getAbsoluteDate } = require("./utils/dateFormatter")
 const getReadingTime = require("./utils/readingTime")
-// const roc = require("roc-framework")
-const roc = require("/Volumes/SSD256/MacMini/Developer/roc/index.js")
+const roc = require("roc-framework")
 
 const NodeCache = require("node-cache")
 const caches = new NodeCache({ stdTTL: 60 * 60 * 24 }) // cache with a default of one day
@@ -28,37 +29,44 @@ function isEligibleForCache(filePath) {
 	return cachesEligibleExt.includes(path.extname(filePath))
 }
 
+async function executeCommandInConsole(command, options = {}){
+	var spawnedProcess = childProcess.exec(command)
+	await new Promise((resolve, reject) => {
+		spawnedProcess.stdout.on("data", data => {
+			if(typeof data == "string") console.log(`> ${data.trim().split("\n").join("\n> ")}`)
+			else process.stdout.write(data)
+		})
+		spawnedProcess.stderr.on("data", data => {
+			if(typeof data == "string") console.error(`> ${data.trim().split("\n").join("\n> ")}`)
+			else process.stderr.write(data)
+		})
+		spawnedProcess.on("close", code => {
+			if(code === 0) resolve()
+			else reject(new Error(`Process exited with code ${code}`))
+		})
+	})
+	return true
+}
+
 // Main function, prepare and start the server
 async function main(){
 	var perfNow = performance.now()
 	console.log("Preparing the server...")
 
 	// Check for compiled content, compile it if not found
-	if(!fs.existsSync(contentDir.compiled)) {
+	if(!fs.existsSync(contentDir.compiled) || fs.readdirSync(contentDir.compiled).length < 1) {
 		console.log("Compiled content not found. Compiling content...")
-		var spawnedCompileProcess = childProcess.exec(`${process.versions.bun ? "bun run" : "node"} scripts/compileContent.js`)
-		await new Promise((resolve, reject) => {
-			spawnedCompileProcess.stdout.on("data", data => {
-				if(typeof data == "string") console.log(`> ${data.trim().split("\n").join("\n> ")}`)
-				else process.stdout.write(data)
-			})
-			spawnedCompileProcess.stderr.on("data", data => {
-				if(typeof data == "string") console.error(`> ${data.trim().split("\n").join("\n> ")}`)
-				else process.stderr.write(data)
-			})
-			spawnedCompileProcess.on("close", code => {
-				if(code === 0) resolve()
-				else reject(new Error(`Content compilation process exited with code ${code}`))
-			})
-		})
+		await executeCommandInConsole(`${process.versions.bun ? "bun run" : "node"} scripts/compileContent.js`)
+		await require("./scripts/getGitDetails").saveGitDetails(process.cwd(), path.join(contentDir.compiled, "git_repo_details.json"))
 	}
 
 	// Add some compiled content files to memory
-	["redirections", "_index"].forEach(fileName => {
+	["redirections", "_index", "git_repo_details"].forEach(fileName => {
 		const filePath = path.join(contentDir.compiled, `${fileName}.json`)
 		if(!fs.existsSync(filePath)) throw new Error(`Required content file "${fileName}.json" not found in compiled content folder.`)
 		const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"))
 		if(!fileContent || typeof fileContent != "object") throw new Error(`Content file "${fileName}.json" is not valid. Found:`, fileContent)
+		if(fileName == "git_repo_details") globalThis.gitRepoDetails = fileContent
 		contentFiles[fileName] = fileContent
 	})
 

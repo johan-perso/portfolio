@@ -1,4 +1,4 @@
-// TODO: add this in index.js and Dockerfile:
+// TODO: add this in Dockerfile:
 // node -e "require('/Users/Johan/Developer/portfolio/scripts/getGitDetails.js').saveGitDetails(process.cwd(), 'content/compiled/git_repo_details.json')"
 
 const fs = require("fs")
@@ -34,7 +34,7 @@ async function getGitDetails(cwd){
 	}
 
 	if(!details?.hash?.length) {
-		console.warn('Git commit hash could not be accessed. Canceling Git details retrieval.')
+		console.warn("Git commit hash could not be accessed. Canceling Git details retrieval.")
 		return { hash: null, message: null }
 	}
 
@@ -57,7 +57,27 @@ async function getGitDetails(cwd){
 		console.warn(err)
 	}
 
-	details.url = `https://github.com/johan-perso/portfolio/commit/${details.hash}` // TODO: make this dynamic based on the actual remote URL of the repo, or smth setup in .env
+	// Get the remote URL for the repo
+	try {
+		var remoteUrl = childProcess.execSync("git remote get-url origin", { cwd }).toString().trim()
+		details.remoteUrl = remoteUrl
+	} catch (err) {
+		console.warn("Unable to use Git CLI to get the remote URL from origin. Trying fallback method...")
+	}
+
+	// Fallback: try to read from .git/config file directly
+	if(!details?.remoteUrl?.length) try {
+		const configPath = path.join(cwd, ".git", "config")
+		const configContent = (await fs.promises.readFile(configPath, "utf8")).toString()
+		const remoteOriginMatch = configContent.match(/\[remote "origin"\][^[]*?url\s*=\s*(.+)/)
+		if(remoteOriginMatch) details.remoteUrl = remoteOriginMatch[1].trim()
+	} catch (err) {
+		console.warn("Unable to get Git remote URL using fallback method as well.")
+		console.warn(err)
+	}
+
+	if(details.remoteUrl.endsWith("/")) details.remoteUrl = details.remoteUrl.slice(0, -1) // remove trailing slash if exists
+	if(details.remoteUrl) details.commitUrl = `${details.remoteUrl}/commit/${details.hash}`
 
 	console.log("Git details retrieved:", details)
 	return details

@@ -452,7 +452,7 @@ module.exports.convertMarkdown = async (
 				if(!url || !content) continue
 
 				const isExtern = url.startsWith("http://") || url.startsWith("https://") || url.startsWith("mailto:")
-				if(isExtern) url = addRefInUrl(url, 'read.johanstick.fr')
+				if(isExtern) url = addRefInUrl(url, "read.johanstick.fr")
 
 				if(content.startsWith("@") && isExtern) { // mention will use a specific component
 					var avatarUrl = url.startsWith("https://github.com/") ? `https://github.com/${content.replace("@", "").replace(/\s/g, "")}.png?size=200` : null
