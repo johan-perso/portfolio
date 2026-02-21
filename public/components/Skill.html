@@ -1,4 +1,4 @@
-<div class="flex place-items-center space-x-3">
+<div id="{{ $id }}" class="flex place-items-center space-x-3">
 	<div class="p-2.5 w-fit rounded-md text-white" style="background: linear-gradient(135deg, #000000 -8.33%, #414141 108.33%); box-shadow: 0px 4px 4px rgba(0,0,0,0.15);">
 		<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 			{{ $svgPath }}
@@ -7,8 +7,8 @@
 
 	<div class="text-primary-content flex flex-row flex-wrap gap-2 text-left leading-none">
 		<p class="text-[18px] font-medium">
-			<span class="sr-only">-&nbsp;</span>{{ $name }}
-			<span class="text-[11px] font-normal {{ this.componentAttribs.additional ? '' : 'hidden' }}">{{ $additional }}</span>
+			<span class="skill_name sr-only">-&nbsp;</span>{{ $name }}
+			<span class="skill_additional text-[11px] font-normal {{ this.componentAttribs.additional ? '' : 'hidden' }}">{{ $additional }}</span>
 		</p>
 	</div>
 </div>

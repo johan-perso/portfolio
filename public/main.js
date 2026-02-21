@@ -177,6 +177,8 @@ window.onload = async function(){
 	}
 
 	hasMainLoadFunctionsRun = true
+
+	document.querySelector("#skill_student > div > p > span.skill_additional").setAttribute("title", `Très exactement ${((Date.now() - new Date("2008-03-07")) / 31557600000).toFixed(7)} ans 🤓`)
 }
 
 window.onresize = function(){
