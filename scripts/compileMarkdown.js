@@ -43,6 +43,21 @@ function addRefInUrl(url, ref){
 	else return `${url}?ref=${ref}`
 }
 
+function formatTableCell(cell) {
+	const normalized = cell.replaceAll("<br/>", "<br>").replaceAll("<br />", "<br>")
+	const parts = normalized.split("<br>").map(p => p.trim()).filter(p => p.length > 0)
+
+	if(parts.some(p => p.startsWith("- "))) {
+		const items = parts.map(p => {
+			const text = p.startsWith("- ") ? p.slice(2).trim() : p
+			return `<li>${checkForBasicMarkdownSyntax(escapeHtml(text))}</li>`
+		}).join("")
+		return `<ul class="list-disc list-inside space-y-0.5 py-0.5">${items}</ul>`
+	}
+
+	return parts.map(p => checkForBasicMarkdownSyntax(escapeHtml(p))).join("<br>")
+}
+
 var lastRandomStrings = {}
 function randomString(length, ignoreDuplicateCheck = false, retryI = 0) {
 	var result = ""
@@ -122,6 +137,7 @@ module.exports.convertMarkdown = async (
 	let currentActionHistory = []
 	let wentPastFirstParagraph = false
 	let wentPastFirstTitle = false
+	let tableIsInHeader = true
 
 	function currentAction_set(action){
 		if(currentAction == action) return false
@@ -222,11 +238,6 @@ module.exports.convertMarkdown = async (
 					contentObject.warns.push(`Attaching an image - Cannot read the file located at "${imagePath}".`)
 				}
 			})
-		}
-
-		// edit <br> in tables
-		if(line.startsWith("|") && line.endsWith("|")){
-			line = line.replaceAll("<br>", "<br/>")
 		}
 
 		// ========= Actions that can potentially add content
@@ -414,6 +425,42 @@ module.exports.convertMarkdown = async (
 			lastLineType = "blockquote"
 		}
 
+		// tables
+		else if(line.trim().startsWith("|") && line.trim().endsWith("|")) {
+			const trimmed = line.trim()
+			const isSeparator = trimmed.split("|").slice(1, -1).every(cell => /^\s*:?-+:?\s*$/.test(cell))
+
+			if(currentAction !== "table") {
+				currentAction_set("table")
+				tableIsInHeader = true
+				currentValue = ""
+			}
+
+			if(isSeparator) {
+				tableIsInHeader = false
+			} else {
+				const cells = trimmed.split("|").slice(1, -1).map(cell => cell.trim())
+				if(tableIsInHeader) {
+					const cellsHtml = cells.map(cell => `<th class="px-4 py-2.5 text-left font-semibold text-primary-content-heavy border-b border-light-background-heavier">${checkForBasicMarkdownSyntax(escapeHtml(cell))}</th>`).join("")
+					currentValue += `<thead><tr>${cellsHtml}</tr></thead><tbody>`
+				} else {
+					const cellsHtml = cells.map(cell => `<td class="px-4 py-2 text-primary-content border-b border-light-background-heavy">${formatTableCell(cell)}</td>`).join("")
+					currentValue += `<tr class="hover:bg-light-background transition-colors">${cellsHtml}</tr>`
+				}
+			}
+
+			lastLineType = "table"
+			lastLineWasEmpty = false
+			continue
+		} else if(currentAction === "table") {
+			currentAction_precedent()
+			const closingBodyTag = currentValue.includes("<tbody>") ? "</tbody>" : ""
+			contentObject.content += `<div class="overflow-x-auto mt-5 rounded-xl bentoCard smallShadow transition-shadow"><table class="w-full text-sm border-collapse">${currentValue}${closingBodyTag}</table></div>\n`
+			currentValue = ""
+			tableIsInHeader = true
+			lastLineType = "table"
+		}
+
 		// default behavior
 		else {
 			if(line.trim() != "") {
@@ -434,6 +481,13 @@ module.exports.convertMarkdown = async (
 		lastLineWasEmpty = line.trim() == ""
 	}
 
+	// Flush any unclosed table at end of file
+	if(currentAction === "table") {
+		const closingBodyTag = currentValue.includes("<tbody>") ? "</tbody>" : ""
+		contentObject.content += `<div class="overflow-x-auto mt-5 rounded-xl bentoCard smallShadow transition-shadow"><table class="w-full text-sm border-collapse">${currentValue}${closingBodyTag}</table></div>\n`
+		currentValue = ""
+	}
+
 	// Check links across the whole content
 	var linkMatches = []
 	linkMatches.push(...(contentObject.content.match(/\[.*?\]\(.*?\)/g) || []).map(match => { return { content: match, type: "classic" } })) // [text](url)
@@ -452,14 +506,15 @@ module.exports.convertMarkdown = async (
 				if(!url || !content) continue
 
 				const isExtern = url.startsWith("http://") || url.startsWith("https://") || url.startsWith("mailto:")
+				const isInternalAnchor = url.startsWith("#")
 				if(isExtern) url = addRefInUrl(url, "read.johanstick.fr")
 
-				if(content.startsWith("@") && isExtern) { // mention will use a specific component
+				if(content.startsWith("@") && isExtern && !isInternalAnchor) { // mention will use a specific component
 					var avatarUrl = url.startsWith("https://github.com/") ? `https://github.com/${content.replace("@", "").replace(/\s/g, "")}.png?size=200` : null
 					htmlLink = `<MentionInText username="${content.replace("@", "")}" href="${url}" avatarUrl="${avatarUrl}"></MentionInText>`
 				} else {
 					if(!isExtern) url = (await searchReferenceFile(url, path.dirname(options.filePath)))?.url || url // if it's not an extern link, try to find the file in the local assets
-					htmlLink = isExtern ? `<a href="${url.replace(/"/g, "\\\"")}" target="_blank" rel="noopener noreferrer" class="text-link hover:underline">${content}</a>` : `<a href="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${url.replace(/"/g, "\\\"")}" class="text-link hover:underline">${content}</a>`
+					htmlLink = isExtern ? `<a href="${url.replace(/"/g, "\\\"")}" target="_blank" rel="noopener noreferrer" class="text-link hover:underline">${content}</a>` : `<a href="${isInternalAnchor ? "" : options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${url.replace(/"/g, "\\\"")}" class="text-link hover:underline">${content}</a>`
 				}
 			}
 
