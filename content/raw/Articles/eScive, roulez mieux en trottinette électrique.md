@@ -53,6 +53,6 @@ Ces deux éléments vous permettent, par exemple, de configurer un tag NFC posé
 
 Le design avait d’abord été conçu rapidement sur Figma par mes soins (enfin, façon de parler…) afin de visualiser avec [@el2zay](https://github.com/el2zay) les idées que j’avais en tête. On a ensuite itéré avec des modifications liées aux composants de base de l’app, afin de la rendre plus intuitive pour tous les utilisateurs. Ces choix ont permis de proposer une interface claire, sans distractions, et qui vous permet d’effectuer n’importe quelle action en un instant.
 
-![[escive_design_evolution.png]]
+![[escive_design_evolution.webp]]
 
 Quant au développement de l’app, [Flutter](https://flutter.dev/) a été utilisé pour concevoir rapidement une app disponible sur différentes plateformes (Android et iOS, ainsi qu’une expérimentation pour navigateur). Les trottinettes sont connectées en utilisant une imitation de leur protocole Bluetooth originel, basée sur le code décompilé des apps officielles, et sur des analyses des paquets BLE envoyés et reçus, ce qui limite l’utilisation de l’app à un seul constructeur pour le moment.
