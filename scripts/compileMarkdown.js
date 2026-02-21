@@ -21,7 +21,8 @@ function escapeHtml(text){
 function checkForBasicMarkdownSyntax(text){ // check for bold, italic, strikethrough and underline
 	return text
 		.replace(/(\*\*|__)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(2, -2))}</strong>`) // bold
-		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<em class="italic">${escapeHtml(match.slice(1, -1))}</em>`) // italic
+		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(2, -2))}</strong>`) // italic text will be bold (font doesn't support italic)
+		// .replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<em class="italic">${escapeHtml(match.slice(1, -1))}</em>`) // (disabled) italic
 		.replace(/~~(?:(?!~~|<[^>]*>)(.|\n))*?~~/g, match => `<del>${escapeHtml(match.slice(2, -2))}</del>`) // strikethrough
 		.replace(/__(?:(?!__|<[^>]*>)(.|\n))*?__/g, match => `<u>${escapeHtml(match.slice(2, -2))}</u>`) // underline
 		.replace(/`(?:(?!`|<[^>]*>)(.|\n))*?`/g, match => `<code>${escapeHtml(match.slice(1, -1))}</code>`) // inline code
@@ -503,8 +504,10 @@ module.exports.convertMarkdown = async (
 				const url = (await searchReferenceFile(reference, path.dirname(options.filePath)))?.url || "/404"
 				htmlLink = `<a href="${url}" class="text-link hover:underline">${reference}</a>`
 			} else {
-				var url = linkMatch.content?.split("(")?.[1]?.split(")")?.[0]
-				const content = linkMatch.content?.split("[")?.[1]?.split("]")?.[0]
+				const urlSplitRegex = /\[(.*?)\]\((.*?)\)/
+				const hyperlinkPropertiesMatch = linkMatch.content?.match(urlSplitRegex)
+				var url = hyperlinkPropertiesMatch?.[2] || linkMatch.content?.split("(")?.[1]?.split(")")?.[0]
+				const content = hyperlinkPropertiesMatch?.[1] || linkMatch.content?.split("[")?.[1]?.split("]")?.[0]
 				if(!url || !content) continue
 
 				const isExtern = url.startsWith("http://") || url.startsWith("https://") || url.startsWith("mailto:")
