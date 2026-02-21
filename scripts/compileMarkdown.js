@@ -38,9 +38,11 @@ function normalizeText(text){
 }
 
 function addRefInUrl(url, ref){
-	if(!url) return url
-	if(url.includes("?")) return `${url}&ref=${ref}`
-	else return `${url}?ref=${ref}`
+	return url
+	// if(!url) return url
+	// const [baseUrl, hash] = url.split("#")
+	// const separator = baseUrl.includes("?") ? "&" : "?"
+	// return `${baseUrl}${separator}ref=${ref}${hash ? `#${hash}` : ""}`
 }
 
 function formatTableCell(cell) {
