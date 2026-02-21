@@ -18,10 +18,19 @@ function escapeHtml(text){
 	return text?.replace(/&(?!(?:amp|lt|gt|quot|apos);)/g, "&amp")?.replace(/</g, "&lt;")?.replace(/>/g, "&gt;")?.replace(/"/g, "&quot;")?.replace(/'/g, "&apos;")
 }
 
+function extractLinkAndText(markdownLink) {
+	if(!markdownLink) return { url: null, content: null }
+	const urlSplitRegex = /\[(.*?)\]\((.*?)\)/
+	const hyperlinkPropertiesMatch = markdownLink?.match(urlSplitRegex)
+	var url = hyperlinkPropertiesMatch?.[2] || markdownLink?.split("(")?.[1]?.split(")")?.[0] || null
+	const content = hyperlinkPropertiesMatch?.[1] || markdownLink?.split("[")?.[1]?.split("]")?.[0] || null
+	return { url, content }
+}
+
 function checkForBasicMarkdownSyntax(text){ // check for bold, italic, strikethrough and underline
 	return text
 		.replace(/(\*\*|__)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(2, -2))}</strong>`) // bold
-		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(2, -2))}</strong>`) // italic text will be bold (font doesn't support italic)
+		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(1, -1))}</strong>`) // italic text will be bold (font doesn't support italic)
 		// .replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<em class="italic">${escapeHtml(match.slice(1, -1))}</em>`) // (disabled) italic
 		.replace(/~~(?:(?!~~|<[^>]*>)(.|\n))*?~~/g, match => `<del>${escapeHtml(match.slice(2, -2))}</del>`) // strikethrough
 		.replace(/__(?:(?!__|<[^>]*>)(.|\n))*?__/g, match => `<u>${escapeHtml(match.slice(2, -2))}</u>`) // underline
@@ -135,12 +144,24 @@ module.exports.convertMarkdown = async (
 	const lines = content.split("\n")
 	let lastLineType = ""
 	let lastLineWasEmpty = false
+
 	let currentValue = ""
 	let currentAction = ""
 	let currentActionHistory = []
+
 	let wentPastFirstParagraph = false
 	let wentPastFirstTitle = false
 	let tableIsInHeader = true
+
+	const htmlTokens = {}
+	let tokenIndex = 0
+
+	function addHtmlToken(html){
+		const token = `?!(HTMLTOKEN:N${tokenIndex.toString()})!?`
+		tokenIndex++
+		htmlTokens[token] = html
+		return token
+	}
 
 	function currentAction_set(action){
 		if(currentAction == action) return false
@@ -213,12 +234,19 @@ module.exports.convertMarkdown = async (
 		// ========= Actions that can potentially edit the content
 
 		// images attached with the format: ![Image](/image.png)
-		var imagesWithAltMatches = line.match(/!\[.*?\]\(.*?\)/g)
+		const imagesWithAltMatches = line.match(/!\[.*?\]\(.*?\)/g)
 		if(imagesWithAltMatches?.length){
 			imagesWithAltMatches.forEach(imageMatch => {
+				const extract = extractLinkAndText(linkMatch.content)
+				var { url, content } = extract
+				if(!url || !content) return
+
+				// Remove "|number" at the end of the URL (syntax used by Obsidian to specify image width)
+				url = url?.replace(/\|(\d+)$/, "")
+
 				const image = {
-					"alt": checkForBasicMarkdownSyntax(escapeHtml(imageMatch.split("[")[1].split("]")[0])),
-					"src": imageMatch.split("(")[1].split(")")[0],
+					"alt": checkForBasicMarkdownSyntax(escapeHtml(extract.content)),
+					"src": extract.url
 				}
 
 				var imagePath = path.join(options.assetsPath, image.src)
@@ -230,16 +258,56 @@ module.exports.convertMarkdown = async (
 					if(options.renameAssets) image.src = `${randomString(12)}${path.parse(imagePath).ext}`
 
 					contentObject.images.push(image)
+					lastLineType = "image"
+
+					const html = image.src.endsWith(".mp4")
+						? `<video class="w-full h-auto rounded-lg shadow my-5" controls src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" aria-label="${image.alt.replace(/"/g, "\\\"")}" />`
+						: `<img class="w-full h-auto rounded-lg bentoCard smallShadow transition-shadow my-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
 					line = line.replace(
 						imageMatch,
-						image.src.endsWith(".mp4")
-							? `<video class="w-full h-auto rounded-lg shadow mt-5" controls src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" aria-label="${image.alt.replace(/"/g, "\\\"")}" />`
-							: `<img class="w-full h-auto rounded-lg bentoCard smallShadow transition-shadow mt-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
+						addHtmlToken(html)
 					)
-					lastLineType = "image"
 				} catch (error) {
 					contentObject.warns.push(`Attaching an image - Cannot read the file located at "${imagePath}".`)
 				}
+			})
+		}
+
+		// link attached with following format: ![[file name]]
+		// Obsidian supports referencing any files (including other notes), but we will focus on images
+		const imagesWithoutAltMatches = line.match(/!\[\[.*?\]\]/g)
+		if(imagesWithoutAltMatches?.length){
+			imagesWithoutAltMatches.forEach(match => {
+				var link = match.split("[[")[1].split("]]")[0]
+				link = link?.replace(/\|(\d+)$/, "") // remove "|number" at the end of the URL (syntax used by Obsidian to specify image width)
+
+				if(!link.endsWith(".png") && !link.endsWith(".jpg") && !link.endsWith(".jpeg") && !link.endsWith(".gif") && !link.endsWith(".webp")){
+					contentObject.warns.push(`Attaching an image - The extension of the file located at "${imagePath}" is not supported. Supported extensions are: .png, .jpg, .jpeg, .gif and .webp.`)
+					return
+				}
+
+				var imageContent
+				var imagePath = path.join(options.assetsPath, link)
+				var image = { "alt": "", "src": link, "path": imagePath }
+
+				// Try to read the file
+				try {
+					imageContent = fs.readFileSync(imagePath)
+					image.content = imageContent
+					if(options.renameAssets) image.src = `${randomString(12)}${path.parse(imagePath).ext}`
+				} catch (error) {
+					contentObject.warns.push(`Attaching an image - Cannot read the file located at "${imagePath}".`)
+					return
+				}
+
+				contentObject.images.push(image)
+				lastLineType = "image"
+				lastLineWasEmpty = false
+
+				line = line.replace(
+					match,
+					addHtmlToken(`<img class="w-full h-auto rounded-lg bentoCard smallShadow transition-shadow my-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`)
+				)
 			})
 		}
 
@@ -268,37 +336,6 @@ module.exports.convertMarkdown = async (
 			} else currentValue += `${checkForBasicMarkdownSyntax(escapeHtml(line.startsWith(">") ? line.slice(1).trim() : line.trim()))}<br>`
 			lastLineType = "callout"
 			lastLineWasEmpty = false
-			continue
-		}
-
-		// link attached with following format: ![[file name]]
-		// Obsidian supports referencing any files (including other notes), but we will focus on images
-		else if(line.startsWith("![[") && line.endsWith("]]")){
-			const link = line.split("[[")[1].split("]]")[0]
-			if(!link.endsWith(".png") && !link.endsWith(".jpg") && !link.endsWith(".jpeg") && !link.endsWith(".gif") && !link.endsWith(".webp")){
-				contentObject.warns.push(`Attaching an image - The extension of the file located at "${imagePath}" is not supported. Supported extensions are: .png, .jpg, .jpeg, .gif and .webp.`)
-				continue
-			}
-
-			var imageContent
-			var imagePath = path.join(options.assetsPath, link)
-			var image = { "alt": "", "src": link, "path": imagePath }
-
-			// Try to read the file
-			try {
-				imageContent = fs.readFileSync(imagePath)
-				image.content = imageContent
-				if(options.renameAssets) image.src = `${randomString(12)}${path.parse(imagePath).ext}`
-			} catch (error) {
-				contentObject.warns.push(`Attaching an image - Cannot read the file located at "${imagePath}".`)
-				continue
-			}
-
-			contentObject.content += `<img class="w-full h-auto rounded-lg bentoCard smallShadow transition-shadow mt-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
-			contentObject.images.push(image)
-			lastLineType = "image"
-			lastLineWasEmpty = false
-
 			continue
 		}
 
@@ -484,6 +521,11 @@ module.exports.convertMarkdown = async (
 		lastLineWasEmpty = line.trim() == ""
 	}
 
+	// Add all HTML tokens back to the content
+	for(const token in htmlTokens){
+		contentObject.content = contentObject.content.replaceAll(token, htmlTokens[token])
+	}
+
 	// Flush any unclosed table at end of file
 	if(currentAction === "table") {
 		const closingBodyTag = currentValue.includes("<tbody>") ? "</tbody>" : ""
@@ -504,10 +546,8 @@ module.exports.convertMarkdown = async (
 				const url = (await searchReferenceFile(reference, path.dirname(options.filePath)))?.url || "/404"
 				htmlLink = `<a href="${url}" class="text-link hover:underline">${reference}</a>`
 			} else {
-				const urlSplitRegex = /\[(.*?)\]\((.*?)\)/
-				const hyperlinkPropertiesMatch = linkMatch.content?.match(urlSplitRegex)
-				var url = hyperlinkPropertiesMatch?.[2] || linkMatch.content?.split("(")?.[1]?.split(")")?.[0]
-				const content = hyperlinkPropertiesMatch?.[1] || linkMatch.content?.split("[")?.[1]?.split("]")?.[0]
+				const extract = extractLinkAndText(linkMatch.content)
+				var { url, content } = extract
 				if(!url || !content) continue
 
 				const isExtern = url.startsWith("http://") || url.startsWith("https://") || url.startsWith("mailto:")
