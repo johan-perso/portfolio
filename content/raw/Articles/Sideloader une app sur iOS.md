@@ -69,12 +69,14 @@ Le sideloading ouvre la porte à des applications qu’Apple a refusées, ou mê
 SideStore est un « fork » d’AltStore qui présente un avantage majeur : une fois installé, vous n’avez plus besoin d’ordinateur pour installer ou rafraîchir vos apps. Il utilise un VPN local pour tromper l’iPhone et lui faire croire qu’il communique avec un serveur de développement. *Tiré de [ce tutoriel](https://gist.github.com/sinceohsix/688637ac04695d1ff38f844acc8ba7f3)*.
 
 1. Sur votre PC, téléchargez et ouvrez le logiciel [iloader](https://github.com/nab138/iloader/releases/latest). Celui-ci permettra d’installer SideStore dans un premier temps.
-2. Dans iloader, entrez vos identifiants Apple ID dans le champ dédié, et cliquez sur « Login ». ![[iossideloading_iloader.png]]
+2. Dans iloader, entrez vos identifiants Apple ID dans le champ dédié, et cliquez sur « Login ».
+![[iossideloading_iloader.png]]
 3. Branchez votre iPhone à votre ordinateur et cliquez sur son nom dans la liste d’appareils pour le sélectionner comme cible. S’il n’apparait pas, vous pouvez utiliser le bouton « Refresh » pour actualiser la liste d’appareils.
 4. Sous « Installers », choisissez « SideStore (Stable) » et procédez à l’installation.
 5. En parallèle, vous pouvez télécharger [LocalDevVPN depuis l’App Store](https://apps.apple.com/fr/app/localdevvpn/id6755608044) sur votre iPhone. Vous devrez ouvrir cette app et l’activer à chaque fois que vous installez ou rafraîchissez une app.
 6. Pour autoriser SideStore à s’ouvrir, vous devrez ouvrir l’app Réglages et vous rendre dans *Général → VPN et gestion de l’appareil → votre adresse mail → Vérifier l’app*.
-7. Ouvrez LocalDevVPN et cliquez sur « Connect », puis autorisez l’ajout d’une nouvelle configuration VPN. ![[iossideloading_localdevvpn.png]]
+7. Ouvrez LocalDevVPN et cliquez sur « Connect », puis autorisez l’ajout d’une nouvelle configuration VPN.
+![[iossideloading_localdevvpn.png]]
 8. Ouvrez maintenant SideStore et naviguez dans « My Apps ». Vous devriez voir que SideStore expire dans « 7 DAYS ». Lancez votre premier refresh en cliquant sur ce bouton et connectez vous avec le même compte Apple que dans iloader.
 
 SideStore est prêt à être utilisé ! Vous pouvez à présent installer les apps que vous voulez, dans la limite des deux emplacements restants. Pour installer autant d’apps que vous souhaitez, dans des conteneurs, vous pouvez le remplacer par [Live Container](#install-live-container).
@@ -97,8 +99,10 @@ SideStore est prêt à être utilisé ! Vous pouvez à présent installer les ap
 ## Installer avec Impactor ^install-impactor
 
 1. Téléchargez [Impactor](https://github.com/khcrysalis/Impactor/releases) sur votre ordinateur depuis leur dépôt GitHub.
-2. Une fois l’app ouverte, glissez-y un fichier d’installation en `.ipa` et sélectionnez votre iPhone dans la liste en haut à droite. ![[iossideloading_impactor_home.png]]
-3. Cliquez sur « Install » et renseignez les informations de votre compte Apple pour pouvoir continuer avec l’installation de votre app. Cette étape est nécessaire pour permettre au logiciel de demander aux serveurs d’Apple de générer une signature pour l’appli que vous êtes en train d’installer. ![[iossideloading_impactor_login.png]]
+2. Une fois l’app ouverte, glissez-y un fichier d’installation en `.ipa` et sélectionnez votre iPhone dans la liste en haut à droite.
+![[iossideloading_impactor_home.png]]
+3. Cliquez sur « Install » et renseignez les informations de votre compte Apple pour pouvoir continuer avec l’installation de votre app. Cette étape est nécessaire pour permettre au logiciel de demander aux serveurs d’Apple de générer une signature pour l’appli que vous êtes en train d’installer.
+![[iossideloading_impactor_login.png]]
 4. Quelques minutes plus tard, vous pourrez retrouver l’application sur l’écran d’accueil de votre iPhone. Dans le cas contraire, une erreur s’affichera sur le logiciel, libre à vous d’effectuer des recherches (ou de changer de méthode).
 5. Avant d’ouvrir l’app, vous devrez ouvrir les Réglages et vous rendre dans *Général → VPN et gestion de l’appareil → votre adresse mail* puis appuyer sur *Vérifier l’app*.
 
@@ -107,7 +111,8 @@ SideStore est prêt à être utilisé ! Vous pouvez à présent installer les ap
 ## Installer avec Sideloadly ^install-sideloadly
 
 1. Téléchargez et ouvrez Sideloadly sur votre PC : [Windows 64-bits](https://sideloadly.io/SideloadlySetup64.exe) ; [Windows 32-bits](https://sideloadly.io/SideloadlySetup32.exe) ; [macOS](https://sideloadly.io/SideloadlySetup.dmg).
-2. Branchez votre iPhone à votre PC et sélectionnez-le dans la liste en dessous du texte « iDevice ». Cliquez sur le bouton « IPA » et sélectionnez un fichier d’installation. Saisissez l’adresse e-mail d’un compte Apple dans « Apple ID » (même s’il n’a jamais été connecté à votre appareil), puis cliquez sur « Start ». ![[iossideloading_sideloadly.png]]
+2. Branchez votre iPhone à votre PC et sélectionnez-le dans la liste en dessous du texte « iDevice ». Cliquez sur le bouton « IPA » et sélectionnez un fichier d’installation. Saisissez l’adresse e-mail d’un compte Apple dans « Apple ID » (même s’il n’a jamais été connecté à votre appareil), puis cliquez sur « Start ».
+![[iossideloading_sideloadly.png]]
 3. Une fenêtre s’affichera pour vous demander le mot de passe de votre compte Apple. Cette étape est nécessaire pour permettre au logiciel de demander aux serveurs d’Apple de générer une signature pour l’appli que vous comptez installer. Vous pouvez utiliser un compte secondaire/poubelle si vous le souhaitez.
 4. Quelques minutes plus tard, l’application sera installée sur votre iPhone. Dans le cas contraire, une erreur s’affichera sur le logiciel Sideloadly, libre à vous d’effectuer des recherches (ou de changer de méthode).
 5. Avant d’ouvrir l’app, vous devrez ouvrir les Réglages et vous rendre dans *Général → VPN et gestion de l’appareil → votre adresse mail* puis appuyer sur *Vérifier l’app*.
@@ -119,7 +124,8 @@ SideStore est prêt à être utilisé ! Vous pouvez à présent installer les ap
 1. Téléchargez AltServer (World) pour [Windows](https://cdn.altstore.io/file/altstore/altinstaller.zip) (10 et supérieur) ou [macOS](https://cdn.altstore.io/file/altstore/altserver.zip) (Big Sur et supérieur).
 2. Une fois installé, exécutez-le sur votre ordinateur, puis branchez votre iPhone. Vous devrez accepter la demande de connexion en saisissant le code de votre téléphone si demandé.
 3. Localisez et cliquez sur l'icône dans la barre des tâches/de menu sur votre ordinateur.
-4. Passez votre curseur sur « Install AltStore » et sélectionnez votre iPhone dans la liste. ![[iossideloading_altstore_install.webp]]
+4. Passez votre curseur sur « Install AltStore » et sélectionnez votre iPhone dans la liste.
+![[iossideloading_altstore_install.webp]]
 5. *AltServer* vous demandera de saisir l’adresse mail et le mot de passe de votre identifiant Apple. Cette étape est nécessaire pour permettre au logiciel de demander aux serveurs d’Apple de générer une signature pour l’installation d’*AltStore* sur votre iPhone. Vous pouvez utiliser un compte secondaire/poubelle si vous le souhaitez.
 6. Patientez 30 secondes jusqu’à ce qu’AltStore s’affiche sur votre écran d’accueil. Laissez votre iPhone branché à votre ordinateur. Une fois que l’icône est visible, ouvrez l’app Réglages et rendez vous dans *Général → VPN et gestion de l’appareil → votre adresse mail → Vérifier l’app*.
 7. Vous allez désormais pouvoir ouvrir AltStore sur votre téléphone. À la première installation, l’app pourra vous redemander de vous connecter à votre compte Apple, le même que celui renseigné dans AltServer sur votre PC.
