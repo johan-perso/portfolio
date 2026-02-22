@@ -238,7 +238,7 @@ module.exports.convertMarkdown = async (
 
 					const html = image.src.endsWith(".mp4")
 						? `<video class="w-full h-auto rounded-lg shadow my-5" controls src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" aria-label="${image.alt.replace(/"/g, "\\\"")}" />`
-						: `<img class="w-full h-auto rounded-lg bentoCard smallShadow transition-shadow my-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
+						: `<img class="w-full h-auto rounded-lg bentoCard smallShadow duration-300 transition-shadow my-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
 					line = line.replace(
 						imageMatch,
 						addHtmlToken(html)
@@ -281,7 +281,7 @@ module.exports.convertMarkdown = async (
 
 				line = line.replace(
 					match,
-					addHtmlToken(`<img class="w-full h-auto rounded-lg bentoCard smallShadow transition-shadow my-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`)
+					addHtmlToken(`<img class="w-full h-auto rounded-lg bentoCard smallShadow duration-300 transition-shadow my-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`)
 				)
 			})
 		}
@@ -470,7 +470,7 @@ module.exports.convertMarkdown = async (
 		} else if(currentAction === "table") {
 			currentAction_precedent()
 			const closingBodyTag = currentValue.includes("<tbody>") ? "</tbody>" : ""
-			contentObject.content += `<div class="overflow-x-auto mt-5 rounded-xl bentoCard smallShadow transition-shadow"><table class="w-full text-sm border-collapse">${currentValue}${closingBodyTag}</table></div>\n`
+			contentObject.content += `<div class="overflow-x-auto mt-5 rounded-xl bentoCard smallShadow duration-300 transition-shadow"><table class="w-full text-sm border-collapse">${currentValue}${closingBodyTag}</table></div>\n`
 			currentValue = ""
 			tableIsInHeader = true
 			lastLineType = "table"
@@ -504,7 +504,7 @@ module.exports.convertMarkdown = async (
 	// Flush any unclosed table at end of file
 	if(currentAction === "table") {
 		const closingBodyTag = currentValue.includes("<tbody>") ? "</tbody>" : ""
-		contentObject.content += `<div class="overflow-x-auto mt-5 rounded-xl bentoCard smallShadow transition-shadow"><table class="w-full text-sm border-collapse">${currentValue}${closingBodyTag}</table></div>\n`
+		contentObject.content += `<div class="overflow-x-auto mt-5 rounded-xl bentoCard smallShadow duration-300 transition-shadow"><table class="w-full text-sm border-collapse">${currentValue}${closingBodyTag}</table></div>\n`
 		currentValue = ""
 	}
 
