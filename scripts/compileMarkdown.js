@@ -70,27 +70,6 @@ function formatTableCell(cell) {
 	return parts.map(p => checkForBasicMarkdownSyntax(escapeHtml(p))).join("<br>")
 }
 
-var lastRandomStrings = {}
-function randomString(length, ignoreDuplicateCheck = false, retryI = 0) {
-	var result = ""
-	var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-	var charactersLength = characters.length
-	for (var i = 0; i < length; i++) {
-		result += characters.charAt(Math.floor(Math.random() * charactersLength))
-	}
-
-	if(!ignoreDuplicateCheck) { // check to avoid generating multiple times the same string in a row
-		if(!lastRandomStrings[length]) lastRandomStrings[length] = []
-		if(lastRandomStrings[length]?.includes(result)) {
-			if(retryI > 50) throw new Error(`randomString - Too many retries to generate a unique string for ${length} characters.`)
-			return randomString(length)
-		}
-		lastRandomStrings[length].push(result)
-	}
-
-	return result
-}
-
 async function searchReferenceFile(referenceName, searchPath){
 	function getReturnValue(filePath){
 		var slug = fs.readFileSync(filePath, "utf-8").split("\n").find(line => line.trim().startsWith("slug:"))?.split("slug:")[1]?.trim()
@@ -123,7 +102,6 @@ async function searchReferenceFile(referenceName, searchPath){
  * @param {String} options.assetsPath Path to the folder that contains the assets attached in the Markdown document (images, videos, etc.)
  * @param {String} options.publicAssetsPath Public (on the web server) path that browsers will use to access assets (used to generate the correct src in the HTML content)
  * @param {String} options.filePath Path to the Markdown file being converted (used to resolve local references and links)
- * @param {boolean} options.renameAssets Whether to rename assets with random strings (avoid leaking information when serving them)
  * @returns {Object}
 */
 module.exports.convertMarkdown = async (
@@ -131,7 +109,6 @@ module.exports.convertMarkdown = async (
 	options = {
 		assetsPath: null,
 		filePath: null,
-		renameAssets: true
 	}
 ) => {
 	const contentObject = {
@@ -255,7 +232,6 @@ module.exports.convertMarkdown = async (
 					imageContent = fs.readFileSync(imagePath)
 					image.content = imageContent
 					image.path = imagePath
-					if(options.renameAssets) image.src = `${randomString(12)}${path.parse(imagePath).ext}`
 
 					contentObject.images.push(image)
 					lastLineType = "image"
@@ -294,7 +270,6 @@ module.exports.convertMarkdown = async (
 				try {
 					imageContent = fs.readFileSync(imagePath)
 					image.content = imageContent
-					if(options.renameAssets) image.src = `${randomString(12)}${path.parse(imagePath).ext}`
 				} catch (error) {
 					contentObject.warns.push(`Attaching an image - Cannot read the file located at "${imagePath}".`)
 					return
