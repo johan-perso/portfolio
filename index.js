@@ -123,7 +123,7 @@ async function startRocServer(){
 			console.log(`Got a request to ${req.path} - Serving blog document with slug: ${foundBlogDocument.slug || foundBlogDocument.url}`)
 			console.log(foundBlogDocument)
 
-			const originalBlogHtml = fs.readFileSync(path.join("public", "blog.html"), "utf-8")
+			const originalBlogHtml = fs.readFileSync(path.join("public", "blog_post_template.html"), "utf-8")
 			const blogContent = fs.readFileSync(path.join(contentDir.compiled, `${foundBlogDocument.slug}.html`), "utf-8")
 			var readTime = caches.get(`readTime-${foundBlogDocument.slug}`)
 			if(!readTime) {
