@@ -97,6 +97,7 @@ async function main(){
 				type: "document",
 				slug: file.filename,
 				title: (path.extname(originalFilenameTitle).length ? originalFilenameTitle.slice(0, -path.extname(originalFilenameTitle).length) : originalFilenameTitle).replace(", ", " : "),
+				firstParagraph: result.firstParagraph,
 				frontmatter: {
 					...file.frontMatter,
 				},

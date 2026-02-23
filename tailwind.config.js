@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ["./public/**/*.{html,js,json}", "./scripts/**/*.{html,js,json}", "./utils/**/*.{html,js,json}"],
+	content: ["./index.js", "./public/**/*.{html,js,json}", "./scripts/**/*.{html,js,json}", "./utils/**/*.{html,js,json}"],
 	plugins: [],
 	daisyui: {
 		logs: false

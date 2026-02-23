@@ -15,7 +15,7 @@ function escapeHtml(text){
 	if(!text) return text
 	if(typeof text != "string") return text
 	text = normalizeText(text)
-	return text?.replace(/&(?!(?:amp|lt|gt|quot|apos);)/g, "&amp")?.replace(/</g, "&lt;")?.replace(/>/g, "&gt;")?.replace(/"/g, "&quot;")?.replace(/'/g, "&apos;")
+	return text?.replace(/&(?!(?:amp|lt|gt|quot|apos);)/g, "&amp")?.replace(/</g, "&lt;")?.replace(/>/g, "&gt;")?.replace(/"/g, "&quot;")?.replace(/'/g, "&apos;").replace(/’/g, "&apos;")
 }
 
 function extractLinkAndText(markdownLink) {
@@ -126,6 +126,7 @@ module.exports.convertMarkdown = async (
 	let currentAction = ""
 	let currentActionHistory = []
 
+	let firstParagraphContent = ""
 	let wentPastFirstParagraph = false
 	let wentPastFirstTitle = false
 	let tableIsInHeader = true
@@ -421,7 +422,7 @@ module.exports.convertMarkdown = async (
 				if(content.length > 400) content = `${content.slice(0, 400)}...`
 				if(![".", "!", "?"].includes(content[content.length - 1])) content += "." // add trailing dot if not present
 
-				contentObject.content += `<div class="mt-5"><BlogPostCard date="${releaseDate}" title="${escapeHtml(title)}" content="${checkForBasicMarkdownSyntax(escapeHtml(content))}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
+				contentObject.content += `<div class="mt-5"><BlogPostCard openInNewTab=true date="${releaseDate}" title="${escapeHtml(title)}" content="${checkForBasicMarkdownSyntax(escapeHtml(content))}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
 			} else {
 				contentObject.warns.push(`Blog Post Card - Cannot find the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)
 			}
@@ -489,6 +490,7 @@ module.exports.convertMarkdown = async (
 
 				contentObject.content += `<p class="${marginTop}">${checkForBasicMarkdownSyntax(escapeHtml(line))}</p>\n`
 				lastLineType = "paragraph"
+				if(!wentPastFirstParagraph) firstParagraphContent += `${checkForBasicMarkdownSyntax(escapeHtml(stripMarkdown(line, true)))} `
 				wentPastFirstParagraph = true
 			}
 		}
@@ -547,5 +549,6 @@ module.exports.convertMarkdown = async (
 	while(contentObject.content.startsWith("\n")) contentObject.content = contentObject.content.slice(1) // delete new lines at the beginning
 	while(contentObject.content.endsWith("\n")) contentObject.content = contentObject.content.slice(0, -1) // delete new lines at the end
 
+	contentObject.firstParagraph = firstParagraphContent.trim()
 	return contentObject
 }

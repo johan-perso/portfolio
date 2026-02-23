@@ -6,7 +6,7 @@
 
 	<div class="mt-1 leading-snug">
 		<p class="mt-0.5 font-normal text-primary-content-light overflow-hidden break-words text-ellipsis line-clamp-5">{{ $content }}</p>
-		<a href="{{ $href }}" target="_blank" class="mt-3 inline-block text-link hover:underline font-medium">
+		<a href="{{ $href }}" target="{{ this.componentAttribs.openinnewtab ? '_blank' : '' }}" class="mt-3 inline-block text-link hover:underline font-medium">
 			<span>Lire l'article complet →</span>
 		</a>
 	</div>

@@ -48,6 +48,33 @@ async function executeCommandInConsole(command, options = {}){
 	return true
 }
 
+function getBlogDocument(slug, frontmatter){
+	const originalBlogHtml = fs.readFileSync(path.join("public", "blog_post_template.html"), "utf-8")
+	const blogContent = fs.readFileSync(path.join(contentDir.compiled, `${slug}.html`), "utf-8")
+
+	var readTime = caches.get(`readTime-${slug}`)
+	if(!readTime) {
+		readTime = getReadingTime(blogContent).minutes
+		caches.set(`readTime-${slug}`, readTime)
+		console.log(`Calculated reading time for blog "${slug}": ${readTime} minutes (now cached)`)
+	}
+
+	const bannerPhysicalPath = frontmatter?.banner ? path.join(contentDir.attachments, frontmatter.banner) : null
+	var bannerWebPath
+	if(frontmatter?.banner && !fs.existsSync(bannerPhysicalPath)) {
+		console.warn(`Banner image specified in frontmatter of blog post "${slug}" not found at path: ${bannerPhysicalPath} - The banner will not be displayed.`)
+	} else if(frontmatter?.banner) {
+		bannerWebPath = frontmatter?.banner ? path.join(publicAssetsPath, frontmatter.banner).replace(/\\/g, "/") : null
+	}
+
+	return {
+		originalBlogHtml,
+		blogContent,
+		readTime,
+		bannerWebPath
+	}
+}
+
 // Main function, prepare and start the server
 async function main(){
 	var perfNow = performance.now()
@@ -92,6 +119,35 @@ async function startRocServer(){
 	})
 	const cacheControlHeader = server.isDev ? "no-cache" : "max-age=7200" // 7200sec = 2h
 
+	// Parse blog documents from content index
+	const blogDocuments = Object.values(contentFiles._index).filter(content => content.type == "document").sort((a, b) => new Date(b.frontmatter?.post_releasedate || 0) - new Date(a.frontmatter?.post_releasedate || 0))
+	globalThis.recentsBlogArticlesCards = blogDocuments.slice(0, 3).map(content => {
+		return `<BlogPostCard
+			date="${content.frontmatter?.post_releasedate || ""}"
+			title="${(content.title || "").replace(/"/g, "&quot;")}"
+			content="${(content.firstParagraph || "").replace(/"/g, "&quot;")}"
+			href="${content.slug || content.url || "#"}"
+		></BlogPostCard>`
+	}).join("\n")
+	globalThis.blogDocumentsCards = blogDocuments.map(content => {
+		const { readTime, bannerWebPath } = getBlogDocument(content?.slug, content?.frontmatter)
+		const banner = bannerWebPath ? `<img src="${bannerWebPath.replace(/"/g, "\\\"")}" alt="" class="w-full h-auto aspect-video object-cover rounded-lg mt-4 bentoCard smallShadow duration-300 transition-shadow" />` : ""
+		const href = (content.slug ? `/${content.slug}` : undefined) || content.url || "#"
+
+		return `<div class="bentoCard smallShadow rounded-[18px] text-primary-content font-normal text-sm w-full h-full p-5 transition-all duration-300 overflow-hidden">
+			<div class="inline items-start justify-between min-w-0">
+				<a href="${href}" class="hover:text-link w-fit duration-300 transition-colors font-medium text-base 2xl:text-[17px] overflow-hidden text-ellipsis line-clamp-2 text-primary-content-heavy">
+					${(content.title || "").replace(/"/g, "&quot;")}
+				</a>
+				<p class="mt-1 2xl:mt-[3px] text-sm line-clamp-2 text-primary-content-light">Publié le ${getAbsoluteDate("fr-FR", new Date(content?.frontmatter?.post_releasedate))} • ${readTime || "0"} min de lecture</p>
+
+				${banner ? `<a href="${href}">
+					${banner}
+				</a>` : `<p class="mt-3 font-normal text-primary-content-light overflow-hidden break-words text-ellipsis line-clamp-5 leading-snug">${(content.firstParagraph || "").replace(/"/g, "&quot;")}</p>`}
+			</div>
+		</div>`
+	}).join("\n")
+
 	// Register routes from content files
 	server.registerRoutes(contentFiles.redirections.keyValue.map(redirection => {
 		return {
@@ -102,8 +158,7 @@ async function startRocServer(){
 			}
 		}
 	}))
-	server.registerRoutes(Object.values(contentFiles._index)
-		.filter(content => content.type == "document")
+	server.registerRoutes(blogDocuments
 		.map(content => {
 			return {
 				method: "get",
@@ -123,22 +178,7 @@ async function startRocServer(){
 			console.log(`Got a request to ${req.path} - Serving blog document with slug: ${foundBlogDocument.slug || foundBlogDocument.url}`)
 			console.log(foundBlogDocument)
 
-			const originalBlogHtml = fs.readFileSync(path.join("public", "blog_post_template.html"), "utf-8")
-			const blogContent = fs.readFileSync(path.join(contentDir.compiled, `${foundBlogDocument.slug}.html`), "utf-8")
-			var readTime = caches.get(`readTime-${foundBlogDocument.slug}`)
-			if(!readTime) {
-				readTime = getReadingTime(blogContent).minutes
-				caches.set(`readTime-${foundBlogDocument.slug}`, readTime)
-				console.log(`Calculated reading time for blog "${foundBlogDocument.slug}": ${readTime} minutes (now cached)`)
-			}
-
-			const bannerPhysicalPath = foundBlogDocument?.frontmatter?.banner ? path.join(contentDir.attachments, foundBlogDocument.frontmatter.banner) : null
-			var bannerWebPath
-			if(foundBlogDocument?.frontmatter?.banner && !fs.existsSync(bannerPhysicalPath)) {
-				console.warn(`Banner image specified in frontmatter of blog post "${foundBlogDocument.slug}" not found at path: ${bannerPhysicalPath} - The banner will not be displayed.`)
-			} else if(foundBlogDocument?.frontmatter?.banner) {
-				bannerWebPath = foundBlogDocument?.frontmatter?.banner ? path.join(publicAssetsPath, foundBlogDocument.frontmatter.banner).replace(/\\/g, "/") : null
-			}
+			const { originalBlogHtml, blogContent, readTime, bannerWebPath } = getBlogDocument(foundBlogDocument?.slug, foundBlogDocument?.frontmatter)
 
 			const editedBlogHtml = originalBlogHtml
 				.replaceAll("%%BLOG_TITLE%%", foundBlogDocument?.title)
