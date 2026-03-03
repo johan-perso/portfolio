@@ -32,6 +32,8 @@ function parseMarkdownLinks(content){
 }
 
 async function main(){
+	var gotWarnings = false
+
 	const rawFilesList = readFilesRecursively(contentDir.raw)
 	console.log(`Found ${rawFilesList.length} raw content files. Reading content...`)
 
@@ -91,8 +93,14 @@ async function main(){
 				assetsPath: contentDir.attachments,
 				publicAssetsPath: publicAssetsPath,
 			})
+			if(result?.warns?.length) {
+				console.warn(`Warnings while compiling ${file.filename}:\n- ${result.warns.join("\n- ")}`)
+				gotWarnings = true
+			}
+
 			if(fs.existsSync(compiledPathHtml)) throw new Error(`File ${compiledPathHtml} already exists. Please remove it before compiling.`)
 			await fs.promises.writeFile(compiledPathHtml, result.content, "utf-8")
+
 			compiledFiles[path.relative(contentDir.compiled, compiledPathHtml)] = {
 				type: "document",
 				slug: file.filename,
@@ -154,7 +162,11 @@ async function main(){
 	}))
 
 	await fs.promises.writeFile(path.join(contentDir.compiled, "_index.json"), JSON.stringify(compiledFiles, null, 2), "utf-8")
-
 	console.log(`Compiled content saved to ${contentDir.compiled}`)
+
+	if(gotWarnings) {
+		console.error("Compilation completed with warnings. Please check the logs above and fix the issues before deploying the content.\nFiles can be found in the compiled directory, but process will be exited with code 1 to prevent deployment with warnings.")
+		process.exit(1)
+	}
 }
 main()
