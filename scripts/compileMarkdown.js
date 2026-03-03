@@ -79,11 +79,11 @@ async function searchReferenceFile(referenceName, searchPath){
 		}
 	}
 
-	referenceName = referenceName.toLowerCase()
+	referenceName = referenceName.toLowerCase().normalize("NFC")
 	const files = fs.readdirSync(searchPath)
 	for(const file of files){
 		const filePath = path.join(searchPath, file)
-		const lowerCaseFileName = file.toLowerCase()
+		const lowerCaseFileName = file.toLowerCase().normalize("NFC")
 
 		if(fs.lstatSync(filePath).isDirectory()){
 			const result = await searchReferenceFile(referenceName, filePath)
@@ -228,10 +228,10 @@ module.exports.convertMarkdown = async (
 				}
 
 				var imagePath = path.join(options.assetsPath, image.src)
-				var imageContent
+				// var imageContent
 				try {
-					imageContent = fs.readFileSync(imagePath)
-					image.content = imageContent
+					// imageContent = fs.readFileSync(imagePath)
+					// image.content = imageContent
 					image.path = imagePath
 
 					contentObject.images.push(image)
@@ -263,14 +263,15 @@ module.exports.convertMarkdown = async (
 					return
 				}
 
-				var imageContent
+				// var imageContent
 				var imagePath = path.join(options.assetsPath, link)
 				var image = { "alt": "", "src": link, "path": imagePath }
 
 				// Try to read the file
 				try {
-					imageContent = fs.readFileSync(imagePath)
-					image.content = imageContent
+					// imageContent = fs.readFileSync(imagePath)
+					fs.readFileSync(imagePath) // throw an error if the file doesn't exist
+					// image.content = imageContent
 				} catch (error) {
 					contentObject.warns.push(`Attaching an image - Cannot read the file located at "${imagePath}".`)
 					return
