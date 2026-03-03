@@ -8,7 +8,7 @@ const getReadingTime = require("./utils/readingTime")
 const roc = require("roc-framework")
 
 const NodeCache = require("node-cache")
-const caches = new NodeCache({ stdTTL: 60 * 60 * 24 }) // cache with a default of one day
+const caches = new NodeCache({ stdTTL: 60 * 60 * 24 * 30 }) // cache with a default of 30 days
 
 const contentDir = {
 	base: path.join(__dirname, "content"),
@@ -49,6 +49,12 @@ async function executeCommandInConsole(command, options = {}){
 }
 
 function getBlogDocument(slug, frontmatter){
+	if(!slug) throw new Error("Slug is required to get a blog document.")
+	if(caches.has(`blogDocument-${slug}`)) {
+		console.log(`Blog document "${slug}" found in cache.`)
+		return caches.get(`blogDocument-${slug}`)
+	}
+
 	const originalBlogHtml = fs.readFileSync(path.join("public", "blog_post_template.html"), "utf-8")
 	const blogContent = fs.readFileSync(path.join(contentDir.compiled, `${slug}.html`), "utf-8")
 
@@ -67,12 +73,14 @@ function getBlogDocument(slug, frontmatter){
 		bannerWebPath = frontmatter?.banner ? path.join(publicAssetsPath, frontmatter.banner).replace(/\\/g, "/") : null
 	}
 
-	return {
+	var toReturn = {
 		originalBlogHtml,
 		blogContent,
 		readTime,
 		bannerWebPath
 	}
+	caches.set(`blogDocument-${slug}`, toReturn)
+	return toReturn
 }
 
 // Main function, prepare and start the server
