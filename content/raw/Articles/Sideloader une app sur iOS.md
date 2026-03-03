@@ -1,6 +1,5 @@
 ---
 slug: sideload-ios
-banner:
 Post_ReleaseDate: 2026-02-15
 Post_Theme: Sideloading, Third Party Store, iOS
 Post_Author: Johan
