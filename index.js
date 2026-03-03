@@ -121,7 +121,7 @@ async function startRocServer(){
 
 	// Parse blog documents from content index
 	const blogDocuments = Object.values(contentFiles._index).filter(content => content.type == "document").sort((a, b) => new Date(b.frontmatter?.post_releasedate || 0) - new Date(a.frontmatter?.post_releasedate || 0))
-	globalThis.recentsBlogArticlesCards = blogDocuments.slice(0, 3).map(content => {
+	globalThis.recentsBlogArticlesCards = blogDocuments.filter(content => content?.frontmatter?.visibility != "hidden").slice(0, 3).map(content => {
 		return `<BlogPostCard
 			date="${content.frontmatter?.post_releasedate || ""}"
 			title="${(content.title || "").replace(/"/g, "&quot;")}"
@@ -129,7 +129,7 @@ async function startRocServer(){
 			href="${content.slug || content.url || "#"}"
 		></BlogPostCard>`
 	}).join("\n")
-	globalThis.blogDocumentsCards = blogDocuments.map(content => {
+	globalThis.blogDocumentsCards = blogDocuments.filter(content => content?.frontmatter?.visibility != "hidden").map(content => {
 		const { readTime, bannerWebPath } = getBlogDocument(content?.slug, content?.frontmatter)
 		const banner = bannerWebPath ? `<img src="${bannerWebPath.replace(/"/g, "\\\"")}" alt="" class="w-full h-auto aspect-video object-cover rounded-lg mt-4 bentoCard smallShadow duration-300 transition-shadow" />` : ""
 		const href = (content.slug ? `/${content.slug}` : undefined) || content.url || "#"
@@ -200,6 +200,7 @@ async function startRocServer(){
 				.replaceAll("%%BLOG_DETAILS_LINK_MACOS%%", foundBlogDocument?.frontmatter?.download_macos || "")
 				.replaceAll("%%BLOG_DETAILS_LINK_LINUX%%", foundBlogDocument?.frontmatter?.download_linux || "")
 
+				.replace("%%BLOG_ROBOTS_RULES%%", foundBlogDocument?.frontmatter?.visibility == "hidden" ? "noindex" : "index")
 				.replace("%%BLOG_CONTENT%%", blogContent)
 
 			const htmlResponse = await server.renderPage(editedBlogHtml, { route: { file: null, path: req.path } })
