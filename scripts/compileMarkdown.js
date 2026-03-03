@@ -29,11 +29,11 @@ function extractLinkAndText(markdownLink) {
 
 function checkForBasicMarkdownSyntax(text){ // check for bold, italic, strikethrough and underline
 	return text
-		.replace(/(\*\*|__)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(2, -2))}</strong>`) // bold
+		.replace(/(\*\*)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(2, -2))}</strong>`) // bold
+		.replace(/__(?:(?!__|<[^>]*>)(.|\n))*?__/g, match => `<u>${escapeHtml(match.slice(2, -2))}</u>`) // underline
 		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(1, -1))}</strong>`) // italic text will be bold (font doesn't support italic)
 		// .replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<em class="italic">${escapeHtml(match.slice(1, -1))}</em>`) // (disabled) italic
 		.replace(/~~(?:(?!~~|<[^>]*>)(.|\n))*?~~/g, match => `<del>${escapeHtml(match.slice(2, -2))}</del>`) // strikethrough
-		.replace(/__(?:(?!__|<[^>]*>)(.|\n))*?__/g, match => `<u>${escapeHtml(match.slice(2, -2))}</u>`) // underline
 		.replace(/`(?:(?!`|<[^>]*>)(.|\n))*?`/g, match => `<code>${escapeHtml(match.slice(1, -1))}</code>`) // inline code
 }
 
