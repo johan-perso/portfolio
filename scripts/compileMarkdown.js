@@ -102,13 +102,16 @@ async function searchReferenceFile(referenceName, searchPath){
  * @param {String} options.assetsPath Path to the folder that contains the assets attached in the Markdown document (images, videos, etc.)
  * @param {String} options.publicAssetsPath Public (on the web server) path that browsers will use to access assets (used to generate the correct src in the HTML content)
  * @param {String} options.filePath Path to the Markdown file being converted (used to resolve local references and links)
+ * @param {Boolean} options.documentHasBanner Whether the document being converted has a banner or not (used to add a specific margin to the first element)
  * @returns {Object}
 */
 module.exports.convertMarkdown = async (
 	content,
 	options = {
 		assetsPath: null,
+		publicAssetsPath: null,
 		filePath: null,
+		documentHasBanner: false
 	}
 ) => {
 	const contentObject = {
@@ -373,7 +376,7 @@ module.exports.convertMarkdown = async (
 				</div>`
 			}
 
-			contentObject.content += `<div class="flex gap-1.5 ${lastLineType.startsWith("title") ? "mt-3" : "mt-8"} blogHeader">
+			contentObject.content += `<div class="flex gap-1.5 ${lastLineType == "metadata" ? "" : lastLineType.startsWith("title") ? "mt-3" : "mt-8"} blogHeader">
 				<h${titleLevel} id="${escapeHtml(anchor)}" class="font-semibold text-primary-content-heavy antialiased ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
 				<a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="text-link focus:underline hover:underline transition-opacity duration-100 opacity-0 focus:opacity-100 hover:opacity-100 ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${(titleLevel > 4 ? 24 : 20) * Math.pow(0.9, titleLevel - 1)}px">#</a>
 			</div>`
@@ -482,7 +485,9 @@ module.exports.convertMarkdown = async (
 		else {
 			if(line.trim() != "") {
 				let marginTop = lastLineWasEmpty && lastLineType == "paragraph" ? "mt-2.5" : "mt-1"
-				if(lastLineType == "image" || !wentPastFirstParagraph) marginTop = "mt-6"
+
+				if(lastLineType == "image" || (!wentPastFirstParagraph && options.documentHasBanner)) marginTop = "mt-6"
+				else if(!wentPastFirstParagraph && !options.documentHasBanner) marginTop = "mt-4"
 				else if(lastLineType == "list") marginTop = "mt-3.5"
 				else if(lastLineType.startsWith("title-")) {
 					const titleLevel = parseInt(lastLineType.split("-")[1] ?? "1")

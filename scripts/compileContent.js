@@ -92,6 +92,7 @@ async function main(){
 				filePath: file.path,
 				assetsPath: contentDir.attachments,
 				publicAssetsPath: publicAssetsPath,
+				documentHasBanner: !!file.frontMatter?.banner,
 			})
 			if(result?.warns?.length) {
 				console.warn(`Warnings while compiling ${file.filename}:\n- ${result.warns.join("\n- ")}`)
