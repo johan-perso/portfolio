@@ -140,7 +140,7 @@ async function startRocServer(){
 	globalThis.blogDocumentsCards = blogDocuments.filter(content => content?.frontmatter?.visibility != "hidden").map(content => {
 		const { readTime, bannerWebPath } = getBlogDocument(content?.slug, content?.frontmatter)
 		const banner = bannerWebPath ? `<img src="${bannerWebPath.replace(/"/g, "\\\"")}" alt="" class="w-full h-auto aspect-video object-cover rounded-lg mt-4 bentoCard smallShadow duration-300 transition-shadow" />` : ""
-		const href = (content.slug ? `/${content.slug}` : undefined) || content.url || "#"
+		const href = `${(content.slug ? `/${content.slug}` : undefined) || content.url || "#"}?from=/articles`
 
 		return `<div class="bentoCard smallShadow rounded-[18px] text-primary-content font-normal text-sm w-full h-full p-5 transition-all duration-300 overflow-hidden">
 			<div class="inline items-start justify-between min-w-0">

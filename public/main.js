@@ -192,6 +192,19 @@ window.onload = async function(){
 		})
 	}
 
+	Array.from(document.getElementsByClassName("blogPostCardLink")).forEach(el => {
+		if(!el.hasAttribute("href") || !el.getAttribute("href").length) return
+		if(el.getAttribute("target") == "_blank") return // already opens in new tab, no need to add referrer info in url
+		const elHref = el.getAttribute("href")
+		const currentHref = (window.location.href || "").replace(`${window.location.protocol}//${window.location.host}`, "")
+		el.setAttribute("href", `${elHref}${elHref.includes("?") ? "&" : "?"}from=${encodeURIComponent(currentHref.endsWith("/") ? currentHref : `${currentHref}/`)}`)
+	})
+
+	const fromParamsInThisUrl = new URLSearchParams(window.location.search)?.get("from")
+	if(fromParamsInThisUrl?.length) Array.from(document.getElementsByClassName("goBackButton")).forEach(card => {
+		card.setAttribute("href", fromParamsInThisUrl)
+	})
+
 	hasMainLoadFunctionsRun = true
 
 	document.querySelector("#skill_student > div > p > span.skill_additional").setAttribute("title", `Très exactement ${((Date.now() - new Date("2008-03-07")) / 31557600000).toFixed(7)} ans 🤓`)
@@ -485,6 +498,21 @@ async function hideLoader(instant = false){
 }
 
 // ========== Others Features
+function goBack(event) { // eslint-disable-line no-unused-vars
+	if(event) {
+		event.preventDefault()
+		event.stopPropagation()
+	}
+
+	const fromParamsInThisUrl = new URLSearchParams(window.location.search).get("from")
+	if(fromParamsInThisUrl) {
+		console.log(`Going back to "${fromParamsInThisUrl}" (from URL parameter)`)
+		window.location.replace(fromParamsInThisUrl)
+	} else {
+		console.log("No 'from' URL parameter found, going back to previous page")
+		history.back()
+	}
+}
 function applyDynamicEllipsis() {
 	document.querySelectorAll(".dynamic-ellipsis").forEach(el => {
 		// Get original text, in case we already truncated it before
