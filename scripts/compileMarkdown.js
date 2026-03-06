@@ -43,6 +43,7 @@ function normalizeText(text){
 	text = text.replace(/\n{3,}/g, "\n\n") // replace 3 or more new lines with only 2 new lines
 	text = text.replace(/ {2,}/g, " ") // replace 2 or more spaces with only 1 space
 	text = text.replace(/'/g, "'") // replace special apostrophes with simple ones
+	text = text.replace(/…/g, "...") // replace special ellipsis with three simple points
 	return text.normalize("NFC") // avoid issues wih some unicode characters such as emojis or weird chatgpt-ahh spaces
 }
 
@@ -351,12 +352,12 @@ module.exports.convertMarkdown = async (
 
 			var anchor = lineParts[lineParts.length - 1].startsWith("^") ? lineParts.pop().slice(1) : null
 			if(anchor == null){ // autogenerate anchor if not specified
-				anchor = lineParts.slice(1).join(" ").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^[a-zA-Z0-9\-_]+$/g, "-").replace(/^-+|-+$/g, "").slice(0, 50)
+				anchor = lineParts.slice(1).join(" ").toLowerCase().normalize("NFC").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 50)
 			} else { // remove anchor from line
 				line = line.split(` ^${anchor}`)[0]
 				if(!/^[a-zA-Z0-9\-_]+$/.test(anchor)){
 					contentObject.warns.push(`Title Custom Anchor - "${anchor}" is not a valid custom anchor. It need to be composed of letters, numbers, dashes or underscores, without spaces.`)
-					anchor = anchor.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^[a-zA-Z0-9\-_]+$/g, "-").replace(/^-+|-+$/g, "").slice(0, 50)
+					anchor = anchor.toLowerCase().normalize("NFC").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 50)
 				}
 			}
 
