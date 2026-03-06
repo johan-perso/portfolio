@@ -10,6 +10,7 @@ module.exports = {
 			fontFamily: {
 				"header": ["Schibsted Grotesk", "system-ui", "sans-serif"],
 				"body": ["Bricolage Grotesque", "system-ui", "sans-serif"],
+				"serif": ["IBM Plex Serif", "serif"],
 			},
 			colors: {
 				"primary-background": "#FFFFFF",

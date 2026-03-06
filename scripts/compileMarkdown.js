@@ -31,8 +31,7 @@ function checkForBasicMarkdownSyntax(text){ // check for bold, italic, strikethr
 	return text
 		.replace(/(\*\*)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(2, -2))}</strong>`) // bold
 		.replace(/__(?:(?!__|<[^>]*>)(.|\n))*?__/g, match => `<u>${escapeHtml(match.slice(2, -2))}</u>`) // underline
-		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<strong class="font-medium">${escapeHtml(match.slice(1, -1))}</strong>`) // italic text will be bold (font doesn't support italic)
-		// .replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<em class="italic">${escapeHtml(match.slice(1, -1))}</em>`) // (disabled) italic
+		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<em class="italic">${escapeHtml(match.slice(1, -1))}</em>`) // italic
 		.replace(/~~(?:(?!~~|<[^>]*>)(.|\n))*?~~/g, match => `<del>${escapeHtml(match.slice(2, -2))}</del>`) // strikethrough
 		.replace(/`(?:(?!`|<[^>]*>)(.|\n))*?`/g, match => `<code>${escapeHtml(match.slice(1, -1))}</code>`) // inline code
 }
@@ -64,7 +63,7 @@ function formatTableCell(cell) {
 			const text = p.startsWith("- ") ? p.slice(2).trim() : p
 			return `<li>${checkForBasicMarkdownSyntax(escapeHtml(text))}</li>`
 		}).join("")
-		return `<ul class="list-disc list-inside space-y-0.5 py-0.5">${items}</ul>`
+		return `<ul class="list-disc list-inside space-y-0.5 py-0.5 font-serif">${items}</ul>`
 	}
 
 	return parts.map(p => checkForBasicMarkdownSyntax(escapeHtml(p))).join("<br>")
@@ -174,7 +173,7 @@ module.exports.convertMarkdown = async (
 		if(currentAction != "codeblock" && currentAction != "custom-component" && line.trim().startsWith("```") && !line.trim().startsWith("```component")){
 			currentAction_set("codeblock")
 			const language = line.trim().slice(3).trim() || ""
-			contentObject.content += `<pre class="mt-2.5"><code${language ? ` class="language-${escapeHtml(language.replace(/\s/g, "-"))}"` : ""}>`
+			contentObject.content += `<pre class="mt-3"><code${language ? ` class="language-${escapeHtml(language.replace(/\s/g, "-"))}"` : ""}>`
 			lastLineWasEmpty = false
 			continue
 		}
@@ -311,7 +310,7 @@ module.exports.convertMarkdown = async (
 		} else if(currentAction == "callout"){
 			if(!line){
 				currentAction_precedent()
-				contentObject.content += `<div class="mt-4">${components.callout.replaceAll("{{ $content }}", currentValue?.trim() || "")}</div>\n`
+				contentObject.content += `<div class="mt-4 font-serif">${components.callout.replaceAll("{{ $content }}", currentValue?.trim() || "")}</div>\n`
 				currentValue = ""
 			} else currentValue += `${checkForBasicMarkdownSyntax(escapeHtml(line.startsWith(">") ? line.slice(1).trim() : line.trim()))}<br>`
 			lastLineType = "callout"
@@ -376,8 +375,8 @@ module.exports.convertMarkdown = async (
 				</div>`
 			}
 
-			contentObject.content += `<div class="flex gap-1.5 ${lastLineType == "metadata" ? "" : lastLineType.startsWith("title") ? "mt-3" : "mt-8"} blogHeader">
-				<h${titleLevel} id="${escapeHtml(anchor)}" class="font-semibold text-primary-content-heavy antialiased ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
+			contentObject.content += `<div class="flex gap-1.5 ${lastLineType == "metadata" ? "" : lastLineType.startsWith("title") ? "mt-3" : "mt-8"} items-center blogSubHeader">
+				<h${titleLevel} id="${escapeHtml(anchor)}" class="antialiased font-serif font-semibold ${titleLevel > 1 ? "text-primary-content" : "text-primary-content-heavy"} ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
 				<a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="text-link focus:underline hover:underline transition-opacity duration-100 opacity-0 focus:opacity-100 hover:opacity-100 ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${(titleLevel > 4 ? 24 : 20) * Math.pow(0.9, titleLevel - 1)}px">#</a>
 			</div>`
 			wentPastFirstTitle = true
@@ -387,7 +386,7 @@ module.exports.convertMarkdown = async (
 		// bullets points list
 		else if(line.trim().startsWith("- ")){
 			if(currentAction != "ul") {
-				contentObject.content += "<ul class=\"mt-2.5 list-disc list-outside marker-medium pl-5 space-y-1\">\n"
+				contentObject.content += "<ul class=\"mt-2.5 list-disc list-outside marker-medium pl-5 space-y-1 font-serif\">\n"
 				currentAction_set("ul")
 			}
 			contentObject.content += `<li>${checkForBasicMarkdownSyntax(escapeHtml(line.trim().slice(2)))}</li>\n`
@@ -401,7 +400,7 @@ module.exports.convertMarkdown = async (
 		// numbered list
 		else if(line.trim().match(/^\d+\. /)){
 			if(currentAction != "ol") {
-				contentObject.content += "<ul class=\"mt-2.5 list-decimal list-outside marker-medium pl-5 space-y-1\">\n"
+				contentObject.content += "<ul class=\"mt-2.5 list-decimal list-outside marker-medium pl-5 space-y-1 font-serif\">\n"
 				currentAction_set("ol")
 			}
 			contentObject.content += `<li>${checkForBasicMarkdownSyntax(escapeHtml(line.trim().replace(/^\d+\. /, "")))}</li>\n`
@@ -426,7 +425,7 @@ module.exports.convertMarkdown = async (
 				if(content.length > 400) content = `${content.slice(0, 400)}...`
 				if(![".", "!", "?"].includes(content[content.length - 1])) content += "." // add trailing dot if not present
 
-				contentObject.content += `<div class="mt-5"><BlogPostCard openInNewTab=true date="${releaseDate}" title="${escapeHtml(title)}" content="${checkForBasicMarkdownSyntax(escapeHtml(content))}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
+				contentObject.content += `<div class="mt-5"><BlogPostCard useSerif=true openInNewTab=true date="${releaseDate}" title="${escapeHtml(title)}" content="${checkForBasicMarkdownSyntax(escapeHtml(content))}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
 			} else {
 				contentObject.warns.push(`Blog Post Card - Cannot find the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)
 			}
@@ -440,7 +439,7 @@ module.exports.convertMarkdown = async (
 			lastLineType = "blockquote"
 		} else if(currentAction == "blockquote"){
 			currentAction_precedent()
-			contentObject.content += `<div class="mt-4">${components.callout.replaceAll("{{ $content }}", currentValue?.trim() || "")}</div>\n`
+			contentObject.content += `<div class="mt-4 font-serif">${components.callout.replaceAll("{{ $content }}", currentValue?.trim() || "")}</div>\n`
 			currentValue = ""
 			lastLineType = "blockquote"
 		}
@@ -464,7 +463,7 @@ module.exports.convertMarkdown = async (
 					const cellsHtml = cells.map(cell => `<th class="px-4 py-2.5 text-left font-semibold text-primary-content-heavy border-b border-light-background-heavier">${checkForBasicMarkdownSyntax(escapeHtml(cell))}</th>`).join("")
 					currentValue += `<thead><tr>${cellsHtml}</tr></thead><tbody>`
 				} else {
-					const cellsHtml = cells.map(cell => `<td class="px-4 py-2 text-primary-content border-b border-light-background-heavy">${formatTableCell(cell)}</td>`).join("")
+					const cellsHtml = cells.map(cell => `<td class="px-4 py-2 text-primary-content border-b border-light-background-heavy font-serif">${formatTableCell(cell)}</td>`).join("")
 					currentValue += `<tr class="hover:bg-light-background transition-colors">${cellsHtml}</tr>`
 				}
 			}
@@ -494,7 +493,7 @@ module.exports.convertMarkdown = async (
 					marginTop = titleLevel < 3 ? "mt-3" : "mt-2"
 				}
 
-				contentObject.content += `<p class="${marginTop}">${checkForBasicMarkdownSyntax(escapeHtml(line))}</p>\n`
+				contentObject.content += `<p class="${marginTop} font-serif">${checkForBasicMarkdownSyntax(escapeHtml(line))}</p>\n`
 				lastLineType = "paragraph"
 				if(!wentPastFirstParagraph) firstParagraphContent += `${checkForBasicMarkdownSyntax(escapeHtml(stripMarkdown(line, true)))} `
 				wentPastFirstParagraph = true
