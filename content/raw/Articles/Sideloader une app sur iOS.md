@@ -38,8 +38,7 @@ Une source est un moyen d’ajouter une liste d’applications dynamiques à un 
 
 Si vous n'utilisez pas de compte Apple Developer payant (99 $/an) ou de certificat tiers, vous êtes soumis aux restrictions d'Apple concernant l'installation d'applications hors App Store.
 
-1. Trois applications actives : chaque appareil est restreint à un maximum de 3 applications installées via sideloading. Les magasins d’apps (comme AltStore ou SideStore) comptent eux-mêmes au sein de cette limite, ce qui ne vous laisse que deux emplacements pour vos fichiers `.ipa`.
-   Avec Live Container, vous pouvez faire tourner des applications à l’intérieur de lui-même, contournant partiellement cette limitation.
+1. Trois applications actives : chaque appareil est restreint à un maximum de 3 applications installées via sideloading. Les magasins d’apps (comme AltStore ou SideStore) comptent eux-mêmes au sein de cette limite, ce qui ne vous laisse que deux emplacements pour vos fichiers `.ipa`. Avec Live Container, vous pouvez faire tourner des applications à l’intérieur de lui-même, contournant partiellement cette limitation.
 2. Une semaine avant expiration : 7 jours après l’installation d’une app, celle-ci expirera et refusera de s’ouvrir. Pour éviter cela, vous devrez la « refresh » avant la fin de ce délai. Cette étape peut être automatisée si vous utilisez un magasin d’apps.
 
 # Disclaimer ^disclaimer
