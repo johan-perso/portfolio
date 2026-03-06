@@ -174,6 +174,8 @@ window.onload = async function(){
 			console.error(error)
 			return null
 		})
+	} else {
+		document.getElementById("aidropdown-copymarkdown").classList.add("hidden")
 	}
 
 	if(window.innerWidth < 390) { // hardcoded switch positions for some projects cards
@@ -181,6 +183,13 @@ window.onload = async function(){
 			document.getElementById("smallprojectcard_yourdownloader"),
 			document.getElementById("largeprojectcard_findmeme")
 		)
+	}
+
+	if(document.querySelector(".blogPost")) {
+		Array.from(document.querySelectorAll(".aiChoiceDropdownButton")).forEach(btn => {
+			if(!btn.hasAttribute("hrefprefix") || !btn.getAttribute("hrefprefix").length) return btn.classList.add("hidden")
+			btn.setAttribute("href", btn.getAttribute("hrefprefix") + encodeURIComponent(`Résume-moi cet article de blog en une liste de points clés, évoque les éléments les plus importants à savoir, et raconte moi quelques détails sur l'auteur de ce post.\n\nURL de l'article : ${window.location.href}\n\nDétails sur l'auteur : https://johanstick.fr ; https://johanstick.fr/llms.txt`))
+		})
 	}
 
 	hasMainLoadFunctionsRun = true
