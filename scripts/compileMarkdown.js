@@ -174,7 +174,7 @@ module.exports.convertMarkdown = async (
 		if(currentAction != "codeblock" && currentAction != "custom-component" && line.trim().startsWith("```") && !line.trim().startsWith("```component")){
 			currentAction_set("codeblock")
 			const language = line.trim().slice(3).trim() || ""
-			contentObject.content += `<pre><code${language ? ` class="language-${escapeHtml(language.replace(/\s/g, "-"))}"` : ""}>`
+			contentObject.content += `<pre class="mt-2.5"><code${language ? ` class="language-${escapeHtml(language.replace(/\s/g, "-"))}"` : ""}>`
 			lastLineWasEmpty = false
 			continue
 		}
@@ -516,6 +516,16 @@ module.exports.convertMarkdown = async (
 		currentValue = ""
 	}
 
+	// Temporarily protect content inside <code> blocks so that links/references inside codeblocks are not parsed
+	const codeBlockPlaceholders = {}
+	let codeBlockIndex = 0
+	contentObject.content = contentObject.content.replace(/<code>([\s\S]*?)<\/code>/g, (match) => {
+		const placeholder = `@@CODEBLOCK_${codeBlockIndex}@@`
+		codeBlockPlaceholders[placeholder] = match
+		codeBlockIndex++
+		return placeholder
+	})
+
 	// Check links across the whole content
 	var linkMatches = []
 	linkMatches.push(...(contentObject.content.match(/\[.*?\]\(.*?\)/g) || []).map(match => { return { content: match, type: "classic" } })) // [text](url)
@@ -548,6 +558,11 @@ module.exports.convertMarkdown = async (
 
 			contentObject.content = contentObject.content.replace(linkMatch.content, htmlLink)
 		}
+	}
+
+	// Restore code blocks
+	for(const [placeholder, original] of Object.entries(codeBlockPlaceholders)){
+		contentObject.content = contentObject.content.replaceAll(placeholder, original)
 	}
 
 	// Final check to clean content
