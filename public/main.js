@@ -174,9 +174,7 @@ window.onload = async function(){
 			console.error(error)
 			return null
 		})
-	} else {
-		document.getElementById("aidropdown-copymarkdown").classList.add("hidden")
-	}
+	} else disableCopyMarkdownButton()
 
 	if(window.innerWidth < 390) { // hardcoded switch positions for some projects cards
 		swapTwoElements(
@@ -187,7 +185,7 @@ window.onload = async function(){
 
 	if(document.querySelector(".blogPost")) {
 		Array.from(document.querySelectorAll(".aiChoiceDropdownButton")).forEach(btn => {
-			if(!btn.hasAttribute("hrefprefix") || !btn.getAttribute("hrefprefix").length) return btn.classList.add("hidden")
+			if(!btn.hasAttribute("hrefprefix") || !btn.getAttribute("hrefprefix").length) return
 			btn.setAttribute("href", btn.getAttribute("hrefprefix") + encodeURIComponent(`Résume-moi cet article de blog en une liste de points clés, évoque les éléments les plus importants à savoir, et raconte moi quelques détails sur l'auteur de ce post.\n\nURL de l'article : ${window.location.href}\n\nDétails sur l'auteur : https://johanstick.fr ; https://johanstick.fr/llms.txt`))
 		})
 	}
@@ -512,6 +510,12 @@ function goBack(event) { // eslint-disable-line no-unused-vars
 		console.log("No 'from' URL parameter found, going back to previous page")
 		history.back()
 	}
+}
+function disableCopyMarkdownButton() {
+	document.getElementById("aidropdown-copymarkdown").setAttribute("disabled", "true")
+	document.getElementById("aidropdown-copymarkdown").setAttribute("href", "")
+	document.getElementById("aidropdown-copymarkdown").classList.add("cursor-not-allowed", "opacity-50")
+	document.getElementById("aidropdown-copymarkdown").classList.remove("hover:scale-[1.015]", "hover:bg-light-background")
 }
 function applyDynamicEllipsis() {
 	document.querySelectorAll(".dynamic-ellipsis").forEach(el => {
