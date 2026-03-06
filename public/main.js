@@ -176,6 +176,13 @@ window.onload = async function(){
 		})
 	}
 
+	if(window.innerWidth < 390) { // hardcoded switch positions for some projects cards
+		swapTwoElements(
+			document.getElementById("smallprojectcard_yourdownloader"),
+			document.getElementById("largeprojectcard_findmeme")
+		)
+	}
+
 	hasMainLoadFunctionsRun = true
 
 	document.querySelector("#skill_student > div > p > span.skill_additional").setAttribute("title", `Très exactement ${((Date.now() - new Date("2008-03-07")) / 31557600000).toFixed(7)} ans 🤓`)
@@ -482,6 +489,25 @@ function applyDynamicEllipsis() {
 			el.textContent = `${text}...`
 		}
 	})
+}
+function swapTwoElements(el1, el2) {
+	if(!el1 || !el2 || !el1.parentNode || !el2.parentNode) {
+		console.warn("swapTwoElements: Invalid elements provided.")
+		return
+	}
+
+	const el1Next = el1.nextSibling
+	const el2Next = el2.nextSibling
+	const el1Parent = el1.parentNode
+	const el2Parent = el2.parentNode
+
+	if(el1Parent === el2Parent) { // same parent: simple swap
+		el1Parent.insertBefore(el2, el1)
+		el1Parent.insertBefore(el1, el2Next)
+	} else { // different parents: swap positions
+		el2Parent.insertBefore(el1, el2)
+		el1Parent.insertBefore(el2, el1Next)
+	}
 }
 function copyLlmsTxt() { // eslint-disable-line no-unused-vars
 	var AiBrandIcon = document.getElementById("aidropdown-copymarkdown").querySelector(".AiBrandIcon")
