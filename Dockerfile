@@ -16,6 +16,9 @@ COPY package.json .
 RUN bun install --minimum-release-age 259200 --frozen-lockfile --no-cache
 COPY --exclude=node_modules --exclude=content/compiled --exclude=.env --exclude=*.log --exclude=*.lock . .
 
+# Install Git CLI (to use getGitDetails.js script)
+RUN apk add --no-cache git
+
 # Compile some files/contents to avoid compilation at runtime
 RUN bun run scripts/compileContent.js
 RUN bun -e "require('./scripts/getGitDetails.js').saveGitDetails(process.cwd(), 'content/compiled/git_repo_details.json')"
