@@ -236,12 +236,21 @@
 		</div>
 	</div>
 
-	<div id="machineViewContent" class="hidden pointer-events-none opacity-0 duration-500 transition-opacity fixed inset-0 w-full h-full overflow-y-auto font-mono text-primary-background bg-dark-background backdrop-blur-sm z-50 px-12 md:px-32 py-8">
-		<!-- TODO: allows switch from this mode -->
-		<!-- TODO: allows clipboard copy resume -->
+	<div id="machineViewContent" class="hidden pointer-events-none opacity-0 duration-500 transition-opacity fixed inset-0 w-full h-full overflow-y-auto font-mono text-primary-background bg-dark-background backdrop-blur-sm z-50 px-6 sm:px-8 md:px-10 lg:px-32 py-8">
 		<!-- TODO: support toasts in dark mode for this -->
+		<div class="min-[768px]:flex items-start justify-center h-fit gap-1.5 w-full max-w-[88rem] mx-auto">
+			<div class="flex min-[768px]:hidden shrink-0 items-center justify-center text-center mb-8 text-sm">
+				<p>Vous ne comprenez pas ? Revenez à l'<span onclick="switchInterface('human')" class="text-stone-400 hover:underline decoration-blue-500 cursor-pointer">expérience classique</span>.</p>
+			</div>
+			<div class="sticky max-[767px]:hidden shrink-0 -mt-0.5 mr-2.5">
+				<button onclick="switchInterface('human')" aria-label="Revenir au mode classique" class="p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
+					<div class="relative w-5 h-5">
+						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4L4 16"/><path d="M4 4L16 16"/></svg>
+					</div>
+				</button>
+			</div>
 
-		<div class="flex items-center justify-center h-fit">
+			<!-- Content -->
 			<div class="border-l-2 border-r-2 border-stone-600 hover:border-stone-500/80 duration-200 px-10 py-px space-y-6 text-[13px] leading-5 break-words">
 				<p class="uppercase text-base font-medium"><span class="text-stone-400">#</span> Portfolio ⇢ Johan</p>
 
@@ -315,6 +324,15 @@
 						<p class="pt-3"><span class="text-stone-400">&gt;</span> Plus de projets sont disponibles sur ce portfolio en mode classique. <span onclick="switchInterface('human')" class="text-stone-400 hover:underline decoration-blue-500 cursor-pointer">Désactivez le mode machine</span> pour les découvrir.</p>
 					</div>
 				</div>
+			</div>
+
+			<div class="sticky max-[767px]:hidden shrink-0 -mt-0.5 ml-3">
+				<button onclick="copyMachineView()" aria-label="Copier le contenu dans le presse-papier" class="p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
+					<div class="relative w-5 h-5">
+						<svg id="machineViewCopyIcon" class="absolute inset-0 transition-all duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+						<svg id="machineViewCheckIcon" class="absolute inset-0 opacity-0 scale-50 transition-all duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+					</div>
+				</button>
 			</div>
 		</div>
 	</div>

@@ -256,7 +256,12 @@ window.onhashchange = function(event){
 }
 
 // ========== Human/Machine Interface
+var isSwitching = false
 async function switchInterface(mode) {
+	console.log(`Switching interface to "${mode}" mode...`)
+	if(isSwitching) return console.warn("Already switching interface, ignoring new switch request.")
+	isSwitching = true
+
 	const appContainer = document.querySelector(".appContainer")
 	const machineViewContent = document.getElementById("machineViewContent")
 
@@ -302,6 +307,7 @@ async function switchInterface(mode) {
 	}
 
 	currentInterfaceMode = mode
+	isSwitching = false
 }
 
 // ========== Dropdown
@@ -572,6 +578,8 @@ function swapTwoElements(el1, el2) {
 		el1Parent.insertBefore(el2, el1Next)
 	}
 }
+
+// ========== Copy to Clipboard Functions
 function copyLlmsTxt() { // eslint-disable-line no-unused-vars
 	var AiBrandIcon = document.getElementById("aidropdown-copymarkdown").querySelector(".AiBrandIcon")
 	AiBrandIcon.classList.add("text-green-600")
@@ -606,6 +614,33 @@ function copyCryptoAddress(crypto) { // eslint-disable-line no-unused-vars
 		console.warn(`Unknown crypto type: ${crypto}`)
 		showToast("Type de cryptomonnaie inconnu, veuillez signalez ce problème.")
 
+	}
+}
+var isAnimatingCopy = false
+function copyMachineView() { // eslint-disable-line no-unused-vars
+	const machineViewContent = document.getElementById("machineViewContent")
+	const textContent = machineViewContent?.innerText || machineViewContent?.textContent || ""
+	navigator.clipboard.writeText(textContent.trim())
+
+	if(isAnimatingCopy) return console.warn("Already animating copy, ignoring new copy request.")
+	isAnimatingCopy = true
+
+	const copyIcon = document.getElementById("machineViewCopyIcon")
+	const checkIcon = document.getElementById("machineViewCheckIcon")
+	if(copyIcon && checkIcon) {
+		// Crossfade: copy icon out, check icon in (scale up)
+		copyIcon.classList.add("opacity-0", "scale-50")
+		checkIcon.classList.remove("opacity-0", "scale-50")
+		checkIcon.classList.add("opacity-100", "scale-100")
+
+		setTimeout(() => {
+			// Crossfade back: check icon out, copy icon in
+			checkIcon.classList.add("opacity-0", "scale-50")
+			checkIcon.classList.remove("opacity-100", "scale-100")
+			copyIcon.classList.remove("opacity-0", "scale-50")
+
+			isAnimatingCopy = false
+		}, 2000)
 	}
 }
 function copyHeaderLink(event) { // eslint-disable-line no-unused-vars
