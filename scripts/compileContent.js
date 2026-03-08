@@ -105,7 +105,7 @@ async function main(){
 			compiledFiles[path.relative(contentDir.compiled, compiledPathHtml)] = {
 				type: "document",
 				slug: file.filename,
-				title: (path.extname(originalFilenameTitle).length ? originalFilenameTitle.slice(0, -path.extname(originalFilenameTitle).length) : originalFilenameTitle).replace(", ", " : "),
+				title: (path.extname(originalFilenameTitle).length ? originalFilenameTitle.slice(0, -path.extname(originalFilenameTitle).length) : originalFilenameTitle).normalize("NFC").replace(", ", " : "),
 				firstParagraph: result.firstParagraph,
 				frontmatter: {
 					...file.frontMatter,
