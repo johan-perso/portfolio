@@ -87,7 +87,7 @@ ul.marker-medium li::marker {
 }
 
 /* Main content grid */
-.app-container {
+.appContainer {
   height: 100dvh;
 
   display: grid;
@@ -96,8 +96,8 @@ ul.marker-medium li::marker {
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
-.app-container > .myself { grid-area: 1 / 1 / 2 / 2; }
-.app-container > .content { grid-area: 1 / 2 / 2 / 3; }
+.appContainer > .myself { grid-area: 1 / 1 / 2 / 2; }
+.appContainer > .content { grid-area: 1 / 2 / 2 / 3; }
 
 .myself *, .content * {
   overflow-wrap: break-word;

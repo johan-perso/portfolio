@@ -256,7 +256,10 @@ window.onhashchange = function(event){
 }
 
 // ========== Human/Machine Interface
-function switchInterface(mode) {
+async function switchInterface(mode) {
+	const appContainer = document.querySelector(".appContainer")
+	const machineViewContent = document.getElementById("machineViewContent")
+
 	const humanBtn = document.getElementById("segmentedControl-button-human")
 	const machineBtn = document.getElementById("segmentedControl-button-machine")
 	const slider = document.getElementById("slider")
@@ -269,7 +272,26 @@ function switchInterface(mode) {
 		machineBtn.classList.remove("hover:shadow-inner")
 		machineBtn.setAttribute("disabled", "true")
 		humanBtn.removeAttribute("disabled")
+		await new Promise(resolve => setTimeout(resolve, 350))
+
+		machineViewContent.classList.remove("hidden", "pointer-events-none")
+		appContainer.style.overflow = "hidden"
+		await new Promise(resolve => setTimeout(resolve, 50))
+		machineViewContent.classList.add("opacity-100")
+		machineViewContent.classList.remove("opacity-0")
+
+		await new Promise(resolve => setTimeout(resolve, 500))
+		appContainer.style.display = "none"
 	} else if(mode == "human") {
+		appContainer.style.display = ""
+		appContainer.style.overflow = ""
+		machineViewContent.classList.add("pointer-events-none")
+		machineViewContent.classList.add("opacity-0")
+		machineViewContent.classList.remove("opacity-100")
+
+		await new Promise(resolve => setTimeout(resolve, 500))
+		machineViewContent.classList.add("hidden")
+
 		slider.style.left = `${humanBtn.offsetLeft}px`
 		slider.style.width = `${humanBtn.offsetWidth}px`
 

@@ -15,7 +15,7 @@
 	<JsRequired></JsRequired>
 	<Loader></Loader>
 
-	<div class="app-container 2xl:px-12 pt-14 max-[1219px]:grid-cols-1">
+	<div class="appContainer 2xl:px-12 pt-14 max-[1219px]:grid-cols-1">
 		<!-- Description about myself -->
 		<MyselfSidebar></MyselfSidebar>
 
@@ -236,14 +236,13 @@
 		</div>
 	</div>
 
-	<div id="machineViewContent" class="fixed inset-0 w-full h-full overflow-y-auto font-mono text-primary-background bg-dark-background backdrop-blur-sm z-50 px-12 md:px-32 py-8">
-		<!-- TODO: allows switch to this mode -->
+	<div id="machineViewContent" class="hidden pointer-events-none opacity-0 duration-500 transition-opacity fixed inset-0 w-full h-full overflow-y-auto font-mono text-primary-background bg-dark-background backdrop-blur-sm z-50 px-12 md:px-32 py-8">
 		<!-- TODO: allows switch from this mode -->
 		<!-- TODO: allows clipboard copy resume -->
 		<!-- TODO: support toasts in dark mode for this -->
 
 		<div class="flex items-center justify-center h-fit">
-			<div class="border-l-2 border-r-2 border-stone-600 hover:border-stone-500 px-10 py-px space-y-6 text-[13px] leading-5 break-words">
+			<div class="border-l-2 border-r-2 border-stone-600 hover:border-stone-500/80 duration-200 px-10 py-px space-y-6 text-[13px] leading-5 break-words">
 				<p class="uppercase text-base font-medium"><span class="text-stone-400">#</span> Portfolio ⇢ Johan</p>
 
 				<div>
@@ -313,7 +312,7 @@
 							</li>
 						</ul>
 
-						<p class="pt-3"><span class="text-stone-400">&gt;</span> Plus de projets sont disponibles sur ce portfolio en mode classique. Désactivez le mode machine pour les découvrir.</p>
+						<p class="pt-3"><span class="text-stone-400">&gt;</span> Plus de projets sont disponibles sur ce portfolio en mode classique. <span onclick="switchInterface('human')" class="text-stone-400 hover:underline decoration-blue-500 cursor-pointer">Désactivez le mode machine</span> pour les découvrir.</p>
 					</div>
 				</div>
 			</div>
