@@ -203,6 +203,16 @@ window.onload = async function(){
 		card.setAttribute("href", fromParamsInThisUrl)
 	})
 
+	document.addEventListener("keydown", (e) => {
+		if (e.key === "Escape") {
+			// If we are in machine mode, return to human mode
+			if(currentInterfaceMode == "machine") return switchInterface("human")
+
+			// Close dropdown menu
+			closeDropdown()
+		}
+	})
+
 	hasMainLoadFunctionsRun = true
 
 	document.querySelector("#skill_student > div > p > span.skill_additional").setAttribute("title", `Très exactement ${((Date.now() - new Date("2008-03-07")) / 31557600000).toFixed(7)} ans 🤓`)
@@ -326,12 +336,6 @@ function initDropdown() {
 			closeDropdown()
 		}
 	})
-
-	document.addEventListener("keydown", (e) => { // close menu with Escape
-		if (e.key === "Escape") {
-			closeDropdown()
-		}
-	})
 }
 
 function toggleDropdown() {
@@ -357,6 +361,7 @@ function toggleDropdown() {
 function closeDropdown() {
 	const dropdownMenu = document.getElementById("dropdown-menu")
 	const dropdownChevron = document.getElementById("dropdown-chevron")
+	if(!dropdownMenu || !dropdownChevron) return
 
 	dropdownMenu.style.opacity = "0"
 	dropdownMenu.style.transform = "scaleY(0.95)"
