@@ -19,6 +19,8 @@ module.exports = {
 				"primary-content-heavy": "#1B1B1B",
 				"primary-content-light": "#5E6269",
 
+				"dark-background": "#0E0E0E",
+
 				"light-background": "#F8F8F8",
 				"light-background-heavy": "#F1F1F1", // 60% #F8F8F8
 				"light-background-heavier": "#E7E7E7",

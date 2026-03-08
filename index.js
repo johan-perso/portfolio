@@ -129,6 +129,10 @@ async function startRocServer(){
 
 	// Parse blog documents from content index
 	const blogDocuments = Object.values(contentFiles._index).filter(content => content.type == "document").sort((a, b) => new Date(b.frontmatter?.post_releasedate || 0) - new Date(a.frontmatter?.post_releasedate || 0))
+	globalThis.recentsBlogArticlesMachineCards = blogDocuments.filter(content => content?.frontmatter?.visibility != "hidden").slice(0, 5).map(content => {
+		const href = content.slug || content.url || "#"
+		return `<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="${href}"><span>[${(content.title || "").replace(/\[/g, "\\[").replace(/\]/g, "\\]")}]</span><span class="text-stone-400 break-all">(/${href})</span></a></p>`
+	}).join("\n")
 	globalThis.recentsBlogArticlesCards = blogDocuments.filter(content => content?.frontmatter?.visibility != "hidden").slice(0, 3).map(content => {
 		return `<BlogPostCard
 			date="${content.frontmatter?.post_releasedate || ""}"
