@@ -11,6 +11,7 @@ module.exports = {
 				"header": ["Schibsted Grotesk", "system-ui", "sans-serif"],
 				"body": ["Bricolage Grotesque", "system-ui", "sans-serif"],
 				"serif": ["IBM Plex Serif", "serif"],
+				"mono": ["SFMono-Regular", "ui-monospace", "Menlo", "Hack", "Monaco", "Consolas", "monospace"],
 			},
 			colors: {
 				"primary-background": "#FFFFFF",
