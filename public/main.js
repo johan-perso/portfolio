@@ -218,8 +218,10 @@ window.onload = async function(){
 	document.querySelector("#skill_student > div > p > span.skill_additional").setAttribute("title", `Très exactement ${((Date.now() - new Date("2008-03-07")) / 31557600000).toFixed(7)} ans 🤓`)
 }
 
-window.onresize = function(){
-	switchInterface(currentInterfaceMode) // readjust segmented control slider when font size changes
+window.onresize = function(force = false){
+	if(force) console.log("Window resized (forced)", { width: window.innerWidth, height: window.innerHeight })
+	if(!force && currentInterfaceMode != "human") return // ignore resizes if content is hidden (machine mode for example)
+	adjustSegmentedControlSlider(currentInterfaceMode) // readjust segmented control slider when font size changes
 	applyDynamicEllipsis()
 
 	if(window.innerWidth > 1220) {
@@ -253,7 +255,7 @@ window.onresize = function(){
 	}
 
 	setTimeout(() => { // readjust segmented control slider when font size changes
-		switchInterface(currentInterfaceMode)
+		adjustSegmentedControlSlider(currentInterfaceMode)
 	}, 300)
 }
 
@@ -277,11 +279,9 @@ async function switchInterface(mode) {
 
 	const humanBtn = document.getElementById("segmentedControl-button-human")
 	const machineBtn = document.getElementById("segmentedControl-button-machine")
-	const slider = document.getElementById("slider")
 
 	if(mode == "machine") {
-		slider.style.left = `${machineBtn.offsetLeft}px`
-		slider.style.width = `${machineBtn.offsetWidth}px`
+		adjustSegmentedControlSlider(mode)
 
 		humanBtn.classList.add("hover:shadow-inner")
 		machineBtn.classList.remove("hover:shadow-inner")
@@ -289,35 +289,58 @@ async function switchInterface(mode) {
 		humanBtn.removeAttribute("disabled")
 		await new Promise(resolve => setTimeout(resolve, 350))
 
+		document.documentElement.style.overflow = "hidden"
 		machineViewContent.classList.remove("hidden", "pointer-events-none")
 		appContainer.style.overflow = "hidden"
 		await new Promise(resolve => setTimeout(resolve, 50))
-		machineViewContent.classList.add("opacity-100")
-		machineViewContent.classList.remove("opacity-0")
+		machineViewContent.classList.add("opacity-100", "scale-100")
+		machineViewContent.classList.remove("opacity-0", "scale-95")
+		machineViewContent.style.borderRadius = "0px"
+		machineViewContent.style.boxShadow = "none"
 
-		await new Promise(resolve => setTimeout(resolve, 500))
+		await new Promise(resolve => setTimeout(resolve, 700))
 		appContainer.style.display = "none"
+		document.documentElement.style.overflow = ""
 	} else if(mode == "human") {
+		document.documentElement.style.overflow = "hidden"
 		appContainer.style.display = ""
-		appContainer.style.overflow = ""
+		appContainer.style.overflow = "hidden"
 		machineViewContent.classList.add("pointer-events-none")
-		machineViewContent.classList.add("opacity-0")
-		machineViewContent.classList.remove("opacity-100")
+		machineViewContent.classList.add("opacity-0", "scale-95")
+		machineViewContent.classList.remove("opacity-100", "scale-100")
+		machineViewContent.style.borderRadius = "16px"
+		machineViewContent.style.boxShadow = "0 0 60px 30px rgba(0,0,0,0.4)"
 
-		await new Promise(resolve => setTimeout(resolve, 500))
+		await new Promise(resolve => setTimeout(resolve, 700))
 		machineViewContent.classList.add("hidden")
+		appContainer.style.overflow = ""
+		document.documentElement.style.overflow = ""
 
-		slider.style.left = `${humanBtn.offsetLeft}px`
-		slider.style.width = `${humanBtn.offsetWidth}px`
+		adjustSegmentedControlSlider(mode)
 
 		machineBtn.classList.add("hover:shadow-inner")
 		humanBtn.classList.remove("hover:shadow-inner")
 		humanBtn.setAttribute("disabled", "true")
 		machineBtn.removeAttribute("disabled")
+
+		window.onresize(true) // readjust widths and segmented control slider
 	}
 
 	currentInterfaceMode = mode
 	isSwitching = false
+}
+function adjustSegmentedControlSlider(interfaceMode) {
+	const humanBtn = document.getElementById("segmentedControl-button-human")
+	const machineBtn = document.getElementById("segmentedControl-button-machine")
+	const slider = document.getElementById("slider")
+
+	if(interfaceMode == "human") {
+		slider.style.left = `${humanBtn.offsetLeft}px`
+		slider.style.width = `${humanBtn.offsetWidth}px`
+	} else if(interfaceMode == "machine") {
+		slider.style.left = `${machineBtn.offsetLeft}px`
+		slider.style.width = `${machineBtn.offsetWidth}px`
+	}
 }
 
 // ========== Dropdown
