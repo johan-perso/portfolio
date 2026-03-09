@@ -290,13 +290,15 @@ async function switchInterface(mode) {
 		await new Promise(resolve => setTimeout(resolve, 350))
 
 		document.documentElement.style.overflow = "hidden"
-		machineViewContent.classList.remove("hidden", "pointer-events-none")
 		appContainer.style.overflow = "hidden"
-		await new Promise(resolve => setTimeout(resolve, 50))
-		machineViewContent.classList.add("opacity-100", "scale-100")
-		machineViewContent.classList.remove("opacity-0", "scale-95")
-		machineViewContent.style.borderRadius = "0px"
-		machineViewContent.style.boxShadow = "none"
+		if(machineViewContent) {
+			machineViewContent.classList.remove("hidden", "pointer-events-none")
+			await new Promise(resolve => setTimeout(resolve, 50))
+			machineViewContent.classList.add("opacity-100", "scale-100")
+			machineViewContent.classList.remove("opacity-0", "scale-95")
+			machineViewContent.style.borderRadius = "0px"
+			machineViewContent.style.boxShadow = "none"
+		}
 
 		await new Promise(resolve => setTimeout(resolve, 700))
 		appContainer.style.display = "none"
@@ -305,14 +307,16 @@ async function switchInterface(mode) {
 		document.documentElement.style.overflow = "hidden"
 		appContainer.style.display = ""
 		appContainer.style.overflow = "hidden"
-		machineViewContent.classList.add("pointer-events-none")
-		machineViewContent.classList.add("opacity-0", "scale-95")
-		machineViewContent.classList.remove("opacity-100", "scale-100")
-		machineViewContent.style.borderRadius = "16px"
-		machineViewContent.style.boxShadow = "0 0 60px 30px rgba(0,0,0,0.4)"
+		if(machineViewContent) {
+			machineViewContent.classList.add("pointer-events-none")
+			machineViewContent.classList.add("opacity-0", "scale-95")
+			machineViewContent.classList.remove("opacity-100", "scale-100")
+			machineViewContent.style.borderRadius = "16px"
+			machineViewContent.style.boxShadow = "0 0 60px 30px rgba(0,0,0,0.4)"
 
-		await new Promise(resolve => setTimeout(resolve, 700))
-		machineViewContent.classList.add("hidden")
+			await new Promise(resolve => setTimeout(resolve, 700))
+			machineViewContent.classList.add("hidden")
+		}
 		appContainer.style.overflow = ""
 		document.documentElement.style.overflow = ""
 
