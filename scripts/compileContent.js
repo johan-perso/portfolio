@@ -162,6 +162,7 @@ async function main(){
 		}
 	}))
 
+	compiledFiles.compileDate = new Date().toISOString()
 	await fs.promises.writeFile(path.join(contentDir.compiled, "_index.json"), JSON.stringify(compiledFiles, null, 2), "utf-8")
 	console.log(`Compiled content saved to ${contentDir.compiled}`)
 

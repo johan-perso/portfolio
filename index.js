@@ -1,4 +1,4 @@
-if(!process.versions.bun) console.warn("Warning: It is recommended to run this server using Bun for better library compatibility.")
+if(!process.versions.bun) console.warn("⚠️ Warning: It is recommended to run this server using Bun for better library compatibility.")
 
 const fs = require("fs")
 const path = require("path")
@@ -68,7 +68,7 @@ function getBlogDocument(slug, frontmatter){
 	const bannerPhysicalPath = frontmatter?.banner ? path.join(contentDir.attachments, frontmatter.banner) : null
 	var bannerWebPath
 	if(frontmatter?.banner && !fs.existsSync(bannerPhysicalPath)) {
-		console.warn(`Banner image specified in frontmatter of blog post "${slug}" not found at path: ${bannerPhysicalPath} - The banner will not be displayed.`)
+		console.warn(`⚠️ Banner image specified in frontmatter of blog post "${slug}" not found at path: ${bannerPhysicalPath} - The banner will not be displayed.`)
 	} else if(frontmatter?.banner) {
 		bannerWebPath = frontmatter?.banner ? path.join(publicAssetsPath, frontmatter.banner).replace(/\\/g, "/") : null
 	}
@@ -101,10 +101,19 @@ async function main(){
 	requiredFiles.forEach(fileName => {
 		const filePath = path.join(contentDir.compiled, `${fileName}.json`)
 		if(!fs.existsSync(filePath)) throw new Error(`Required content file "${fileName}.json" not found in compiled content folder.`)
+
 		const fileContent = JSON.parse(fs.readFileSync(filePath, "utf-8"))
 		if(!fileContent || typeof fileContent != "object") throw new Error(`Content file "${fileName}.json" is not valid. Found:`, fileContent)
-		if(fileName == "git_repo_details") globalThis.gitRepoDetails = fileContent
 		contentFiles[fileName] = fileContent
+
+		if(fileName == "git_repo_details") globalThis.gitRepoDetails = fileContent
+		if(fileName == "_index") {
+			const compileDate = fileContent?.compileDate
+			if(!compileDate) throw new Error("\"_index.json\" file does not contain a \"compileDate\" property.")
+			if(isNaN(new Date(compileDate).getTime())) throw new Error(`"compileDate" property in "_index.json" is not a valid date. Found: ${compileDate}`)
+			if(new Date(compileDate) > new Date()) throw new Error(`"compileDate" property in "_index.json" is in the future. Found: ${compileDate}`)
+			if(new Date(compileDate) < new Date(Date.now() - (1000 * 60 * 60 * 24 * 7)) && process.env.NODE_ENV != "production") console.warn(`⚠️ "compileDate" property in "_index.json" is older than 7 days. Found: ${compileDate}\n  Consider recompiling the content if you are in development mode.`)
+		}
 	})
 
 	console.log(`Starting the server...          (took ${(Math.round(performance.now() - perfNow) / 1000).toFixed(3)}s)`)
