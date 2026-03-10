@@ -2,6 +2,7 @@
 slug: blog-demo-features
 visibility: hidden
 Post_ReleaseDate: 2026-03-03
+Post_EditDate: 2026-03-10
 Post_Author: Johan
 ---
 # Headers
@@ -29,11 +30,10 @@ Post_Author: Johan
 - **Bold**.
 - __Underline__.
 - ~~Strikethrough~~.
+- Images, videos and tables can be added through basic markdown methods.
 
 1. You can also use
 2. Numbered list.
-
-- Images, videos and tables can be added through basic markdown methods.
 
 # Frontmatter
 
@@ -46,6 +46,7 @@ Post_Author: Johan
 | `Post_Date`        | Epoch for this project (if the post is about a project), format: `year - year` or `year - Present` | `2024 - Present`                         |
 | `Post_Theme`       | Themes of this post / project                                                                      |                                          |
 | `Post_ReleaseDate` | When did this post was written/published                                                           | `03/03/2026`                             |
+| `Post_EditDate`    | When was the last edit of this post.                                                               | `10/03/2026`                             |
 | `Post_CoAuthors`   | People who helped with this project or this blog post, can include hyperlinks, separated by commas |                                          |
 | `Download_Android` | Download link for Android, if the post is about an Android app                                     | `https://dl.bassinecorp.fr/…?os=android` |
 | `Download_iOS`     | Download link for iOS, if the post is about an iOS app                                             | `https://dl.bassinecorp.fr/…?os=ios`     |
