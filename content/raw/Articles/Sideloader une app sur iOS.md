@@ -1,6 +1,7 @@
 ---
 slug: sideload-ios
 Post_ReleaseDate: 2026-02-15
+Post_EditDate: 2026-03-10
 Post_Theme: Sideloading, Third Party Store, iOS
 Post_Author: Johan
 ---
@@ -66,6 +67,8 @@ Le sideloading ouvre la porte à des applications qu’Apple a refusées, ou mê
 
 SideStore est un « fork » d’AltStore qui présente un avantage majeur : une fois installé, vous n’avez plus besoin d’ordinateur pour installer ou rafraîchir vos apps. Il utilise un VPN local pour tromper l’iPhone et lui faire croire qu’il communique avec un serveur de développement. *Tiré de [ce tutoriel](https://gist.github.com/sinceohsix/688637ac04695d1ff38f844acc8ba7f3)*.
 
+> ⚠️ Apple a récemment apporté des modifications dans iOS 26.4 qui empêchent l’utilisation de SideStore. Vous pouvez suivre [cette issue](https://github.com/LiveContainer/LiveContainer/issues/1152#issuecomment-3977095338) pour plus d’informations.
+
 1. Sur votre PC, téléchargez et ouvrez le logiciel [iloader](https://github.com/nab138/iloader/releases/latest). Celui-ci permettra d’installer SideStore dans un premier temps.
 2. Dans iloader, entrez vos identifiants Apple ID dans le champ dédié, et cliquez sur « Login ». ![[iossideloading_iloader.png]]
 3. Branchez votre iPhone à votre ordinateur et cliquez sur son nom dans la liste d’appareils pour le sélectionner comme cible. S’il n’apparait pas, vous pouvez utiliser le bouton « Refresh » pour actualiser la liste d’appareils.
@@ -80,6 +83,8 @@ SideStore est prêt à être utilisé ! Vous pouvez à présent installer les ap
 > 💡 Pour ne pas penser au rafraîchissement de SideStore, vous pouvez utiliser l’app Raccourcis pour créer une automatisation qui le fait à votre place à une certaine heure par exemple. Pour cela, vous devrez activer « Background Refresh » dans les réglages de SideStore.
 
 ## Remplacer SideStore par Live Container ^install-live-container
+
+> ⚠️ Apple a récemment apporté des modifications dans iOS 26.4 qui empêchent l’utilisation de SideStore, avec ou sans Live Container. Vous pouvez suivre [cette issue](https://github.com/LiveContainer/LiveContainer/issues/1152#issuecomment-3977095338) pour plus d’informations.
 
 1. Si vous n’avez pas déjà [installé SideStore](#install-sidestore), revenez en arrière et effectuez toutes les étapes nécessaires.
 2. Sur votre iPhone, téléchargez « [LiveContainer+SideStore.ipa](https://github.com/LiveContainer/LiveContainer/releases/latest/) » depuis le [dépôt GitHub](https://github.com/LiveContainer/LiveContainer/) de Live Container. La version « Nightly » contient plus de fonctionnalités et est plus récente, mais est expérimentale et n’est pas recommandée pour tout le monde.
