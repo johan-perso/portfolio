@@ -90,10 +90,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 			}
 
 			// If we finished loading, speed up the loading
-			else if(finishedLoading && intervalDelay > 5 && mainResourcesLoaded && incrementLevel != 2.5 && incrementLevel != 4) {
+			else if(finishedLoading && intervalDelay > 5 && mainResourcesLoaded && incrementLevel != 2.5 && incrementLevel != 4 && incrementLevel != 6) {
 				intervalDelay = 45
-				incrementLevel = Date.now() - startTime > 500 ? 2.5 : 4
-				console.log(`Speeding up loader interval to ${intervalDelay}ms`)
+				incrementLevel = Date.now() - startTime > 500
+					? 2.5 // if loading took more than 0.5s, use 2.5% increments
+					: Date.now() - startTime > 350
+						? 4 // if loading took more than 0.3s, use 2.5% increments
+						: 6 // if loading was very fast, use 6% increments to make it look smoother
+				console.log(`Speeding up loader interval to ${intervalDelay}ms and increment level to ${incrementLevel}% (finished loading)`)
 				updateInterval()
 			}
 		}, intervalDelay)
