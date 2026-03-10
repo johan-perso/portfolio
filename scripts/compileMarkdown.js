@@ -377,7 +377,7 @@ module.exports.convertMarkdown = async (
 			}
 
 			contentObject.content += `<div class="flex gap-1.5 ${lastLineType == "metadata" ? "" : lastLineType.startsWith("title") ? "mt-3" : "mt-8"} items-center blogSubHeader">
-				<h${titleLevel} id="${escapeHtml(anchor)}" class="antialiased font-serif font-semibold ${titleLevel > 1 ? "text-primary-content" : "text-primary-content-heavy"} ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
+				<h${titleLevel} id="${escapeHtml(anchor)}" class="antialiased font-serif-alt font-semibold ${titleLevel > 1 ? "text-primary-content-heavy/90" : "text-primary-content-heavy"} ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
 				<a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="text-link focus:underline hover:underline transition-opacity duration-100 opacity-0 focus:opacity-100 hover:opacity-100 ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${(titleLevel > 4 ? 24 : 20) * Math.pow(0.9, titleLevel - 1)}px">#</a>
 			</div>`
 			wentPastFirstTitle = true

@@ -10,7 +10,8 @@ module.exports = {
 			fontFamily: {
 				"header": ["Schibsted Grotesk", "system-ui", "sans-serif"],
 				"body": ["Bricolage Grotesque", "system-ui", "sans-serif"],
-				"serif": ["Noto Serif", "Literata", "Bricolage Grotesque", "serif"],
+				"serif": ["Noto Serif", "Literata", "IBM Plex Serif", "Bricolage Grotesque", "serif"],
+				"serif-alt": ["IBM Plex Serif", "Literata", "Noto Serif", "Bricolage Grotesque", "serif"],
 				"mono": ["SFMono-Regular", "ui-monospace", "Menlo", "Hack", "Monaco", "Consolas", "monospace"],
 			},
 			colors: {
