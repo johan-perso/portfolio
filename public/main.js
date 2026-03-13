@@ -564,7 +564,7 @@ async function hideLoader(instant = false){
 }
 
 // ========== Haptics/Audios Feedbacks
-function haptic(type) { // eslint-disable-line no-unused-vars
+async function haptic(type, pulseAmount = 3) { // eslint-disable-line no-unused-vars
 	if(!["click", "light", "pulse"].includes(type)) throw new Error(`Haptic: Invalid haptic type: ${type}`)
 
 	if(!navigator.vibrate && !isIOS) throw new Error("Haptic: Vibration API not supported on this device (navigator.vibrate missing, system is not iOS).")
@@ -577,33 +577,33 @@ function haptic(type) { // eslint-disable-line no-unused-vars
 	case "light":
 		console.log("Haptic: light")
 		if(navigator.vibrate) navigator.vibrate(40)
-		else if(isIOS) for (let i = 0; i < 4; i++) {
+		else if(isIOS) for (let i = 0; i < 10; i++) {
 			_ios_haptic()
-			setTimeout(() => {}, 10)
+			await new Promise(resolve => setTimeout(resolve, 3))
 		}
 		break
 	case "pulse":
 		console.log("Haptic: pulse")
-		if(navigator.vibrate) navigator.vibrate([30, 40, 30])
-		else if(isIOS) for (let i = 0; i < 2; i++) {
+		if(navigator.vibrate) navigator.vibrate([pulseAmount * 40, 50].flat())
+		else if(isIOS) for (let i = 0; i < pulseAmount; i++) {
 			_ios_haptic()
-			setTimeout(() => {}, 60)
+			await new Promise(resolve => setTimeout(resolve, 90))
 		}
 		break
 	}
 }
 function _ios_haptic() {
 	console.log("Triggered _ios_haptic")
-	const name = `ios-haptic-${Date.now()}`
+	const inputId = `ios-haptic-${Date.now()}`
 
 	const input = document.createElement("input")
 	input.setAttribute("type", "checkbox")
-	input.setAttribute("name", name)
+	input.setAttribute("id", inputId)
 	input.setAttribute("switch", "")
 	input.style.display = "none"
 
 	const label = document.createElement("label")
-	label.setAttribute("for", name)
+	label.setAttribute("for", inputId)
 	label.appendChild(input)
 	label.style.display = "none"
 
