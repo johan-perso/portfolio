@@ -135,6 +135,7 @@ window.onload = async function(){
 	mainResourcesLoaded = true
 	console.log("All resources finished loading! (event onload called)")
 
+	adjustSegmentedControlSlider("human") // ensure slider is well positioned on load
 	switchInterface("human", true) // performs initial width math operations
 	window.onresize() // perform initial width adjustments
 	initDropdown()
@@ -294,6 +295,7 @@ var isSwitching = false
 async function switchInterface(mode, silent = false) {
 	console.log(`Switching interface to "${mode}" mode...`)
 	if(isSwitching) return console.warn("Already switching interface, ignoring new switch request.")
+	if(!document.getElementById("machineViewContent")) return console.warn("Machine view content element not found, cannot switch interface.")
 	if(!silent) haptic("pulse", 15)
 	isSwitching = true
 
