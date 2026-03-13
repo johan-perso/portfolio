@@ -135,7 +135,7 @@ window.onload = async function(){
 	mainResourcesLoaded = true
 	console.log("All resources finished loading! (event onload called)")
 
-	switchInterface("human") // performs initial width math operations
+	switchInterface("human", true) // performs initial width math operations
 	window.onresize() // perform initial width adjustments
 	initDropdown()
 
@@ -267,16 +267,19 @@ window.onresize = function(force = false){
 window.onhashchange = function(event){
 	if(window.location.hash == "#contact"){
 		highlightSection(document.getElementById("contactSection"))
+		haptic("pulse", 5)
 	} else if(window.location.hash == "#donate"){
 		highlightSection(document.getElementById("donationSection"), true)
+		haptic("pulse", 5)
 	}
 }
 
 // ========== Human/Machine Interface
 var isSwitching = false
-async function switchInterface(mode) {
+async function switchInterface(mode, silent = false) {
 	console.log(`Switching interface to "${mode}" mode...`)
 	if(isSwitching) return console.warn("Already switching interface, ignoring new switch request.")
+	if(!silent) haptic("pulse", 20)
 	isSwitching = true
 
 	const appContainer = document.querySelector(".appContainer")
@@ -363,11 +366,13 @@ function initDropdown() {
 
 	dropdownButton.addEventListener("click", (e) => {
 		e.stopPropagation()
+		haptic("click")
 		toggleDropdown()
 	})
 
 	document.addEventListener("click", (e) => { // close menu by clicking outside
 		if (!dropdownMenu.contains(e.target) && !dropdownButton.contains(e.target)) {
+			haptic("click")
 			closeDropdown()
 		}
 	})
@@ -448,6 +453,7 @@ function showToast(message, duration = 0) {
 		toast.style.textAlign = "center"
 	}
 
+	haptic("light")
 	document.body.appendChild(toast)
 	void toast.offsetWidth // force trigger animation
 	if(!isShortScreen) toast.style.transform = "translateY(0)"
@@ -468,6 +474,7 @@ function showToast(message, duration = 0) {
 		})
 	}
 	toastsTimeout[randomId] = setTimeout(() => {
+		haptic("click")
 		toastsClearFunctions[randomId]()
 		delete toastsTimeout[randomId]
 		delete toastsClearFunctions[randomId]
@@ -485,6 +492,7 @@ function highlightSection(section, smallShadow = false) {
 		return
 	}
 
+	haptic("click")
 	section.scrollIntoView({
 		behavior: "smooth",
 		block: "center"
@@ -500,6 +508,8 @@ function highlightSection(section, smallShadow = false) {
 
 	// Wait for scroll to finish before applying highlight
 	setTimeout(() => {
+		haptic("click")
+
 		// Dim other elements
 		for(var elem of elementsToHideOnHighlight) {
 			if(!elem) continue
@@ -525,6 +535,8 @@ function highlightSection(section, smallShadow = false) {
 
 	// Revert styles after a short moment
 	setTimeout(() => {
+		haptic("click")
+
 		for(var elem of elementsToHideOnHighlight) {
 			if(!elem) continue
 			if(section == elem || elem.classList.contains("highlighting")) continue // skip highlighted section itself
@@ -564,7 +576,7 @@ async function hideLoader(instant = false){
 }
 
 // ========== Haptics/Audios Feedbacks
-async function haptic(type, pulseAmount = 3) { // eslint-disable-line no-unused-vars
+async function haptic(type, pulseAmount = 3) {
 	if(!["click", "light", "pulse"].includes(type)) throw new Error(`Haptic: Invalid haptic type: ${type}`)
 
 	if(!navigator.vibrate && !isIOS) throw new Error("Haptic: Vibration API not supported on this device (navigator.vibrate missing, system is not iOS).")
@@ -616,6 +628,7 @@ function goBack(event) { // eslint-disable-line no-unused-vars
 	if(event) {
 		event.preventDefault()
 		event.stopPropagation()
+		haptic("click")
 	}
 
 	const fromParamsInThisUrl = new URLSearchParams(window.location.search).get("from")
@@ -677,12 +690,14 @@ function copyLlmsTxt() { // eslint-disable-line no-unused-vars
 	if(!preloaded.llmsTxt) {
 		showToast("La page est toujours en cours de chargement, veuillez réessayer dans un instant.")
 		console.warn("llms.txt is not preloaded, cannot copy.")
+		haptic("pulse")
 	} else {
 		navigator.clipboard.writeText(preloaded.llmsTxt)
 		showToast("Le résumé du site au format Markdown a été copié !")
 	}
 
 	setTimeout(() => {
+		haptic("click")
 		AiBrandIcon.classList.remove("text-green-600")
 	}, 3000)
 }
@@ -713,6 +728,7 @@ function copyMachineView() { // eslint-disable-line no-unused-vars
 	navigator.clipboard.writeText(textContent.trim())
 
 	if(isAnimatingCopy) return console.warn("Already animating copy, ignoring new copy request.")
+	haptic("click")
 	isAnimatingCopy = true
 
 	const copyIcon = document.getElementById("machineViewCopyIcon")
@@ -723,12 +739,15 @@ function copyMachineView() { // eslint-disable-line no-unused-vars
 		checkIcon.classList.remove("opacity-0", "scale-50")
 		checkIcon.classList.add("opacity-100", "scale-100")
 
+		haptic("click")
+
 		setTimeout(() => {
 			// Crossfade back: check icon out, copy icon in
 			checkIcon.classList.add("opacity-0", "scale-50")
 			checkIcon.classList.remove("opacity-100", "scale-100")
 			copyIcon.classList.remove("opacity-0", "scale-50")
 
+			haptic("click")
 			isAnimatingCopy = false
 		}, 2000)
 	}
