@@ -3,7 +3,6 @@ slug: bachero-end
 Post_ReleaseDate: 2026-03-11
 Post_Date: 2022 - 2024
 Post_Author: Johan
-visibility: hidden
 ---
 Bachero était un bot Discord qui avait pour but de proposer une alternative puissante aux autres robots disponibles sur la plateforme. Son principal atout était la possibilité de l’héberger soi-même pour sa propre communauté, avec une personnalisation maximale.
 
