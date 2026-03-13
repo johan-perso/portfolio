@@ -20,6 +20,7 @@ window.onerror = async function(error){
 }
 
 // ========== Main Variables
+const isIOS = (/iPad|iPhone|iPod/.test(navigator.userAgent || navigator.platform)) && !window.MSStream
 const constrainedWidthContainersIds = ["newsBannerContainer", "othersTextualAboutMeSections"]
 var elementsToHideOnHighlight = []
 var elementsToHideOnHighlightProperties = {}
@@ -219,7 +220,7 @@ window.onload = async function(){
 
 	hasMainLoadFunctionsRun = true
 
-	document.querySelector("#skill_student > div > p > span.skill_additional").setAttribute("title", `Très exactement ${((Date.now() - new Date("2008-03-07")) / 31557600000).toFixed(7)} ans 🤓`)
+	document.querySelector("#skill_student > div > p > span.skill_additional")?.setAttribute("title", `Très exactement ${((Date.now() - new Date("2008-03-07")) / 31557600000).toFixed(7)} ans 🤓`)
 }
 
 window.onresize = function(force = false){
@@ -287,14 +288,14 @@ async function switchInterface(mode) {
 	if(mode == "machine") {
 		adjustSegmentedControlSlider(mode)
 
-		humanBtn.classList.add("hover:shadow-inner")
-		machineBtn.classList.remove("hover:shadow-inner")
-		machineBtn.setAttribute("disabled", "true")
-		humanBtn.removeAttribute("disabled")
+		humanBtn?.classList.add("hover:shadow-inner")
+		machineBtn?.classList.remove("hover:shadow-inner")
+		machineBtn?.setAttribute("disabled", "true")
+		humanBtn?.removeAttribute("disabled")
 		await new Promise(resolve => setTimeout(resolve, 350))
 
 		document.documentElement.style.overflow = "hidden"
-		appContainer.style.overflow = "hidden"
+		if(appContainer) appContainer.style.overflow = "hidden"
 		if(machineViewContent) {
 			machineViewContent.classList.remove("hidden", "pointer-events-none")
 			await new Promise(resolve => setTimeout(resolve, 50))
@@ -305,12 +306,14 @@ async function switchInterface(mode) {
 		}
 
 		await new Promise(resolve => setTimeout(resolve, 700))
-		appContainer.style.display = "none"
+		if(appContainer) appContainer.style.display = "none"
 		document.documentElement.style.overflow = ""
 	} else if(mode == "human") {
 		document.documentElement.style.overflow = "hidden"
-		appContainer.style.display = ""
-		appContainer.style.overflow = "hidden"
+		if(appContainer) {
+			appContainer.style.display = ""
+			appContainer.style.overflow = "hidden"
+		}
 		if(machineViewContent) {
 			machineViewContent.classList.add("pointer-events-none")
 			machineViewContent.classList.add("opacity-0", "scale-95")
@@ -321,15 +324,15 @@ async function switchInterface(mode) {
 			await new Promise(resolve => setTimeout(resolve, 700))
 			machineViewContent.classList.add("hidden")
 		}
-		appContainer.style.overflow = ""
+		if(appContainer) appContainer.style.overflow = ""
 		document.documentElement.style.overflow = ""
 
 		adjustSegmentedControlSlider(mode)
 
-		machineBtn.classList.add("hover:shadow-inner")
-		humanBtn.classList.remove("hover:shadow-inner")
-		humanBtn.setAttribute("disabled", "true")
-		machineBtn.removeAttribute("disabled")
+		machineBtn?.classList.add("hover:shadow-inner")
+		humanBtn?.classList.remove("hover:shadow-inner")
+		humanBtn?.setAttribute("disabled", "true")
+		machineBtn?.removeAttribute("disabled")
 
 		window.onresize(true) // readjust widths and segmented control slider
 	}
@@ -341,6 +344,7 @@ function adjustSegmentedControlSlider(interfaceMode) {
 	const humanBtn = document.getElementById("segmentedControl-button-human")
 	const machineBtn = document.getElementById("segmentedControl-button-machine")
 	const slider = document.getElementById("slider")
+	if(!humanBtn || !machineBtn || !slider) return
 
 	if(interfaceMode == "human") {
 		slider.style.left = `${humanBtn.offsetLeft}px`
@@ -559,6 +563,54 @@ async function hideLoader(instant = false){
 	}, 100)
 }
 
+// ========== Haptics/Audios Feedbacks
+function haptic(type) { // eslint-disable-line no-unused-vars
+	if(!["click", "light", "pulse"].includes(type)) throw new Error(`Haptic: Invalid haptic type: ${type}`)
+
+	if(!navigator.vibrate && !isIOS) throw new Error("Haptic: Vibration API not supported on this device (navigator.vibrate missing, system is not iOS).")
+	switch (type) {
+	case "click":
+		console.log("Haptic: click")
+		if(navigator.vibrate) navigator.vibrate(10)
+		else if(isIOS) _ios_haptic()
+		break
+	case "light":
+		console.log("Haptic: light")
+		if(navigator.vibrate) navigator.vibrate(40)
+		else if(isIOS) for (let i = 0; i < 4; i++) {
+			_ios_haptic()
+			setTimeout(() => {}, 10)
+		}
+		break
+	case "pulse":
+		console.log("Haptic: pulse")
+		if(navigator.vibrate) navigator.vibrate([30, 40, 30])
+		else if(isIOS) for (let i = 0; i < 2; i++) {
+			_ios_haptic()
+			setTimeout(() => {}, 60)
+		}
+		break
+	}
+}
+function _ios_haptic() {
+	console.log("Triggered _ios_haptic")
+	const name = `ios-haptic-${Date.now()}`
+
+	const input = document.createElement("input")
+	input.setAttribute("type", "checkbox")
+	input.setAttribute("name", name)
+	input.setAttribute("switch", "")
+	input.style.display = "none"
+
+	const label = document.createElement("label")
+	label.setAttribute("for", name)
+	label.appendChild(input)
+	label.style.display = "none"
+
+	document.body.appendChild(label)
+	label.click()
+}
+
 // ========== Others Features
 function goBack(event) { // eslint-disable-line no-unused-vars
 	if(event) {
@@ -576,10 +628,12 @@ function goBack(event) { // eslint-disable-line no-unused-vars
 	}
 }
 function disableCopyMarkdownButton() {
-	document.getElementById("aidropdown-copymarkdown").setAttribute("disabled", "true")
-	document.getElementById("aidropdown-copymarkdown").setAttribute("href", "")
-	document.getElementById("aidropdown-copymarkdown").classList.add("cursor-not-allowed", "opacity-50")
-	document.getElementById("aidropdown-copymarkdown").classList.remove("hover:scale-[1.015]", "hover:bg-light-background")
+	const aiDropdownCopyMarkdown = document.getElementById("aidropdown-copymarkdown")
+	if(!aiDropdownCopyMarkdown) return
+	aiDropdownCopyMarkdown.setAttribute("disabled", "true")
+	aiDropdownCopyMarkdown.setAttribute("href", "")
+	aiDropdownCopyMarkdown.classList.add("cursor-not-allowed", "opacity-50")
+	aiDropdownCopyMarkdown.classList.remove("hover:scale-[1.015]", "hover:bg-light-background")
 }
 function applyDynamicEllipsis() {
 	document.querySelectorAll(".dynamic-ellipsis").forEach(el => {

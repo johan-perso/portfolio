@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr" class="bg-primary-background scroll-smooth">
+<head>
+	<DefaultHead></DefaultHead>
+
+	<script src="/main.js"></script>
+</head>
+<body class="font-body text-sm leading-5">
+	<JsRequired></JsRequired>
+	<Loader></Loader>
+
+	<div class="p-4 m-8 flex items-center">
+		<div>
+			<button onclick="haptic('click')" class="px-4 py-2 bg-neutral-800 text-primary-background rounded">Haptic: Click</button>
+			<button onclick="haptic('light')" class="px-4 py-2 bg-neutral-800 text-primary-background rounded">Haptic: Light</button>
+			<button onclick="haptic('pulse')" class="px-4 py-2 bg-neutral-800 text-primary-background rounded">Haptic: Pulse</button>
+		</div>
+	</div>
+</body>
+</html>
