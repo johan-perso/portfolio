@@ -24,7 +24,7 @@ const contentFiles = {
 }
 const mainVersion = require("./package.json").version
 
-const cachesEligibleExt = [".png", ".jpg", ".svg", ".webp", ".gif", ".mp4", ".ttf", ".woff2", ".json", ".css", ".js"]
+const cachesEligibleExt = [".png", ".jpg", ".svg", ".webp", ".gif", ".mp3", ".mp4", ".ttf", ".woff2", ".json", ".css", ".js"]
 function isEligibleForCache(filePath) {
 	return cachesEligibleExt.includes(path.extname(filePath))
 }

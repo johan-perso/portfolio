@@ -1,6 +1,7 @@
 <a
 	id="smallprojectcard_{{ this.componentAttribs.projectname ? this.componentAttribs.projectname.toLowerCase().replace(/\s+/g, '') : 'untitled' }}"
 	href="{{ $href }}"
+	onclick="playAudio('haptic'); haptic('click')"
 	target="_blank"
 	class="bentoCard rounded-[18px] w-full h-full relative transform hover:scale-[1.01] transition-all duration-300 {{ $class }}"
 >

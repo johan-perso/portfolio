@@ -218,6 +218,21 @@ window.onload = async function(){
 		}
 	})
 
+	const audiosToPreload = [
+		{ name: "haptic", src: "/medias/audios/haptic.mp3" },
+		{ name: "notif", src: "/medias/audios/notif.mp3" },
+		{ name: "switch", src: "/medias/audios/switch.mp3" },
+	]
+	for(const audioInfo of audiosToPreload) {
+		try {
+			console.log(`Preloading audio "${audioInfo.name}" from "${audioInfo.src}"...`)
+			preloaded[audioInfo.name] = new Audio(audioInfo.src)
+			preloaded[audioInfo.name].load()
+		} catch(error) {
+			console.error(`Failed to preload audio "${audioInfo.name}":`, error)
+		}
+	}
+
 	hasMainLoadFunctionsRun = true
 
 	document.querySelector("#skill_student > div > p > span.skill_additional")?.setAttribute("title", `Très exactement ${((Date.now() - new Date("2008-03-07")) / 31557600000).toFixed(7)} ans 🤓`)
@@ -301,6 +316,7 @@ async function switchInterface(mode, silent = false) {
 		if(appContainer) appContainer.style.overflow = "hidden"
 		if(machineViewContent) {
 			machineViewContent.classList.remove("hidden", "pointer-events-none")
+			if(!silent) playAudio("switch")
 			await new Promise(resolve => setTimeout(resolve, 50))
 			machineViewContent.classList.add("opacity-100", "scale-100")
 			machineViewContent.classList.remove("opacity-0", "scale-95")
@@ -324,6 +340,7 @@ async function switchInterface(mode, silent = false) {
 			machineViewContent.style.borderRadius = "16px"
 			machineViewContent.style.boxShadow = "0 0 60px 30px rgba(0,0,0,0.4)"
 
+			if(!silent) playAudio("switch")
 			await new Promise(resolve => setTimeout(resolve, 700))
 			machineViewContent.classList.add("hidden")
 		}
@@ -368,6 +385,7 @@ function initDropdown() {
 	dropdownButton.addEventListener("click", (e) => {
 		e.stopPropagation()
 		haptic("click")
+		playAudio("haptic")
 		toggleDropdown()
 	})
 
@@ -408,11 +426,11 @@ function closeDropdown() {
 	isDropdownOpen = false
 
 	haptic("click")
+	playAudio("haptic")
 	dropdownMenu.style.opacity = "0"
 	dropdownMenu.style.transform = "scaleY(0.95)"
 
 	setTimeout(() => {
-		haptic("click")
 		dropdownMenu.classList.add("hidden")
 	}, 150)
 
@@ -460,6 +478,7 @@ function showToast(message, duration = 0) {
 	}
 
 	haptic("light")
+	playAudio("notif")
 	document.body.appendChild(toast)
 	void toast.offsetWidth // force trigger animation
 	if(!isShortScreen) toast.style.transform = "translateY(0)"
@@ -562,7 +581,6 @@ function highlightSection(section, smallShadow = false) {
 function incrementLoader(percentage) {
 	loadingCurrentIncrement += percentage
 	console.log(`Incrementing loader to ${loadingCurrentIncrement}% (+${percentage}%)`)
-	// var adjustedPercentage = (loadingCurrentIncrement / 70) * 100 // adjust to max 70% for visual effect
 	if(loadingCurrentIncrement > 100) loadingCurrentIncrement = 100
 	document.getElementById("loader__progressBar").style.width = `${loadingCurrentIncrement}%`
 }
@@ -582,6 +600,15 @@ async function hideLoader(instant = false){
 }
 
 // ========== Haptics/Audios Feedbacks
+function playAudio(name) {
+	if(!preloaded[name]) return console.warn(`Audio "${name}" not found in preloaded audios.`)
+	try {
+		preloaded[name].currentTime = 0
+		preloaded[name].play()
+	} catch(error) {
+		console.error(`Failed to play audio "${name}":`, error)
+	}
+}
 async function haptic(type, pulseAmount = 3) {
 	if(!["click", "light", "pulse"].includes(type)) throw new Error(`Haptic: Invalid haptic type: ${type}`)
 
@@ -647,6 +674,7 @@ function goBack(event) { // eslint-disable-line no-unused-vars
 		event.preventDefault()
 		event.stopPropagation()
 		haptic("click")
+		playAudio("haptic")
 	}
 
 	const fromParamsInThisUrl = new URLSearchParams(window.location.search).get("from")
@@ -736,7 +764,6 @@ function copyCryptoAddress(crypto) { // eslint-disable-line no-unused-vars
 	default:
 		console.warn(`Unknown crypto type: ${crypto}`)
 		showToast("Type de cryptomonnaie inconnu, veuillez signalez ce problème.")
-
 	}
 }
 var isAnimatingCopy = false
@@ -747,6 +774,7 @@ function copyMachineView() { // eslint-disable-line no-unused-vars
 
 	if(isAnimatingCopy) return console.warn("Already animating copy, ignoring new copy request.")
 	haptic("click")
+	playAudio("haptic")
 	isAnimatingCopy = true
 
 	const copyIcon = document.getElementById("machineViewCopyIcon")
@@ -757,15 +785,12 @@ function copyMachineView() { // eslint-disable-line no-unused-vars
 		checkIcon.classList.remove("opacity-0", "scale-50")
 		checkIcon.classList.add("opacity-100", "scale-100")
 
-		haptic("click")
-
 		setTimeout(() => {
 			// Crossfade back: check icon out, copy icon in
 			checkIcon.classList.add("opacity-0", "scale-50")
 			checkIcon.classList.remove("opacity-100", "scale-100")
 			copyIcon.classList.remove("opacity-0", "scale-50")
 
-			haptic("click")
 			isAnimatingCopy = false
 		}, 2000)
 	}
