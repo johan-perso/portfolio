@@ -15,7 +15,7 @@ window.onerror = async function(error){
 		document.getElementById("loader__error").innerText = error.message || error.stack || error
 		document.getElementById("loader__error").classList.remove("hidden")
 	} else {
-		console.log("(Error Grabber) Loader isn't present on page.")
+		console.log("(Error Grabber) Loader isn't present on page, skipping display to user.")
 	}
 }
 
@@ -279,7 +279,7 @@ var isSwitching = false
 async function switchInterface(mode, silent = false) {
 	console.log(`Switching interface to "${mode}" mode...`)
 	if(isSwitching) return console.warn("Already switching interface, ignoring new switch request.")
-	if(!silent) haptic("pulse", 20)
+	if(!silent) haptic("pulse", 15)
 	isSwitching = true
 
 	const appContainer = document.querySelector(".appContainer")
@@ -359,6 +359,7 @@ function adjustSegmentedControlSlider(interfaceMode) {
 }
 
 // ========== Dropdown
+var isDropdownOpen = false
 function initDropdown() {
 	const dropdownButton = document.getElementById("dropdown-button")
 	const dropdownMenu = document.getElementById("dropdown-menu")
@@ -371,8 +372,8 @@ function initDropdown() {
 	})
 
 	document.addEventListener("click", (e) => { // close menu by clicking outside
-		if (!dropdownMenu.contains(e.target) && !dropdownButton.contains(e.target)) {
-			haptic("click")
+		if (!e.isTrusted) return console.warn("Ignoring an untrusted click event (it may come from JS haptics)")
+		if (isDropdownOpen && !dropdownMenu.contains(e.target) && !dropdownButton.contains(e.target) && !dropdownMenu.classList.contains("hidden")) {
 			closeDropdown()
 		}
 	})
@@ -392,6 +393,7 @@ function toggleDropdown() {
 				dropdownMenu.style.opacity = "1"
 				dropdownMenu.style.transform = "scaleY(1)"
 			})
+			isDropdownOpen = true
 		}, 10)
 
 		dropdownChevron.style.transform = "rotate(180deg)"
@@ -402,11 +404,15 @@ function closeDropdown() {
 	const dropdownMenu = document.getElementById("dropdown-menu")
 	const dropdownChevron = document.getElementById("dropdown-chevron")
 	if(!dropdownMenu || !dropdownChevron) return
+	if(dropdownMenu.classList.contains("hidden")) return
+	isDropdownOpen = false
 
+	haptic("click")
 	dropdownMenu.style.opacity = "0"
 	dropdownMenu.style.transform = "scaleY(0.95)"
 
 	setTimeout(() => {
+		haptic("click")
 		dropdownMenu.classList.add("hidden")
 	}, 150)
 
@@ -604,22 +610,34 @@ async function haptic(type, pulseAmount = 3) {
 		break
 	}
 }
+var _ios_currentHapticLabel = 0
+var _ios_hapticLabels = []
 function _ios_haptic() {
 	console.log("Triggered _ios_haptic")
-	const inputId = `ios-haptic-${Date.now()}`
+	var label
 
-	const input = document.createElement("input")
-	input.setAttribute("type", "checkbox")
-	input.setAttribute("id", inputId)
-	input.setAttribute("switch", "")
-	input.style.display = "none"
+	if(_ios_hapticLabels.length < 5) {
+		const inputId = `ios-haptic-${Date.now()}`
 
-	const label = document.createElement("label")
-	label.setAttribute("for", inputId)
-	label.appendChild(input)
-	label.style.display = "none"
+		const input = document.createElement("input")
+		input.setAttribute("type", "checkbox")
+		input.setAttribute("id", inputId)
+		input.setAttribute("switch", "")
+		input.style.display = "none"
 
-	document.body.appendChild(label)
+		label = document.createElement("label")
+		label.setAttribute("for", inputId)
+		label.appendChild(input)
+		label.style.display = "none"
+
+		document.body.appendChild(label)
+		_ios_hapticLabels.push(label)
+	} else {
+		label = _ios_hapticLabels[_ios_currentHapticLabel]
+		_ios_currentHapticLabel = (_ios_currentHapticLabel + 1) % _ios_hapticLabels.length
+	}
+
+	console.log(`Haptic: Triggering iOS haptic feedback using label click (inputId: ${label.getAttribute("for")} ; _ios_currentHapticLabel index: ${_ios_currentHapticLabel})`)
 	label.click()
 }
 
