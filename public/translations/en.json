@@ -1,0 +1,9 @@
+{
+	"head": {
+		"description": "Someone who just codes some stuff."
+	},
+	"jsRequired": {
+		"title": "JavaScript disabled",
+		"content": "To visit this website, you need to enable JavaScript in your browser settings. <a class='hover:underline text-blue-400' href='https://www.wikihow.com/enable-JavaScript'>Click here</a> to learn more."
+	}
+}

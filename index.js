@@ -5,6 +5,7 @@ const path = require("path")
 const childProcess = require("child_process")
 const { getRelativeTime, getAbsoluteDate } = require("./utils/dateFormatter")
 const getReadingTime = require("./utils/readingTime")
+const { translations } = require("./public/translations/util")
 const roc = require("roc-framework")
 
 const NodeCache = require("node-cache")
@@ -179,21 +180,39 @@ async function startRocServer(){
 			}
 		}
 	}))
-	server.registerRoutes(blogDocuments
-		.map(content => {
-			return {
-				method: "get",
-				path: content.slug || content.url,
-			}
-		}))
+	server.registerRoutes(blogDocuments.flatMap(content => {
+		const path = content.slug || content.url
+		const cleanPath = path.startsWith("/") ? path : `/${path}`
+
+		return [
+			{ method: "get", path: cleanPath }, // routes without language prefix
+			...(Object.keys(translations)).map(lang => ({ method: "get", path: `/${lang}${cleanPath}` })) // routes with language prefixes (ex: /en/example, /fr/example, etc.)
+		]
+	}))
 
 	// Listen for incoming requests
 	server.on("request", async (req, res) => {
 		if(req.method == "GET" && req.simplifiedPath == "version") return res.send(200, mainVersion, { headers: { "Content-Type": "text/plain" } })
 		if(req.method == "GET" && req.simplifiedPath == "blog") return res.redirect(302, "/") // hide template file
 
+		// Extract language prefix (if present) and slug from the request path
+		let cleanPath = (req.path.startsWith("/") ? req.path.substring(1) : req.path) || ""
+		let pathSegments = cleanPath.split("/")
+		let potentialLang = pathSegments[0]
+		let slugToFind = cleanPath
+
+		// If the first segment in the URL looks like a code language (two character), we consider it as a language prefix
+		if (pathSegments.length > 1 && potentialLang.length === 2) {
+			if (!Object.keys(translations).includes(potentialLang)) {
+				// If language prefix is invalid, redirect to english version
+				return res.redirect(302, `/en/${pathSegments.slice(1).join("/")}${req.query ? `?${new URLSearchParams(req.query).toString()}` : ""}`)
+			}
+
+			slugToFind = pathSegments.slice(1).join("/") // remove the language prefix for slug searching
+		}
+
 		// Serve blog documents
-		const foundBlogDocument = contentFiles._index[`${req.path.startsWith("/") ? req.path.substring(1) : req.path}.html`]
+		const foundBlogDocument = contentFiles._index[`${slugToFind}.html`] || contentFiles._index[`${req.path.startsWith("/") ? req.path.substring(1) : req.path}.html`]
 		if(req.method == "GET" && foundBlogDocument) {
 			console.log("=".repeat(50))
 			console.log(`Got a request to ${req.path} - Serving blog document with slug: ${foundBlogDocument.slug || foundBlogDocument.url}`)
@@ -224,7 +243,7 @@ async function startRocServer(){
 				.replace("%%BLOG_ROBOTS_RULES%%", foundBlogDocument?.frontmatter?.visibility == "hidden" ? "noindex" : "index")
 				.replace("%%BLOG_CONTENT%%", blogContent)
 
-			const htmlResponse = await server.renderPage(editedBlogHtml, { route: { file: null, path: req.path } })
+			const htmlResponse = await server.renderPage(editedBlogHtml, { file: path.join(__dirname, "public", "blog_post_template.html"), path: req.path })
 			console.log("=".repeat(50))
 			return res.send(200, htmlResponse, { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
 		}
@@ -240,6 +259,39 @@ async function startRocServer(){
 				return res.sendFile(200, requestedFilePath, { headers: { "Cache-Control": isEligibleForCache(requestedFilePath) ? cacheControlHeader : "no-cache" } })
 			}
 			else return res.send(404, "Not Found", { headers: { "Content-Type": "text/plain" } })
+		}
+
+		// If no langs prefixes, detect user language and redirect with the appropriate lang prefix
+		if(
+			req.method == "GET" &&
+			cleanPath.length &&
+			!Object.keys(translations).includes(potentialLang) &&
+			(
+				res.initialAction.type == "404" ||
+				(res.initialAction.type != "redirect" && res.initialAction.type != "sendJs" && res.initialAction.type != "sendFile")
+			)
+		) {
+			var userLanguage = req.headers["accept-language"] ? req.headers["accept-language"].split(",")[0].split(";")[0].trim().toLowerCase() : "en"
+			if(userLanguage.includes("-")) userLanguage = userLanguage.split("-")[0] // keep only the first part of the language code (ex: "en" from "en-US")
+			if(!Object.keys(translations).includes(userLanguage)) userLanguage = "en" // fallback to english if user language is not supported
+			res.redirect(302, `/${userLanguage}${req.path.startsWith("/") ? req.path : `/${req.path}`}${req.query ? `?${new URLSearchParams(req.query).toString()}` : ""}`)
+			return
+		}
+
+		// Allows accesses pages with langs prefixes
+		if(req.method == "GET" && cleanPath.length && Object.keys(translations).includes(potentialLang)) {
+			const pathWithoutLang = `/${pathSegments.slice(1).join("/")}`
+			var pathWithoutLangWithoutTrailingSlash = pathWithoutLang.endsWith("/") ? pathWithoutLang.slice(0, -1) : pathWithoutLang
+			pathWithoutLangWithoutTrailingSlash = pathWithoutLangWithoutTrailingSlash.startsWith("/") ? pathWithoutLangWithoutTrailingSlash.substring(1) : pathWithoutLangWithoutTrailingSlash
+			pathWithoutLangWithoutTrailingSlash = pathWithoutLangWithoutTrailingSlash.toLowerCase()
+			if(pathWithoutLangWithoutTrailingSlash.length < 1) pathWithoutLangWithoutTrailingSlash = "index"
+			console.log(pathWithoutLangWithoutTrailingSlash)
+
+			const allowedPages = ["index", "articles"]
+			if(allowedPages.includes(pathWithoutLangWithoutTrailingSlash)) {
+				const generatedPage = await server.renderPage(fs.readFileSync(path.join(__dirname, "public", `${pathWithoutLangWithoutTrailingSlash}.html`), "utf-8"), { file: path.join(__dirname, "public", "index.html"), path: req.path })
+				return res.send(200, generatedPage, { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
+			} else return res.redirect(302, `/${potentialLang}/`) // redirect to homepage if the page is not in the allowed list
 		}
 
 		if(res.initialAction.type == "sendHtml") res.send(200, res.initialAction.content, { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
