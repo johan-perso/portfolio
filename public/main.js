@@ -392,13 +392,13 @@ function initDropdown() {
 	})
 
 	document.addEventListener("click", (e) => { // close menu by clicking outside
+		if (e.target && (e.target.getAttribute("id") || "").startsWith("ios-haptic-")) return console.warn("Ignoring click event from iOS haptic feedback element.")
 		if (!e.isTrusted) return console.warn("Ignoring an untrusted click event (it may come from JS haptics)")
 		if (isDropdownOpen && !dropdownMenu.contains(e.target) && !dropdownButton.contains(e.target) && !dropdownMenu.classList.contains("hidden")) {
 			closeDropdown()
 		}
 	})
 }
-
 function toggleDropdown() {
 	const dropdownMenu = document.getElementById("dropdown-menu")
 	const dropdownChevron = document.getElementById("dropdown-chevron")
