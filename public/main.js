@@ -20,6 +20,7 @@ window.onerror = async function(error){
 }
 
 // ========== Main Variables
+const audioContext = new (window.AudioContext || window.webkitAudioContext)()
 const isIOS = (/iPad|iPhone|iPod/.test(navigator.userAgent || navigator.platform)) && !window.MSStream
 const constrainedWidthContainersIds = ["newsBannerContainer", "othersTextualAboutMeSections"]
 var elementsToHideOnHighlight = []
@@ -225,13 +226,7 @@ window.onload = async function(){
 		{ name: "switch", src: "/medias/audios/switch.mp3" },
 	]
 	for(const audioInfo of audiosToPreload) {
-		try {
-			console.log(`Preloading audio "${audioInfo.name}" from "${audioInfo.src}"...`)
-			preloaded[audioInfo.name] = new Audio(audioInfo.src)
-			preloaded[audioInfo.name].load()
-		} catch(error) {
-			console.error(`Failed to preload audio "${audioInfo.name}":`, error)
-		}
+		preloadAudio(audioInfo.name, audioInfo.src)
 	}
 
 	hasMainLoadFunctionsRun = true
@@ -399,6 +394,7 @@ function initDropdown() {
 		}
 	})
 }
+
 function toggleDropdown() {
 	const dropdownMenu = document.getElementById("dropdown-menu")
 	const dropdownChevron = document.getElementById("dropdown-chevron")
@@ -602,13 +598,27 @@ async function hideLoader(instant = false){
 }
 
 // ========== Haptics/Audios Feedbacks
-function playAudio(name) {
-	if(!preloaded[name]) return console.warn(`Audio "${name}" not found in preloaded audios.`)
+async function preloadAudio(name, src) {
 	try {
-		preloaded[name].currentTime = 0
-		preloaded[name].play()
+		const response = await fetch(src)
+		const arrayBuffer = await response.arrayBuffer()
+		preloaded[`${name}_buffer.mp3`] = await audioContext.decodeAudioData(arrayBuffer)
+		console.log(`Audio "${name}" preloaded successfully from "${src}".`)
+	} catch (error) {
+		console.error(`Failed to preload audio "${name}" from "${src}":`, error)
+	}
+}
+function playAudio(name) {
+	const key = `${name}_buffer.mp3`
+	if(!preloaded[key]) return console.warn(`Audio "${name}" not found in preloaded audios (searching "${key}").`)
+
+	try {
+		const source = audioContext.createBufferSource()
+		source.buffer = preloaded[key]
+		source.connect(audioContext.destination)
+		source.start(0)
 	} catch(error) {
-		console.error(`Failed to play audio "${name}":`, error)
+		console.error(`Failed to play audio "${key}":`, error)
 	}
 }
 async function haptic(type, pulseAmount = 3) {
@@ -731,6 +741,41 @@ function swapTwoElements(el1, el2) {
 }
 
 // ========== Copy to Clipboard Functions
+function copyTextToClipboard(text) {
+	if(!navigator.clipboard) {
+		console.warn("CopyClipboard: navigator.clipboard is not available, trying a fallback method.")
+		return _copyTextToClipboard_fallback(text)
+	}
+
+	try {
+		navigator.clipboard.writeText(text)
+	} catch (err) {
+		console.error("CopyClipboard: Catched an error while trying to copy text using navigator.clipboard API:", err)
+		return _copyTextToClipboard_fallback(text)
+	}
+
+	return true
+}
+function _copyTextToClipboard_fallback(text) {
+	const textarea = document.createElement("textarea")
+	textarea.value = text
+	textarea.style.position = "fixed"
+	document.body.appendChild(textarea)
+	textarea.focus()
+	textarea.select()
+
+	try {
+		const successful = document.execCommand("copy")
+		if (!successful) throw new Error("CopyClipboard (Fallback): Copy command was unsuccessful")
+	} catch (err) {
+		console.error("CopyClipboard (Fallback): Catched an error while trying to copy text using execCommand fallback method:", err)
+		return false
+	} finally {
+		document.body.removeChild(textarea)
+	}
+
+	return true
+}
 function copyLlmsTxt() { // eslint-disable-line no-unused-vars
 	var AiBrandIcon = document.getElementById("aidropdown-copymarkdown").querySelector(".AiBrandIcon")
 	AiBrandIcon.classList.add("text-green-600")
@@ -740,8 +785,8 @@ function copyLlmsTxt() { // eslint-disable-line no-unused-vars
 		console.warn("llms.txt is not preloaded, cannot copy.")
 		haptic("pulse")
 	} else {
-		navigator.clipboard.writeText(preloaded.llmsTxt)
-		showToast("Le résumé du site au format Markdown a été copié !")
+		copyTextToClipboard(preloaded.llmsTxt)
+		showToast("Le résumé du site au format Markdown a été copié !")
 	}
 
 	setTimeout(() => {
@@ -752,15 +797,15 @@ function copyLlmsTxt() { // eslint-disable-line no-unused-vars
 function copyCryptoAddress(crypto) { // eslint-disable-line no-unused-vars
 	switch(crypto) {
 	case "eth":
-		navigator.clipboard.writeText("0x1e198e9Df0519bE9E759E8995518D1A5F8025F0a")
+		copyTextToClipboard("0x1e198e9Df0519bE9E759E8995518D1A5F8025F0a")
 		showToast("Adresse Ethereum copiée dans le presse-papier !")
 		break
 	case "btc":
-		navigator.clipboard.writeText("bc1q4ghg2wve6yneadxy58fz5m77jmwyxxtk94jxfj")
+		copyTextToClipboard("bc1q4ghg2wve6yneadxy58fz5m77jmwyxxtk94jxfj")
 		showToast("Adresse Bitcoin copiée dans le presse-papier !")
 		break
 	case "sol":
-		navigator.clipboard.writeText("CfCVJBGqsqiAJ7rDCkUwvMYsmkzSLcjL7CQ1RmBiwfoP")
+		copyTextToClipboard("CfCVJBGqsqiAJ7rDCkUwvMYsmkzSLcjL7CQ1RmBiwfoP")
 		showToast("Adresse Solana copiée dans le presse-papier !")
 		break
 	default:
@@ -772,7 +817,7 @@ var isAnimatingCopy = false
 function copyMachineView() { // eslint-disable-line no-unused-vars
 	const machineViewContent = document.getElementById("machineViewContent")
 	const textContent = machineViewContent?.innerText || machineViewContent?.textContent || ""
-	navigator.clipboard.writeText(textContent.trim())
+	copyTextToClipboard(textContent.trim())
 
 	if(isAnimatingCopy) return console.warn("Already animating copy, ignoring new copy request.")
 	haptic("click")
@@ -801,6 +846,6 @@ function copyHeaderLink(event) { // eslint-disable-line no-unused-vars
 	event.stopPropagation()
 	const hash = event.target.getAttribute("href") || `#${event.currentTarget.id}`
 	location.hash = hash
-	navigator.clipboard.writeText(`${window.location.origin}${window.location.pathname}${hash}`)
+	copyTextToClipboard(`${window.location.origin}${window.location.pathname}${hash}`)
 	showToast("Lien vers cette section copié dans le presse-papier !")
 }
