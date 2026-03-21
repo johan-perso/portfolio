@@ -26,6 +26,7 @@ const contentFiles = {
 	_index: {}
 }
 const mainVersion = require("./package.json").version
+const isProduction = process.env.NODE_ENV === "production"
 
 const cachesEligibleExt = [".png", ".jpg", ".svg", ".webp", ".gif", ".mp3", ".mp4", ".ttf", ".woff2", ".json", ".css", ".js"]
 function isEligibleForCache(filePath) {
@@ -53,7 +54,7 @@ async function executeCommandInConsole(command, options = {}){
 
 function getBlogDocument(slug, frontmatter){
 	if(!slug) throw new Error("Slug is required to get a blog document.")
-	if(caches.has(`blogDocument-${slug}`)) {
+	if(isProduction && caches.has(`blogDocument-${slug}`)) {
 		console.log(`Blog document "${slug}" found in cache.`)
 		return caches.get(`blogDocument-${slug}`)
 	}
@@ -82,7 +83,7 @@ function getBlogDocument(slug, frontmatter){
 		readTime,
 		bannerWebPath
 	}
-	caches.set(`blogDocument-${slug}`, toReturn)
+	if(isProduction) caches.set(`blogDocument-${slug}`, toReturn)
 	return toReturn
 }
 
@@ -116,7 +117,7 @@ async function main(){
 			if(!compileDate) throw new Error("\"_index.json\" file does not contain a \"compileDate\" property.")
 			if(isNaN(new Date(compileDate).getTime())) throw new Error(`"compileDate" property in "_index.json" is not a valid date. Found: ${compileDate}`)
 			if(new Date(compileDate) > new Date()) throw new Error(`"compileDate" property in "_index.json" is in the future. Found: ${compileDate}`)
-			if(new Date(compileDate) < new Date(Date.now() - (1000 * 60 * 60 * 24 * 7)) && process.env.NODE_ENV != "production") console.warn(`⚠️ "compileDate" property in "_index.json" is older than 7 days. Found: ${compileDate}\n  Consider recompiling the content if you are in development mode.`)
+			if(new Date(compileDate) < new Date(Date.now() - (1000 * 60 * 60 * 24 * 7))) console.warn(`⚠️ "compileDate" property in "_index.json" is older than 7 days. Found: ${compileDate}\n  Consider recompiling the content if you are in development mode.`)
 		}
 	})
 
