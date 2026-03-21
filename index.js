@@ -224,8 +224,8 @@ async function startRocServer(){
 
 			const { originalBlogHtml, blogContent, readTime, bannerWebPath } = getBlogDocument(foundBlogDocument?.slug, foundBlogDocument?.frontmatter)
 
-			const tocContentHtml = foundBlogDocument.toc.map(tocItem => {
-				const childrensHtml = tocItem.childrens.map(child => `<li><a href="#${child.anchor}" class="toc-link block py-1.5 pl-9 hover:text-link transition-colors">${escapeHtml(child.title)}</a></li>`).join("\n")
+			const tocContentHtml = foundBlogDocument?.toc?.map(tocItem => {
+				const childrensHtml = tocItem?.childrens?.map(child => `<li><a href="#${child.anchor}" class="toc-link block py-1.5 pl-9 hover:text-link transition-colors">${escapeHtml(child.title)}</a></li>`).join("\n")
 				return `<li>
 					<a href="#${tocItem.anchor}" class="toc-link block py-1.5 pl-7 hover:text-link transition-colors">${escapeHtml(tocItem.title)}</a>
 					<ul class="flex flex-col">
@@ -257,6 +257,7 @@ async function startRocServer(){
 				.replace("%%BLOG_ROBOTS_RULES%%", foundBlogDocument?.frontmatter?.visibility == "hidden" ? "noindex" : "index")
 				.replace("%%BLOG_CONTENT%%", blogContent)
 				.replace("%%BLOG_TOC%%", tocComponentHtml.replace("%%TOC_CONTENT%%", tocContentHtml))
+				.replace("%%TOC_CLASSES%%", foundBlogDocument?.toc?.length > 0 ? "" : "hidden")
 
 			const htmlResponse = await server.renderPage(editedBlogHtml, { file: path.join(__dirname, "public", "blog_post_template.html"), path: req.path })
 			console.log("=".repeat(50))
@@ -300,7 +301,6 @@ async function startRocServer(){
 			pathWithoutLangWithoutTrailingSlash = pathWithoutLangWithoutTrailingSlash.startsWith("/") ? pathWithoutLangWithoutTrailingSlash.substring(1) : pathWithoutLangWithoutTrailingSlash
 			pathWithoutLangWithoutTrailingSlash = pathWithoutLangWithoutTrailingSlash.toLowerCase()
 			if(pathWithoutLangWithoutTrailingSlash.length < 1) pathWithoutLangWithoutTrailingSlash = "index"
-			console.log(pathWithoutLangWithoutTrailingSlash)
 
 			const allowedPages = ["index", "articles"]
 			if(allowedPages.includes(pathWithoutLangWithoutTrailingSlash)) {
