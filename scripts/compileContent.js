@@ -107,6 +107,7 @@ async function main(){
 				slug: file.filename,
 				title: (path.extname(originalFilenameTitle).length ? originalFilenameTitle.slice(0, -path.extname(originalFilenameTitle).length) : originalFilenameTitle).normalize("NFC").replace(", ", " : "),
 				firstParagraph: result.firstParagraph,
+				toc: result.toc,
 				frontmatter: {
 					...file.frontMatter,
 				},

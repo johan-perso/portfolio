@@ -5,17 +5,11 @@ const fs = require("fs")
 const path = require("path")
 const stripMarkdown = require("../utils/stripMarkdown")
 const { svgPaths } = require("../utils/svgPaths")
+const { escapeHtml } = require("../utils/normalization")
 
 const components = {
 	"callout": fs.readFileSync(path.join(__dirname, "..", "public", "components", "Callout.html"), "utf-8"),
 	"primarybutton": fs.readFileSync(path.join(__dirname, "..", "public", "components", "PrimaryButton.html"), "utf-8")
-}
-
-function escapeHtml(text){
-	if(!text) return text
-	if(typeof text != "string") return text
-	text = normalizeText(text)
-	return text?.replace(/&(?!(?:amp|lt|gt|quot|apos);)/g, "&amp")?.replace(/</g, "&lt;")?.replace(/>/g, "&gt;")?.replace(/"/g, "&quot;")?.replace(/'/g, "&apos;").replace(/’/g, "&apos;")
 }
 
 function extractLinkAndText(markdownLink) {
@@ -34,17 +28,6 @@ function checkForBasicMarkdownSyntax(text){ // check for bold, italic, strikethr
 		.replace(/(\*|_)(?:(?!\1|<[^>]*>)(.|\n))*?\1/g, match => `<em class="italic">${escapeHtml(match.slice(1, -1))}</em>`) // italic
 		.replace(/~~(?:(?!~~|<[^>]*>)(.|\n))*?~~/g, match => `<del>${escapeHtml(match.slice(2, -2))}</del>`) // strikethrough
 		.replace(/`(?:(?!`|<[^>]*>)(.|\n))*?`/g, match => `<code>${escapeHtml(match.slice(1, -1))}</code>`) // inline code
-}
-
-function normalizeText(text){
-	if(!text) return text
-	if(typeof text != "string") return text
-	text = text.replace(/\r/g, "").replace(/\t/g, "")
-	text = text.replace(/\n{3,}/g, "\n\n") // replace 3 or more new lines with only 2 new lines
-	text = text.replace(/ {2,}/g, " ") // replace 2 or more spaces with only 1 space
-	text = text.replace(/'/g, "'") // replace special apostrophes with simple ones
-	text = text.replace(/…/g, "...") // replace special ellipsis with three simple points
-	return text.normalize("NFC") // avoid issues wih some unicode characters such as emojis or weird chatgpt-ahh spaces
 }
 
 function addRefInUrl(url, ref){
@@ -118,7 +101,8 @@ module.exports.convertMarkdown = async (
 		warns: [],
 		images: [],
 		metadata: {},
-		content: ""
+		content: "",
+		toc: []
 	}
 
 	const lines = content.split("\n")
@@ -380,6 +364,10 @@ module.exports.convertMarkdown = async (
 				<h${titleLevel} id="${escapeHtml(anchor)}" class="antialiased font-serif-alt font-semibold ${titleLevel > 1 ? "text-primary-content-heavy/90" : "text-primary-content-heavy"} ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
 				<a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="text-link focus:underline hover:underline transition-opacity duration-100 opacity-0 focus:opacity-100 hover:opacity-100 ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${(titleLevel > 4 ? 24 : 20) * Math.pow(0.9, titleLevel - 1)}px">#</a>
 			</div>`
+
+			if(titleLevel == 1) contentObject.toc.push({ title: line, anchor, childrens: [] })
+			if(titleLevel == 2 && contentObject.toc.length) contentObject.toc[contentObject.toc.length - 1].childrens.push({ title: line, anchor })
+
 			wentPastFirstTitle = true
 			lastLineType = `title-${titleLevel}`
 		}
@@ -387,7 +375,7 @@ module.exports.convertMarkdown = async (
 		// bullets points list
 		else if(line.trim().startsWith("- ")){
 			if(currentAction != "ul") {
-				contentObject.content += "<ul class=\"mt-2.5 list-disc list-outside marker-medium pl-5 space-y-1 font-serif\">\n"
+				contentObject.content += `<ul class="${lastLineType == "callout" || lastLineType == "blockquote" ? "mt-4" : "mt-2.5"} list-disc list-outside marker-medium pl-5 space-y-1 font-serif">\n`
 				currentAction_set("ul")
 			}
 			contentObject.content += `<li>${checkForBasicMarkdownSyntax(escapeHtml(line.trim().slice(2)))}</li>\n`
@@ -401,7 +389,7 @@ module.exports.convertMarkdown = async (
 		// numbered list
 		else if(line.trim().match(/^\d+\. /)){
 			if(currentAction != "ol") {
-				contentObject.content += "<ul class=\"mt-2.5 list-decimal list-outside marker-medium pl-5 space-y-1 font-serif\">\n"
+				contentObject.content += `<ul class="${lastLineType == "callout" || lastLineType == "blockquote" ? "mt-4" : "mt-2.5"} list-decimal list-outside marker-medium pl-5 space-y-1 font-serif">\n`
 				currentAction_set("ol")
 			}
 			contentObject.content += `<li>${checkForBasicMarkdownSyntax(escapeHtml(line.trim().replace(/^\d+\. /, "")))}</li>\n`

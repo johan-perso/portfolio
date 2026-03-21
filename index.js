@@ -6,6 +6,7 @@ const childProcess = require("child_process")
 const { getRelativeTime, getAbsoluteDate } = require("./utils/dateFormatter")
 const getReadingTime = require("./utils/readingTime")
 const { translations } = require("./public/translations/util")
+const { escapeHtml } = require("./utils/normalization")
 const roc = require("roc-framework")
 
 const NodeCache = require("node-cache")
@@ -17,6 +18,7 @@ const contentDir = {
 	compiled: path.join(__dirname, "content", "compiled"),
 	attachments: path.join(__dirname, "content", "attachments"),
 }
+const tocComponentHtml = fs.readFileSync(path.join(__dirname, "public", "components", "Toc.html"), "utf-8")
 const publicAssetsPath = "/medias/content/"
 
 const contentFiles = {
@@ -90,10 +92,11 @@ async function main(){
 	console.log("Preparing the server...")
 
 	// Check for compiled content, compile it if not found
-	const compiledContentFolder = fs.existsSync(contentDir.compiled) ? fs.readdirSync(contentDir.compiled) : []
+	var compiledContentFolder = fs.existsSync(contentDir.compiled) ? fs.readdirSync(contentDir.compiled) : []
 	if(!compiledContentFolder || compiledContentFolder.length < 1) {
 		console.log("Compiled content not found. Compiling content...")
 		await executeCommandInConsole(`${process.versions.bun ? "bun run" : "node"} scripts/compileContent.js`)
+		compiledContentFolder = fs.existsSync(contentDir.compiled) ? fs.readdirSync(contentDir.compiled) : []
 	}
 	if(!compiledContentFolder.includes("git_repo_details.json")) await require("./scripts/getGitDetails").saveGitDetails(process.cwd(), path.join(contentDir.compiled, "git_repo_details.json"))
 
@@ -220,6 +223,16 @@ async function startRocServer(){
 
 			const { originalBlogHtml, blogContent, readTime, bannerWebPath } = getBlogDocument(foundBlogDocument?.slug, foundBlogDocument?.frontmatter)
 
+			const tocContentHtml = foundBlogDocument.toc.map(tocItem => {
+				const childrensHtml = tocItem.childrens.map(child => `<li><a href="#${child.anchor}" class="toc-link block py-1.5 pl-9 hover:text-link transition-colors">${escapeHtml(child.title)}</a></li>`).join("\n")
+				return `<li>
+					<a href="#${tocItem.anchor}" class="toc-link block py-1.5 pl-7 hover:text-link transition-colors">${escapeHtml(tocItem.title)}</a>
+					<ul class="flex flex-col">
+						${childrensHtml}
+					</ul>
+				</li>`
+			}).join("\n")
+
 			const editedBlogHtml = originalBlogHtml
 				.replaceAll("%%BLOG_TITLE%%", foundBlogDocument?.title)
 				.replaceAll("%%BLOG_BANNER%%", !bannerWebPath ? "" : `<img src="${bannerWebPath}" alt="" class="w-full h-auto rounded-lg mt-6 bentoCard smallShadow duration-300 transition-shadow" />`)
@@ -242,6 +255,7 @@ async function startRocServer(){
 
 				.replace("%%BLOG_ROBOTS_RULES%%", foundBlogDocument?.frontmatter?.visibility == "hidden" ? "noindex" : "index")
 				.replace("%%BLOG_CONTENT%%", blogContent)
+				.replace("%%BLOG_TOC%%", tocComponentHtml.replace("%%TOC_CONTENT%%", tocContentHtml))
 
 			const htmlResponse = await server.renderPage(editedBlogHtml, { file: path.join(__dirname, "public", "blog_post_template.html"), path: req.path })
 			console.log("=".repeat(50))

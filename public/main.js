@@ -229,6 +229,53 @@ window.onload = async function(){
 		preloadAudio(audioInfo.name, audioInfo.src)
 	}
 
+	const activeIndicator = document.getElementById("active-indicator")
+	const tocLinks = document.querySelectorAll(".toc-link")
+	if(activeIndicator && tocLinks.length) { // only on pages with a ToC (blog posts)
+		// Get all headings from the blog post, and order them by their position in the page
+		const headings = Array.from(document.querySelector("[role=article].blogPost").querySelectorAll("h1[id], h2[id]"))
+		const visibleHeadings = new Set()
+
+		// If the page is loaded with a hash, set the active indicator on the correct ToC link
+		if (location.hash) {
+			const hashTitle = document.getElementById(location.hash.slice(1))
+			if (hashTitle) {
+				const tocLink = document.querySelector(`.toc-link[href="${location.hash}"]`)
+				if (tocLink) {
+					activeIndicator.style.top = `${tocLink.offsetTop}px`
+					activeIndicator.style.height = `${tocLink.offsetHeight}px`
+					activeIndicator.style.opacity = "1"
+				}
+			}
+		}
+
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach(entry => {
+				if (entry.isIntersecting) {
+					visibleHeadings.add(entry.target)
+				} else {
+					visibleHeadings.delete(entry.target)
+				}
+			})
+
+			// Always take the first visible header in the DOM
+			const active = headings.find(h => visibleHeadings.has(h))
+			if (!active) return // if the user is only seeing text and no header, keep the active indicator on the last header instead of hiding it
+
+			const link = document.querySelector(`.toc-link[href="#${active.id}"]`)
+			if (link) {
+				const isLastLink = link === tocLinks[tocLinks.length - 1]
+				activeIndicator.style.top = `${link.offsetTop < 1 ? -1 : isLastLink ? link.offsetTop + 1 : link.offsetTop}px`
+				activeIndicator.style.height = `${link.offsetHeight}px`
+				activeIndicator.style.opacity = "1"
+			}
+		}, {
+			rootMargin: "-10% 0px -80% 0px",
+			threshold: 0
+		})
+		headings.forEach(h => observer.observe(h))
+	}
+
 	hasMainLoadFunctionsRun = true
 
 	document.querySelector("#skill_student > div > p > span.skill_additional")?.setAttribute("title", `Très exactement ${((Date.now() - new Date("2008-03-07")) / 31557600000).toFixed(7)} ans 🤓`)

@@ -28,7 +28,7 @@
 		<div id="mainContent" class="text-primary-content pr-8 2xl:pr-4 pb-16 max-[1219px]:px-40 max-[1186px]:px-24 max-[900px]:px-12 w-full" role="main">
 			<GoBackButton></GoBackButton>
 
-			<div class="flex flex-row row-span-2 gap-10 max-md:flex-col w-full justify-between">
+			<div class="flex flex-row items-start row-span-2 gap-10 max-md:flex-col w-full justify-between">
 				<!-- Article content -->
 				<div role="article" class="blogPost leading-normal w-full max-w-[50rem] break-words">
 					<h1 class="font-semibold text-primary-content-heavy antialiased text-[27px] leading-8" role="heading">%%BLOG_TITLE%%</h1>
@@ -37,25 +37,31 @@
 					%%BLOG_CONTENT%%
 				</div>
 
-				<!-- Article details -->
-				<ArticleDetails
-					readTimeMin="%%BLOG_DETAILS_READ_TIME%%"
-					releaseAbsoluteDate="%%BLOG_DETAILS_RELEASE_DATE%%"
-					releaseRelativeDate="%%BLOG_DETAILS_RELEASE_RELATIVE_DATE%%"
+				<!-- Article details and Table of Content -->
+				<div class="sticky top-6 bottom-6 self-start shrink-0 mt-0.5 pb-12 md:ml-auto max-md:mt-14 w-full sm:max-md:max-w-[80%] md:max-w-52 max-md:w-fit text-primary-content h-fit max-h-[100vh] overflow-y-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+					<ArticleDetails
+						readTimeMin="%%BLOG_DETAILS_READ_TIME%%"
+						releaseAbsoluteDate="%%BLOG_DETAILS_RELEASE_DATE%%"
+						releaseRelativeDate="%%BLOG_DETAILS_RELEASE_RELATIVE_DATE%%"
 
-					projectPeriod="%%BLOG_DETAILS_PROJECT_PERIOD%%"
-					projectStack="%%BLOG_DETAILS_PROJECT_THEME%%"
-					projectAuthor="%%BLOG_DETAILS_PROJECT_AUTHOR%%"
-					projectCoAuthors="%%BLOG_DETAILS_PROJECT_COAUTHORS%%"
+						projectPeriod="%%BLOG_DETAILS_PROJECT_PERIOD%%"
+						projectStack="%%BLOG_DETAILS_PROJECT_THEME%%"
+						projectAuthor="%%BLOG_DETAILS_PROJECT_AUTHOR%%"
+						projectCoAuthors="%%BLOG_DETAILS_PROJECT_COAUTHORS%%"
 
-					linkSourceCode="%%BLOG_DETAILS_LINK_SOURCECODE%%"
-					linkDemo="%%BLOG_DETAILS_LINK_DEMO%%"
-					linkAndroid="%%BLOG_DETAILS_LINK_ANDROID%%"
-					linkIos="%%BLOG_DETAILS_LINK_IOS%%"
-					linkWindows="%%BLOG_DETAILS_LINK_WINDOWS%%"
-					linkMacOS="%%BLOG_DETAILS_LINK_MACOS%%"
-					linkLinux="%%BLOG_DETAILS_LINK_LINUX%%"
-				></ArticleDetails>
+						linkSourceCode="%%BLOG_DETAILS_LINK_SOURCECODE%%"
+						linkDemo="%%BLOG_DETAILS_LINK_DEMO%%"
+						linkAndroid="%%BLOG_DETAILS_LINK_ANDROID%%"
+						linkIos="%%BLOG_DETAILS_LINK_IOS%%"
+						linkWindows="%%BLOG_DETAILS_LINK_WINDOWS%%"
+						linkMacOS="%%BLOG_DETAILS_LINK_MACOS%%"
+						linkLinux="%%BLOG_DETAILS_LINK_LINUX%%"
+					></ArticleDetails>
+
+					<div class="hidden lg:block">
+						%%BLOG_TOC%%
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

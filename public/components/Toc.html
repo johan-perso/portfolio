@@ -1,0 +1,24 @@
+<div class="mt-8 relative text-sm text-primary-content-heavy/90" role="toc">
+	<div class="flex items-center gap-2 mb-2 font-medium antialiased">
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+			<path d="M4 5h16"/>
+			<path d="M4 12h16"/>
+			<path d="M4 19h16"/>
+		</svg>
+		<span>Sur cette page</span>
+	</div>
+
+	<div class="relative">
+		<div class="absolute left-0.5 top-0 bottom-0 w-0.5 bg-primary-content-heavy"></div>
+
+		<div 
+			id="active-indicator" 
+			class="absolute left-[2px] w-0.5 bg-link rounded-full"
+			style="top: 0px; height: 24px; transition: top 260ms cubic-bezier(0.4, 0, 0.2, 1), height 260ms cubic-bezier(0.4, 0, 0.2, 1), opacity 200ms ease;"
+		></div>
+
+		<ul class="flex flex-col toc-list">
+			%%TOC_CONTENT%%
+		</ul>
+	</div>
+</div>
