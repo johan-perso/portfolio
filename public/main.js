@@ -173,7 +173,18 @@ window.onload = async function(){
 		`
 	})
 
-	if(["/", "/index", "/index.html"].includes(window.location.pathname)) {
+	// Preload translation file depending on the URL
+	const currentLang = document.documentElement.lang || "en"
+	preloaded.translations = await fetch(`/translations/${currentLang}.json`).then(response => {
+		if(!response.ok) throw new Error(`Failed to prefetch translations for language "${currentLang}": ${response.status} ${response.statusText}`)
+		return response.json()
+	}).catch(error => {
+		console.error(error)
+		return null
+	})
+	Array.from(document.querySelectorAll(`[data-lang="${currentLang}"]`)).forEach(el => el.classList.remove("hidden"))
+
+	if(document.querySelector("#mainContent[isHomePage=\"true\"]")) {
 		preloaded.llmsTxt = await fetch("/llms.txt").then(response => {
 			if(!response.ok) throw new Error(`Failed to prefetch llms.txt: ${response.status} ${response.statusText}`)
 			return response.text()
@@ -193,7 +204,7 @@ window.onload = async function(){
 	if(document.querySelector(".blogPost")) {
 		Array.from(document.querySelectorAll(".aiChoiceDropdownButton")).forEach(btn => {
 			if(!btn.hasAttribute("hrefprefix") || !btn.getAttribute("hrefprefix").length) return
-			btn.setAttribute("href", btn.getAttribute("hrefprefix") + encodeURIComponent(`Résume-moi cet article de blog en une liste de points clés, évoque les éléments les plus importants à savoir, et raconte moi quelques détails sur l'auteur de ce post.\n\nURL de l'article : ${window.location.href}\n\nDétails sur l'auteur : https://johanstick.fr ; https://johanstick.fr/llms.txt`))
+			btn.setAttribute("href", btn.getAttribute("hrefprefix") + encodeURIComponent(preloaded.translations.aiDropdown.prompts.blogPost.replace("%%CURRENT_URL%%", window.location.href)))
 		})
 	}
 
@@ -749,7 +760,7 @@ function disableCopyMarkdownButton() {
 	const aiDropdownCopyMarkdown = document.getElementById("aidropdown-copymarkdown")
 	if(!aiDropdownCopyMarkdown) return
 	aiDropdownCopyMarkdown.setAttribute("disabled", "true")
-	aiDropdownCopyMarkdown.setAttribute("href", "")
+	aiDropdownCopyMarkdown.removeAttribute("href")
 	aiDropdownCopyMarkdown.classList.add("cursor-not-allowed", "opacity-50")
 	aiDropdownCopyMarkdown.classList.remove("hover:scale-[1.015]", "hover:bg-light-background")
 }
@@ -828,12 +839,12 @@ function copyLlmsTxt() { // eslint-disable-line no-unused-vars
 	AiBrandIcon.classList.add("text-green-600")
 
 	if(!preloaded.llmsTxt) {
-		showToast("La page est toujours en cours de chargement, veuillez réessayer dans un instant.")
+		showToast(preloaded.translations.aiDropdown.pageStillLoading || "Website is still loading, please try again in a moment.")
 		console.warn("llms.txt is not preloaded, cannot copy.")
 		haptic("pulse")
 	} else {
 		copyTextToClipboard(preloaded.llmsTxt)
-		showToast("Le résumé du site au format Markdown a été copié !")
+		showToast(preloaded.translations.aiDropdown.summaryCopied || "Summary copied to clipboard!")
 	}
 
 	setTimeout(() => {

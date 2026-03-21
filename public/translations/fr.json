@@ -2,6 +2,36 @@
 	"head": {
 		"description": "Juste quelqu'un qui code quelques trucs."
 	},
+	"blog": {
+		"readall": "Lire l'article complet →",
+		"tocSectionTitle": "Sur cette page"
+	},
+	"misc": {
+		"back": "Retour en arrière"
+	},
+	"map": {
+		"openParisMaps": "Ouvrir Paris sur Google Maps",
+		"srCityNamePrefix": "Localisation :"
+	},
+	"newsBanner": {
+		"titleNew": "NOUVEAU",
+		"titleAnnouncement": "ANNONCE",
+		"ctaGoToAnnouncement": "Annonce de sortie →"
+	},
+	"aiDropdown": {
+		"pageStillLoading": "La page est toujours en cours de chargement, veuillez réessayer dans un instant...",
+		"summaryCopied": "Le résumé du site au format Markdown a été copié !",
+		"openInAis": {
+			"chatgpt": "Ouvrir dans ChatGPT",
+			"claude": "Ouvrir dans Claude",
+			"grok": "Ouvrir dans Grok",
+			"copyMarkdown": "Copier au format Markdown"
+		},
+		"prompts": {
+			"home": "Résume-moi les détails clés de ce portfolio et dis-moi en plus sur la personne.\n\nPortfolio : https://johanstick.fr\nFichiers LLMS.txt : https://johanstick.fr/llms.txt",
+			"blogPost": "Résume-moi cet article de blog en une liste de points clés, évoque les éléments les plus importants à savoir, et raconte moi quelques détails sur l'auteur de ce post.\n\nURL de l'article : %%CURRENT_URL%%\n\nDétails sur l'auteur : https://johanstick.fr ; https://johanstick.fr/llms.txt"
+		}
+	},
 	"jsRequired": {
 		"title": "JavaScript désactivé",
 		"content": "Pour visiter ce site, vous devrez activer JavaScript dans les réglages de votre navigateur. <a class='hover:underline text-blue-400' href='https://fr.wikihow.com/activer-JavaScript'>Cliquer ici</a> pour en savoir plus."

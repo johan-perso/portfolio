@@ -1,7 +1,7 @@
 <a
 	id="{{ $id }}"
 	hrefprefix="{{ this.componentAttribs.hrefprefix || '' }}" 
-	href="{{ this.componentAttribs.href || (this.componentAttribs.hrefprefix + 'Résume-moi+les+détails+clés+de+ce+portfolio+et+dis-moi+en+plus+sur+la+personne.%0APortfolio+%3A+https%3A%2F%2Fjohanstick.fr%0AFichiers+LLMS.txt+%3A+https%3A%2F%2Fjohanstick.fr%2Fllms.txt') }}"
+	href="{{ this.componentAttribs.href || (this.componentAttribs.hrefprefix + encodeURIComponent(require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'aiDropdown.prompts.home'))) }}"
 	onclick="{{ this.componentAttribs.href?.startsWith('javascript:') ? '' : 'playAudio(\'haptic\')' }}; haptic('click'); closeDropdown()"
 	target="{{ this.componentAttribs.href?.startsWith('javascript:') ? '' : '_blank' }}"
 	class="aiChoiceDropdownButton transform hover:scale-[1.015] dropdown-item flex items-center justify-between px-4 py-2.5 gap-2 text-primary-content hover:bg-light-background transition-all duration-200"

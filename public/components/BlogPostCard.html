@@ -7,7 +7,7 @@
 	<div class="mt-1 leading-snug">
 		<p class="mt-0.5 font-normal text-primary-content-light overflow-hidden break-words text-ellipsis line-clamp-5 {{ this.componentAttribs.useserif ? 'font-serif' : '' }}">{{ $content }}</p>
 		<a href="{{ $href }}" target="{{ this.componentAttribs.openinnewtab ? '_blank' : '' }}" class="blogPostCardLink mt-3 inline-block text-link hover:underline font-medium">
-			<span>Lire l'article complet →</span>
+			<span>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.readall') }}</span>
 		</a>
 	</div>
 </div>

@@ -2,6 +2,36 @@
 	"head": {
 		"description": "Someone who just codes some stuff."
 	},
+	"blog": {
+		"readall": "Read the full article →",
+		"tocSectionTitle": "On this page"
+	},
+	"misc": {
+		"back": "Go back"
+	},
+	"map": {
+		"openParisMaps": "Open Paris on Google Maps",
+		"srCityNamePrefix": "Localization:"
+	},
+	"newsBanner": {
+		"titleNew": "RELEASED",
+		"titleAnnouncement": "ANNOUNCEMENT",
+		"ctaGoToAnnouncement": "Go to announcement →"
+	},
+	"aiDropdown": {
+		"pageStillLoading": "The page is still loading, please try again in a moment...",
+		"summaryCopied": "Summary in Markdown format has been copied!",
+		"openInAis": {
+			"chatgpt": "Open in ChatGPT",
+			"claude": "Open in Claude",
+			"grok": "Open in Grok",
+			"copyMarkdown": "Copy in Markdown format"
+		},
+		"prompts": {
+			"home": "Summarize the key details of this portfolio and tell me more about the person.\n\nPortfolio: https://johanstick.fr\nLLMS.txt file: https://johanstick.fr/llms.txt",
+			"blogPost": "Summarize this blog post into a list of key points, mention the most important things to know, and tell me some details about the author of this post.\n\nBlog post URL: %%CURRENT_URL%%\n\nAuthor details: https://johanstick.fr ; https://johanstick.fr/llms.txt"
+		}
+	},
 	"jsRequired": {
 		"title": "JavaScript disabled",
 		"content": "To visit this website, you need to enable JavaScript in your browser settings. <a class='hover:underline text-blue-400' href='https://www.wikihow.com/enable-JavaScript'>Click here</a> to learn more."

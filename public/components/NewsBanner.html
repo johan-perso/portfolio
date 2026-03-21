@@ -2,7 +2,7 @@
 	<div class="flex items-center justify-between">
 		<div class="bg-blue-500 rounded-full w-fit px-4 py-[2px] text-white font-semibold text-[12px]" style="box-shadow: 2px 3px 10px -1px rgba(81, 134, 249, 0.2)">
 			<!-- Corresponds to 2 months in milliseconds -->
-			<span>{{ (Date.now() - new Date(this.componentAttribs.date)) > 5259600000 ? "ANNONCE" : "NOUVEAU" }}</span>
+			<span>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, (Date.now() - new Date(this.componentAttribs.date)) > 5259600000 ? 'newsBanner.titleAnnouncement' : 'newsBanner.titleNew') }}</span>
 		</div>
 		<p class="mr-1">{{ new Date(this.componentAttribs.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }); }}</p>
 	</div>
@@ -10,7 +10,7 @@
 	<div class="mt-2.5 mb-1 leading-snug">
 		<p>{{ $content }}</p>
 		<a href="{{ $href }}" target="_blank" class="mt-2.5 inline-block text-link hover:underline font-medium">
-			<span>Annonce de sortie →</span>
+			<span>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'newsBanner.ctaGoToAnnouncement') }}</span>
 		</a>
 	</div>
 </div>
