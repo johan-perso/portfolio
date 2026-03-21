@@ -2,6 +2,7 @@
 	<div class="mr-1 space-y-1">
 		<p>{{ $readTimeMin }} min de lecture</p>
 		<p>{{ $releaseAbsoluteDate }} ({{ $releaseRelativeDate }})</p>
+		<p class="{{ this.componentAttribs.editabsolutedate?.length ? '' : 'hidden' }}">Édité le {{ $editAbsoluteDate }}</p>
 	</div>
 
 	<div class="w-full h-px rounded-full bg-primary-content-light my-3 {{ this.componentAttribs.projectperiod?.length || this.componentAttribs.projectstack?.length || this.componentAttribs.projectauthor?.length || this.componentAttribs.projectcoauthors?.length ? '' : 'hidden' }}"></div>

@@ -238,6 +238,7 @@ async function startRocServer(){
 				.replaceAll("%%BLOG_TITLE%%", foundBlogDocument?.title)
 				.replaceAll("%%BLOG_BANNER%%", !bannerWebPath ? "" : `<img src="${bannerWebPath}" alt="" class="w-full h-auto rounded-lg mt-6 bentoCard smallShadow duration-300 transition-shadow" />`)
 				.replaceAll("%%BLOG_DETAILS_READ_TIME%%", readTime)
+				.replaceAll("%%BLOG_DETAILS_EDIT_DATE%%", foundBlogDocument?.frontmatter?.post_editdate ? getAbsoluteDate("fr-FR", new Date(foundBlogDocument.frontmatter.post_editdate)) : "")
 				.replaceAll("%%BLOG_DETAILS_RELEASE_DATE%%", getAbsoluteDate("fr-FR", new Date(foundBlogDocument?.frontmatter?.post_releasedate)))
 				.replaceAll("%%BLOG_DETAILS_RELEASE_RELATIVE_DATE%%", getRelativeTime("fr-FR", new Date(foundBlogDocument?.frontmatter?.post_releasedate), "ago"))
 
