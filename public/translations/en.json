@@ -2,18 +2,48 @@
 	"head": {
 		"description": "Someone who just codes some stuff."
 	},
+	"myselfSidebar": {
+		"aboutMe": {
+			"label": "ABOUT ME",
+			"ariaLabel": "Personal information and skills",
+			"skills": {
+				"developer": "Developer",
+				"student": "Student"
+			},
+			"segmentedControls": {
+				"human": "Human",
+				"machine": "Machine",
+				"machineUnavailableOnThisPage": "Machine view is not available on this page."
+			}
+		},
+		"contact": {
+			"ariaLabel": "Contact methods",
+			"label": "CONTACT",
+			"description": "You can quickly reach me by sending a message via <a href=\"https://t.me/JohanStick\" class=\"text-link hover:underline font-semibold\">Telegram</a> or <a href=\"https://discord.com/users/277825082334773251\" class=\"text-link hover:underline font-semibold\">Discord</a>. You can also send me an email at <a href=\"mailto:johan@johanstick.fr\" class=\"text-link hover:underline font-semibold\">johan@johanstick.fr</a>."
+		},
+		"footer": {
+			"ariaLabel": "Footer with support methods and service statuses",
+			"label": "FOOTER",
+			"donationContent": "Support me via <a href=\"https://github.com/sponsors/johan-perso\" class=\"text-link hover:underline font-medium\">GitHub</a>, via <a href=\"https://paypal.me/moipastoii\" class=\"text-link hover:underline font-medium\">PayPal</a>, via <a href=\"https://ko-fi.com/johan_stickman\" class=\"text-link hover:underline font-medium\">Ko-fi</a>, or via cryptocurrency (<button onclick=\"copyCryptoAddress('eth')\" class=\"text-link hover:underline font-medium\">ETH/Base</button>, <button onclick=\"copyCryptoAddress('btc')\" class=\"text-link hover:underline font-medium\">BTC</button>, <button onclick=\"copyCryptoAddress('sol')\" class=\"text-link hover:underline font-medium\">Solana</button>).",
+			"uptimeContent": "Service status",
+			"copyright": "2026. Made with ❤️ by Johan."
+		}
+	},
 	"blog": {
 		"readall": "Read the full article →",
 		"tocSectionTitle": "On this page"
 	},
 	"misc": {
-		"back": "Go back"
+		"back": "Go back",
+		"copiedSectionLink": "Section link copied to clipboard!"
 	},
 	"map": {
 		"openParisMaps": "Open Paris on Google Maps",
 		"srCityNamePrefix": "Localization:"
 	},
 	"newsBanner": {
+		"content": "Improve your electric scooter experience with the eScive app for Android phones!",
+		"url": "/en/escive/",
 		"titleNew": "RELEASED",
 		"titleAnnouncement": "ANNOUNCEMENT",
 		"ctaGoToAnnouncement": "Go to announcement →"
@@ -21,6 +51,7 @@
 	"aiDropdown": {
 		"pageStillLoading": "The page is still loading, please try again in a moment...",
 		"summaryCopied": "Summary in Markdown format has been copied!",
+		"markdownSummaryInavailableOnThisPage": "Markdown summary is unavailable on this page.",
 		"openInAis": {
 			"chatgpt": "Open in ChatGPT",
 			"claude": "Open in Claude",
@@ -31,6 +62,12 @@
 			"home": "Summarize the key details of this portfolio and tell me more about the person.\n\nPortfolio: https://johanstick.fr\nLLMS.txt file: https://johanstick.fr/llms.txt",
 			"blogPost": "Summarize this blog post into a list of key points, mention the most important things to know, and tell me some details about the author of this post.\n\nBlog post URL: %%CURRENT_URL%%\n\nAuthor details: https://johanstick.fr ; https://johanstick.fr/llms.txt"
 		}
+	},
+	"cryptoAddressCopied": {
+		"eth": "Ethereum/Base address copied to clipboard!",
+		"btc": "Bitcoin address copied to clipboard!",
+		"sol": "Solana address copied to clipboard!",
+		"unknown": "Unknown crypto type, address not copied. Please report this issue."
 	},
 	"jsRequired": {
 		"title": "JavaScript disabled",

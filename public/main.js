@@ -193,18 +193,6 @@ window.onload = async function(){
 		card.setAttribute("href", fromParamsInThisUrl)
 	})
 
-	if(!document.getElementById("machineViewContent")) {
-		console.warn("Machine view content element not found, disabling machine view features.")
-
-		const machineBtn = document.getElementById("segmentedControl-button-machine")
-		if(!machineBtn) {
-			console.warn("Machine view button not found, cannot disable it.")
-		} else {
-			machineBtn.setAttribute("disabled", "true")
-			machineBtn.classList.add("cursor-not-allowed", "opacity-50")
-		}
-	}
-
 	// Preload translation file depending on the URL
 	const currentLang = document.documentElement.lang || "en"
 	preloaded.translations = await fetch(`/translations/${currentLang}.json`).then(response => {
@@ -215,6 +203,19 @@ window.onload = async function(){
 		return null
 	})
 	Array.from(document.querySelectorAll(`[data-lang="${currentLang}"]`)).forEach(el => el.classList.remove("hidden"))
+
+	if(!document.getElementById("machineViewContent")) {
+		console.warn("Machine view content element not found, disabling machine view features.")
+
+		const machineBtn = document.getElementById("segmentedControl-button-machine")
+		if(!machineBtn) {
+			console.warn("Machine view button not found, cannot disable it.")
+		} else {
+			machineBtn.setAttribute("disabled", "true")
+			machineBtn.setAttribute("title", preloaded.translations.myselfSidebar.aboutMe.segmentedControls.machineUnavailableOnThisPage || "Machine view is not available on this page.")
+			machineBtn.classList.add("cursor-not-allowed", "opacity-50")
+		}
+	}
 
 	if(document.querySelector("#mainContent[isHomePage=\"true\"]")) {
 		preloaded.llmsTxt = await fetch("/llms.txt").then(response => {
@@ -775,6 +776,7 @@ function disableCopyMarkdownButton() {
 	aiDropdownCopyMarkdown.removeAttribute("href")
 	aiDropdownCopyMarkdown.classList.add("cursor-not-allowed", "opacity-50")
 	aiDropdownCopyMarkdown.classList.remove("hover:scale-[1.015]", "hover:bg-light-background")
+	aiDropdownCopyMarkdown.setAttribute("title", preloaded.translations.aiDropdown.markdownSummaryInavailableOnThisPage || "Copying markdown is not available on this page.")
 }
 function applyDynamicEllipsis() {
 	document.querySelectorAll(".dynamic-ellipsis").forEach(el => {
@@ -865,22 +867,24 @@ function copyLlmsTxt() { // eslint-disable-line no-unused-vars
 	}, 3000)
 }
 function copyCryptoAddress(crypto) { // eslint-disable-line no-unused-vars
+	const toastMessage = preloaded.translations.cryptoAddressCopied?.[crypto] || "Crypto address copied to clipboard!"
+
 	switch(crypto) {
 	case "eth":
 		copyTextToClipboard("0x1e198e9Df0519bE9E759E8995518D1A5F8025F0a")
-		showToast("Adresse Ethereum copiée dans le presse-papier !")
+		showToast(toastMessage)
 		break
 	case "btc":
 		copyTextToClipboard("bc1q4ghg2wve6yneadxy58fz5m77jmwyxxtk94jxfj")
-		showToast("Adresse Bitcoin copiée dans le presse-papier !")
+		showToast(toastMessage)
 		break
 	case "sol":
 		copyTextToClipboard("CfCVJBGqsqiAJ7rDCkUwvMYsmkzSLcjL7CQ1RmBiwfoP")
-		showToast("Adresse Solana copiée dans le presse-papier !")
+		showToast(toastMessage)
 		break
 	default:
 		console.warn(`Unknown crypto type: ${crypto}`)
-		showToast("Type de cryptomonnaie inconnu, veuillez signalez ce problème.")
+		showToast(preloaded.translations.cryptoAddressCopied.unknown ?? "Unknown crypto type, address not copied. Please report this issue.")
 	}
 }
 var isAnimatingCopy = false
@@ -917,5 +921,5 @@ function copyHeaderLink(event) { // eslint-disable-line no-unused-vars
 	const hash = event.target.getAttribute("href") || `#${event.currentTarget.id}`
 	location.hash = hash
 	copyTextToClipboard(`${window.location.origin}${window.location.pathname}${hash}`)
-	showToast("Lien vers cette section copié dans le presse-papier !")
+	showToast(preloaded.translations.misc.copiedSectionLink || "Section link copied to clipboard!")
 }
