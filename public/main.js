@@ -16,6 +16,12 @@ window.onerror = async function(error){
 		document.getElementById("loader__error").classList.remove("hidden")
 	} else {
 		console.log("(Error Grabber) Loader isn't present on page, skipping display to user.")
+
+		try {
+			showToast(`An error occurred: ${error.message || error.stack || error}`, 10000)
+		} catch { err } {
+			console.warn("(Error Grabber) Failed to display error with showToast on loader:", err)
+		}
 	}
 }
 
