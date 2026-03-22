@@ -216,6 +216,7 @@ async function startRocServer(){
 		}
 
 		// Serve blog documents
+		if(slugToFind.length > 2 && slugToFind.endsWith("/")) slugToFind = slugToFind.slice(0, -1) // remove trailing slash if exists
 		const foundBlogDocument = contentFiles._index[`${slugToFind}.html`] || contentFiles._index[`${req.path.startsWith("/") ? req.path.substring(1) : req.path}.html`]
 		if(req.method == "GET" && foundBlogDocument) {
 			console.log("=".repeat(50))

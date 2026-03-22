@@ -173,6 +173,38 @@ window.onload = async function(){
 		`
 	})
 
+	if(window.innerWidth < 390) { // hardcoded switch positions for some projects cards
+		swapTwoElements(
+			document.getElementById("smallprojectcard_yourdownloader"),
+			document.getElementById("largeprojectcard_findmeme")
+		)
+	}
+
+	Array.from(document.getElementsByClassName("blogPostCardLink")).forEach(el => {
+		if(!el.hasAttribute("href") || !el.getAttribute("href").length) return
+		if(el.getAttribute("target") == "_blank") return // already opens in new tab, no need to add referrer info in url
+		const elHref = el.getAttribute("href")
+		const currentHref = (window.location.href || "").replace(`${window.location.protocol}//${window.location.host}`, "")
+		el.setAttribute("href", `${elHref}${elHref.includes("?") ? "&" : "?"}from=${encodeURIComponent(currentHref.endsWith("/") ? currentHref : `${currentHref}/`)}`)
+	})
+
+	const fromParamsInThisUrl = new URLSearchParams(window.location.search)?.get("from")
+	if(fromParamsInThisUrl?.length) Array.from(document.getElementsByClassName("goBackButton")).forEach(card => {
+		card.setAttribute("href", fromParamsInThisUrl)
+	})
+
+	if(!document.getElementById("machineViewContent")) {
+		console.warn("Machine view content element not found, disabling machine view features.")
+
+		const machineBtn = document.getElementById("segmentedControl-button-machine")
+		if(!machineBtn) {
+			console.warn("Machine view button not found, cannot disable it.")
+		} else {
+			machineBtn.setAttribute("disabled", "true")
+			machineBtn.classList.add("cursor-not-allowed", "opacity-50")
+		}
+	}
+
 	// Preload translation file depending on the URL
 	const currentLang = document.documentElement.lang || "en"
 	preloaded.translations = await fetch(`/translations/${currentLang}.json`).then(response => {
@@ -194,32 +226,12 @@ window.onload = async function(){
 		})
 	} else disableCopyMarkdownButton()
 
-	if(window.innerWidth < 390) { // hardcoded switch positions for some projects cards
-		swapTwoElements(
-			document.getElementById("smallprojectcard_yourdownloader"),
-			document.getElementById("largeprojectcard_findmeme")
-		)
-	}
-
 	if(document.querySelector(".blogPost")) {
 		Array.from(document.querySelectorAll(".aiChoiceDropdownButton")).forEach(btn => {
 			if(!btn.hasAttribute("hrefprefix") || !btn.getAttribute("hrefprefix").length) return
 			btn.setAttribute("href", btn.getAttribute("hrefprefix") + encodeURIComponent(preloaded.translations.aiDropdown.prompts.blogPost.replace("%%CURRENT_URL%%", window.location.href)))
 		})
 	}
-
-	Array.from(document.getElementsByClassName("blogPostCardLink")).forEach(el => {
-		if(!el.hasAttribute("href") || !el.getAttribute("href").length) return
-		if(el.getAttribute("target") == "_blank") return // already opens in new tab, no need to add referrer info in url
-		const elHref = el.getAttribute("href")
-		const currentHref = (window.location.href || "").replace(`${window.location.protocol}//${window.location.host}`, "")
-		el.setAttribute("href", `${elHref}${elHref.includes("?") ? "&" : "?"}from=${encodeURIComponent(currentHref.endsWith("/") ? currentHref : `${currentHref}/`)}`)
-	})
-
-	const fromParamsInThisUrl = new URLSearchParams(window.location.search)?.get("from")
-	if(fromParamsInThisUrl?.length) Array.from(document.getElementsByClassName("goBackButton")).forEach(card => {
-		card.setAttribute("href", fromParamsInThisUrl)
-	})
 
 	document.addEventListener("keydown", (e) => {
 		if (e.key === "Escape") {
