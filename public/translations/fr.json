@@ -2,6 +2,26 @@
 	"head": {
 		"description": "Juste quelqu'un qui code quelques trucs."
 	},
+	"mainBentoPage": {
+		"projects": {
+			"fwl": {
+				"projectName": "File Weight Loss",
+				"description": "Faites perdre du poids à vos fichiers",
+				"linkDefault": "https://fwl.johanstick.fr"
+			}
+		},
+		"oldProjects": {
+			"label": "Anciennes réalisations"
+		},
+		"blog": {
+			"label": "Articles récents",
+			"seeAll": {
+				"ariaLabel": "Accéder à la liste d'articles disponibles",
+				"short": "Voir tout",
+				"long": "Voir tous les articles"
+			}
+		}
+	},
 	"myselfSidebar": {
 		"aboutMe": {
 			"label": "À PROPOS",
