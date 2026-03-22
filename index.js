@@ -199,6 +199,11 @@ async function startRocServer(){
 		if(req.method == "GET" && req.simplifiedPath == "version") return res.send(200, mainVersion, { headers: { "Content-Type": "text/plain" } })
 		if(req.method == "GET" && req.simplifiedPath == "blog") return res.redirect(302, "/") // hide template file
 
+		// Add trailing slash to avoid duplicate content and better SEO
+		if(req.method == "GET" && !req.path.endsWith("/") && !path.extname(req.path)) {
+			return res.redirect(302, `${req.path}/${req.query.length ? `?${new URLSearchParams(req.query).toString()}` : ""}`)
+		}
+
 		// Extract language prefix (if present) and slug from the request path
 		let cleanPath = (req.path.startsWith("/") ? req.path.substring(1) : req.path) || ""
 		let pathSegments = cleanPath.split("/")
@@ -209,7 +214,7 @@ async function startRocServer(){
 		if (pathSegments.length > 1 && potentialLang.length === 2) {
 			if (!Object.keys(translations).includes(potentialLang)) {
 				// If language prefix is invalid, redirect to english version
-				return res.redirect(302, `/en/${pathSegments.slice(1).join("/")}${req.query ? `?${new URLSearchParams(req.query).toString()}` : ""}`)
+				return res.redirect(302, `/en/${pathSegments.slice(1).join("/")}${req.query.length ? `?${new URLSearchParams(req.query).toString()}` : ""}`)
 			}
 
 			slugToFind = pathSegments.slice(1).join("/") // remove the language prefix for slug searching
@@ -292,7 +297,7 @@ async function startRocServer(){
 			var userLanguage = req.headers["accept-language"] ? req.headers["accept-language"].split(",")[0].split(";")[0].trim().toLowerCase() : "en"
 			if(userLanguage.includes("-")) userLanguage = userLanguage.split("-")[0] // keep only the first part of the language code (ex: "en" from "en-US")
 			if(!Object.keys(translations).includes(userLanguage)) userLanguage = "en" // fallback to english if user language is not supported
-			res.redirect(302, `/${userLanguage}${req.path.startsWith("/") ? req.path : `/${req.path}`}${req.query ? `?${new URLSearchParams(req.query).toString()}` : ""}`)
+			res.redirect(302, `/${userLanguage}${req.path.startsWith("/") ? req.path : `/${req.path}`}${req.query.length ? `?${new URLSearchParams(req.query).toString()}` : ""}`)
 			return
 		}
 
