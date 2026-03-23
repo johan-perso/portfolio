@@ -2,6 +2,154 @@
 	"head": {
 		"description": "Someone who just codes some stuff."
 	},
+	"mainBentoPage": {
+		"projects": {
+			"fwl": {
+				"name": "File Weight Loss",
+				"description": "Make your files get in shape",
+				"bannerImg": "/medias/projects/banners/fwl2.webp",
+				"linkDefault": "https://fwl.bassinecorp.fr/en/",
+				"linkDemo": "https://fwl.bassinecorp.fr/en/",
+				"linkGithub": "https://github.com/johan-perso/fileweightloss-landing"
+			},
+			"agendapp": {
+				"name": "Agendapp",
+				"description": "School planner & note-taking app",
+				"bannerImg": "/medias/projects/banners/agendapp.png",
+				"bannerVideo": "/medias/projects/banners/agendapp.mp4",
+				"linkDefault": "https://github.com/johan-perso/agendapp/blob/main/README-en.md",
+				"linkGithub": "https://github.com/johan-perso/agendapp/blob/main/README-en.md"
+			},
+			"escive": {
+				"name": "eScive",
+				"description": "Transform your e-scooter experience",
+				"bannerImg": "/medias/projects/banners/escive.en.jpg",
+				"linkDefault": "/en/escive?from=/",
+				"linkDocs": "/en/escive?from=/",
+				"linkGithub": "https://github.com/johan-perso/escive"
+			},
+			"roc": {
+				"name": "🇫🇷 roc",
+				"description": "Static & dynamic site generator",
+				"bannerImg": "/medias/projects/banners/roc.webp",
+				"linkDefault": "https://github.com/johan-perso/roc-framework",
+				"linkGithub": "https://github.com/johan-perso/roc-framework"
+			},
+			"stend": {
+				"name": "🇫🇷 Stend",
+				"bannerImg": "/medias/projects/banners/stend.png",
+				"linkDefault": "https://stend.johanstick.fr/",
+				"linkDemo": "https://stend.johanstick.fr/",
+				"linkGithub": "https://github.com/hoststend"
+			},
+			"magicCommand": {
+				"name": "Magic Command",
+				"description": "Ask any AI for any CLI commands",
+				"bannerImg": "/medias/projects/banners/magic-command.jpg",
+				"bannerVideo": "/medias/projects/banners/magic-command.mp4",
+				"linkDefault": "https://github.com/johan-perso/magic-command",
+				"linkGithub": "https://github.com/johan-perso/magic-command"
+			},
+			"findmeme": {
+				"name": "🇫🇷 FindMeme",
+				"bannerImg": "/medias/projects/banners/findmeme.png",
+				"linkDefault": "/en/findmeme-mobile?from=/",
+				"linkDocs": "/en/findmeme-mobile?from=/",
+				"linkDemo": "https://findmeme.johanstick.fr/"
+			}
+		},
+		"smallProjects": {
+			"yourdownloader": {
+				"name": "YourDownloader",
+				"description": "Self-hosted private Telegram bot to download video and audio from major platforms like YouTube and SoundCloud.",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/yourdownloader"
+			},
+			"sendovernetwork": {
+				"name": "🇫🇷 SendOverNetwork",
+				"description": "Send and receive files within the same network directly from the CLI",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/sendovernetwork"
+			},
+			"syncpronote": {
+				"name": "🇫🇷 SyncPronote",
+				"description": "Synchronize your Pronote schedule with your Google Calendar",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/syncpronote"
+			},
+			"obsidianInbox": {
+				"name": "Obsidian Inbox",
+				"description": "Receive files into your Obsidian vault through a REST API",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/obsidianinbox-plugin"
+			},
+			"markdocs": {
+				"name": "🇫🇷 MarkDocs",
+				"description": "Create local documentation with MarkDown and Fumadocs",
+				"source": "johanstick.fr",
+				"link": "https://markdocs.johanstick.fr"
+			},
+			"moreshort": {
+				"name": "MoreShort",
+				"description": "Shorten URLs through various services from your JS project",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/moreshort/"
+			},
+			"freeboxtools": {
+				"name": "🇫🇷 Freebox Tools",
+				"description": "Several tools to make your life easier using a french ISP (Free) API",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/freebox-tools"
+			}
+		},
+		"oldProjects": {
+			"label": "Past projects",
+			"mcpShopServer": {
+				"name": "MCP Shop Server",
+				"description": "Search tool that lets your favorite AI find the best shopping deals for you",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/mcp-shop-server"
+			},
+			"obsidianGitPush": {
+				"name": "Obsidian GitPush",
+				"description": "Sync Markdown folders and documents with your GitHub repositories",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/obsidian-gitpush"
+			},
+			"vscodeControl": {
+				"name": "VSCode Control",
+				"description": "Raycast extension to quickly control your code editor on macOS",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/vscode-control"
+			},
+			"infoscreen": {
+				"name": "🇫🇷 InfoScreen",
+				"description": "Always-on smart information dashboard for any computer",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/infoscreen"
+			},
+			"screenshothtml": {
+				"name": "screenshothtml",
+				"description": "Generate HTML page screenshots directly on the server-side",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/screenshothtml"
+			},
+			"discordflutter": {
+				"name": "discordflutter",
+				"description": "Experimental Discord API integration built with Flutter and Dart",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/discordflutter"
+			}
+		},
+		"blog": {
+			"label": "Latest posts",
+			"seeAll": {
+				"ariaLabel": "View all available blog posts",
+				"short": "View all",
+				"long": "View all posts"
+			}
+		}
+	},
 	"myselfSidebar": {
 		"aboutMe": {
 			"label": "ABOUT ME",
@@ -30,12 +178,14 @@
 		}
 	},
 	"blog": {
+		"allPostsTitle": "Writing & Thoughts",
 		"readall": "Read the full article →",
 		"tocSectionTitle": "On this page"
 	},
 	"misc": {
 		"back": "Go back",
-		"copiedSectionLink": "Section link copied to clipboard!"
+		"copiedSectionLink": "Section link copied to clipboard!",
+		"years": "years old"
 	},
 	"map": {
 		"openParisMaps": "Open Paris on Google Maps",

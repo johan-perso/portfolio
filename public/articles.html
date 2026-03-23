@@ -24,7 +24,7 @@
 
 			<div class="w-full">
 				<div class="leading-normal w-full break-words" style="letter-spacing: -0.07px;">
-					<h1 class="font-semibold text-primary-content-heavy antialiased text-[27px] leading-8 mb-5" role="heading">Articles et réflexions</h1>
+					<h1 class="font-semibold text-primary-content-heavy antialiased text-[27px] leading-8 mb-5" role="heading">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.allPostsTitle') }}</h1>
 
 					<div class="grid grid-cols-2 justify-between gap-6 max-md:grid-cols-1">
 						{{ globalThis.blogDocumentsCards || 'Not available for the moment.' }}

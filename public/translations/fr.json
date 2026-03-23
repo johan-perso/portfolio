@@ -5,13 +5,141 @@
 	"mainBentoPage": {
 		"projects": {
 			"fwl": {
-				"projectName": "File Weight Loss",
+				"name": "File Weight Loss",
 				"description": "Faites perdre du poids à vos fichiers",
-				"linkDefault": "https://fwl.johanstick.fr"
+				"bannerImg": "/medias/projects/banners/fwl2.webp",
+				"linkDefault": "https://fwl.bassinecorp.fr/fr/",
+				"linkDemo": "https://fwl.bassinecorp.fr/fr/",
+				"linkGithub": "https://github.com/johan-perso/fileweightloss-landing/blob/main/README.fr.md"
+			},
+			"agendapp": {
+				"name": "Agendapp",
+				"description": "Agenda scolaire et prise de notes",
+				"bannerImg": "/medias/projects/banners/agendapp.png",
+				"bannerVideo": "/medias/projects/banners/agendapp.mp4",
+				"linkDefault": "https://github.com/johan-perso/agendapp",
+				"linkGithub": "https://github.com/johan-perso/agendapp"
+			},
+			"escive": {
+				"name": "eScive",
+				"description": "Roulez mieux en trottinette électrique",
+				"bannerImg": "/medias/projects/banners/escive.fr.jpg",
+				"linkDefault": "/fr/escive?from=/",
+				"linkDocs": "/fr/escive?from=/",
+				"linkGithub": "https://github.com/johan-perso/escive/blob/main/README.fr.md"
+			},
+			"roc": {
+				"name": "roc",
+				"description": "Générateur de sites statiques et dynamiques",
+				"bannerImg": "/medias/projects/banners/roc.webp",
+				"linkDefault": "https://github.com/johan-perso/roc-framework",
+				"linkGithub": "https://github.com/johan-perso/roc-framework"
+			},
+			"stend": {
+				"name": "stend",
+				"bannerImg": "/medias/projects/banners/stend.png",
+				"linkDefault": "https://stend.johanstick.fr/",
+				"linkDemo": "https://stend.johanstick.fr/",
+				"linkGithub": "https://github.com/hoststend"
+			},
+			"magicCommand": {
+				"name": "Magic Command",
+				"description": "Demandez des commandes à l'IA",
+				"bannerImg": "/medias/projects/banners/magic-command.jpg",
+				"bannerVideo": "/medias/projects/banners/magic-command.mp4",
+				"linkDefault": "https://github.com/johan-perso/magic-command/blob/main/README.fr.md",
+				"linkGithub": "https://github.com/johan-perso/magic-command/blob/main/README.fr.md"
+			},
+			"findmeme": {
+				"name": "FindMeme",
+				"bannerImg": "/medias/projects/banners/findmeme.png",
+				"linkDefault": "/fr/findmeme-mobile?from=/",
+				"linkDocs": "/fr/findmeme-mobile?from=/",
+				"linkDemo": "https://findmeme.johanstick.fr/"
+			}
+		},
+		"smallProjects": {
+			"yourdownloader": {
+				"name": "YourDownloader",
+				"description": "Téléchargez des vidéos et fichiers audios de plusieurs plateformes et réseaux sociaux connus, comme YouTube ou SoundCloud, depuis votre bot Telegram privé (self-hosted)",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/yourdownloader/blob/main/README.fr.md"
+			},
+			"sendovernetwork": {
+				"name": "SendOverNetwork",
+				"description": "Échangez des fichiers au sein d'un même réseau à partir du terminal",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/sendovernetwork"
+			},
+			"syncpronote": {
+				"name": "SyncPronote",
+				"description": "Synchroniser votre emploi du temps Pronote avec Google Calendar",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/syncpronote"
+			},
+			"obsidianInbox": {
+				"name": "Obsidian Inbox",
+				"description": "Recevez des fichiers dans votre vault Obsidian via une API REST",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/obsidianinbox-plugin/blob/main/README.fr.md"
+			},
+			"markdocs": {
+				"name": "MarkDocs",
+				"description": "Créateur de documentations locales avec MarkDown et Fumadocs",
+				"source": "johanstick.fr",
+				"link": "https://markdocs.johanstick.fr"
+			},
+			"moreshort": {
+				"name": "MoreShort",
+				"description": "Raccourcissez une URL via différents services depuis votre projet JS",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/moreshort/blob/main/README.fr.md"
+			},
+			"freeboxtools": {
+				"name": "Freebox Tools",
+				"description": "Plusieurs outils utilisant l'API de Freebox OS pour vous rendre la vie simple",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/freebox-tools"
 			}
 		},
 		"oldProjects": {
-			"label": "Anciennes réalisations"
+			"label": "Anciennes réalisations",
+			"mcpShopServer": {
+				"name": "MCP Shop Server",
+				"description": "Donner à une IA la capacité de vous dénicher des offres et des bons plans",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/mcp-shop-server/blob/main/README.fr.md"
+			},
+			"obsidianGitPush": {
+				"name": "Obsidian GitPush",
+				"description": "Synchroniser vos dossiers et documents Markdown avec vos dépôts GitHub",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/obsidian-gitpush/blob/main/README.fr.md"
+			},
+			"vscodeControl": {
+				"name": "VSCode Control",
+				"description": "Une extension Raycast pour contrôler votre éditeur de code rapidement",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/vscode-control/blob/main/README.fr.md"
+			},
+			"infoscreen": {
+				"name": "InfoScreen",
+				"description": "Un écran d'informations intelligent et toujours actif",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/infoscreen"
+			},
+			"screenshothtml": {
+				"name": "screenshothtml",
+				"description": "Générez une capture d'écran d'une page HTML depuis votre code côté serveur",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/screenshothtml/blob/main/README.fr.md"
+			},
+			"discordflutter": {
+				"name": "discordflutter",
+				"description": "Tentative d'interagir avec l'API de Discord dans une app faite avec Flutter / Dart",
+				"source": "github.com",
+				"link": "https://github.com/johan-perso/discordflutter"
+			}
 		},
 		"blog": {
 			"label": "Articles récents",
@@ -50,12 +178,14 @@
 		}
 	},
 	"blog": {
+		"allPostsTitle": "Articles et réflexions",
 		"readall": "Lire l'article complet →",
 		"tocSectionTitle": "Sur cette page"
 	},
 	"misc": {
 		"back": "Retour en arrière",
-		"copiedSectionLink": "Lien vers cette section copié dans le presse-papier !"
+		"copiedSectionLink": "Lien vers cette section copié dans le presse-papier !",
+		"years": "ans"
 	},
 	"map": {
 		"openParisMaps": "Ouvrir Paris sur Google Maps",
