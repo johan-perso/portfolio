@@ -212,6 +212,7 @@
 		"linkGithubAriaLabel": "Consulter le code source de %%NAME%%"
 	},
 	"blog": {
+		"publishedOn": "Publié le %%DATE%%",
 		"allPostsTitle": "Articles et réflexions",
 		"readall": "Lire l'article complet →",
 		"tocSectionTitle": "Sur cette page",

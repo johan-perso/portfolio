@@ -191,7 +191,7 @@
 			"title": "Contact"
 		},
 		"socials": {
-			"title": "Socials Networks"
+			"title": "Social Networks"
 		},
 		"support": {
 			"title": "Support me"
@@ -212,6 +212,7 @@
 		"linkGithubAriaLabel": "View %%NAME%%'s source code"
 	},
 	"blog": {
+		"publishedOn": "Published on %%DATE%%",
 		"allPostsTitle": "Writing & Thoughts",
 		"readall": "Read the full article →",
 		"tocSectionTitle": "On this page",

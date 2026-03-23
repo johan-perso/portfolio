@@ -155,24 +155,31 @@ async function startRocServer(){
 			href="${content.slug || content.url || "#"}"
 		></BlogPostCard>`
 	}).join("\n")
-	globalThis.blogDocumentsCards = blogDocuments.filter(content => content?.frontmatter?.visibility != "hidden").map(content => {
-		const { readTime, bannerWebPath } = getBlogDocument(content?.slug, content?.frontmatter)
-		const banner = bannerWebPath ? `<img src="${bannerWebPath.replace(/"/g, "\\\"")}" alt="" class="w-full h-auto aspect-video object-cover rounded-lg mt-4 bentoCard smallShadow duration-300 transition-shadow" />` : ""
-		const href = `${(content.slug ? `/${content.slug}` : undefined) || content.url || "#"}?from=/articles`
 
-		return `<div class="bentoCard smallShadow rounded-[18px] text-primary-content font-normal text-sm w-full h-full p-5 transition-all duration-300 overflow-hidden">
+	globalThis.blogDocumentsCards = {}
+	Object.keys(translations).forEach(lang => {
+		const publishedOnText = translations[lang]?.blog?.publishedOn || "Published on %%DATE%%"
+		const readingTimeText = translations[lang]?.blog?.articleDetails?.readingTime || "%%MINUTES%% min read"
+
+		globalThis.blogDocumentsCards[lang] = blogDocuments.filter(content => content?.frontmatter?.visibility != "hidden").map(content => {
+			const { readTime, bannerWebPath } = getBlogDocument(content?.slug, content?.frontmatter)
+			const banner = bannerWebPath ? `<img src="${bannerWebPath.replace(/"/g, "\\\"")}" alt="" class="w-full h-auto aspect-video object-cover rounded-lg mt-4 bentoCard smallShadow duration-300 transition-shadow" />` : ""
+			const href = `${(content.slug ? `/${lang}/${content.slug}` : undefined) || content.url || "#"}?from=/articles`
+
+			return `<div class="bentoCard smallShadow rounded-[18px] text-primary-content font-normal text-sm w-full h-full p-5 transition-all duration-300 overflow-hidden">
 			<div class="inline items-start justify-between min-w-0">
 				<a href="${href}" class="hover:text-link w-fit duration-300 transition-colors font-medium text-base 2xl:text-[17px] overflow-hidden text-ellipsis line-clamp-2 text-primary-content-heavy">
 					${(content.title || "").replace(/"/g, "&quot;")}
 				</a>
-				<p class="mt-1 2xl:mt-[3px] text-sm line-clamp-2 text-primary-content-light">Publié le ${getAbsoluteDate("fr-FR", new Date(content?.frontmatter?.post_releasedate))} • ${readTime || "0"} min de lecture</p>
+				<p class="mt-1 2xl:mt-[3px] text-sm line-clamp-2 text-primary-content-light">${publishedOnText.replace("%%DATE%%", getAbsoluteDate(lang == "fr" ? "fr-FR" : "en-US", new Date(content?.frontmatter?.post_releasedate)))} • ${readingTimeText.replace("%%MINUTES%%", readTime || "0")}</p>
 
 				${banner ? `<a href="${href}">
 					${banner}
 				</a>` : `<p class="mt-3 font-normal text-primary-content-light overflow-hidden break-words text-ellipsis line-clamp-5 leading-snug">${(content.firstParagraph || "").replace(/"/g, "&quot;")}</p>`}
 			</div>
 		</div>`
-	}).join("\n")
+		}).join("\n")
+	})
 
 	// Register routes from content files
 	server.registerRoutes(contentFiles.redirections.keyValue.map(redirection => {
