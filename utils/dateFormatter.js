@@ -70,7 +70,7 @@ function getRelativeTime(locale, dateTime, additional) {
 		if(info.type === "prefix") {
 			prefix = `${info.label} `
 		} else if(info.type === "suffix") {
-			suffix = ` ${info.label}`
+			suffix = `${info.label} `
 		}
 	}
 
@@ -84,11 +84,11 @@ function getRelativeTime(locale, dateTime, additional) {
 	// Yesterday or the day before it (make sense in French)
 	if(diffInDays === 1) {
 		const isSpecialPrefix = (prefix.trim() === "depuis" || prefix.trim() === "since")
-		return `${isSpecialPrefix ? prefix : ""}${t.yesterday}`
+		return `${isSpecialPrefix ? prefix : ""}${t.yesterday}`.trim()
 	}
 	if(diffInDays === 2 && lang === "fr") {
 		const isSpecialPrefix = (prefix.trim() === "depuis")
-		return `${isSpecialPrefix ? prefix : ""}${t.beforeYesterday}`
+		return `${isSpecialPrefix ? prefix : ""}${t.beforeYesterday}`.trim()
 	}
 
 	if(diffInDays < 7) return `${prefix}${diffInDays} ${t.day(diffInDays)} ${suffix}`.trim() // less than a week
@@ -104,7 +104,7 @@ function getRelativeTime(locale, dateTime, additional) {
 		if(months === 1) {
 			const isSince = (prefix.trim() === "depuis")
 			const isAgo = (suffix.trim() === "ago")
-			return `${isSince ? prefix : ""}${t.lastMonth}${isAgo ? suffix : ""}`.trim()
+			return `${isSince ? prefix : ""}${t.lastMonth}${isAgo && locale == "fr-FR" ? suffix : ""}`.trim()
 		}
 		return `${prefix}${months} ${t.months(months)} ${suffix}`.trim()
 	}

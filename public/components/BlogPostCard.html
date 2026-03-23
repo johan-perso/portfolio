@@ -1,7 +1,7 @@
 <div class="bentoCard smallShadow rounded-[18px] text-primary-content font-normal text-sm w-full h-full p-5 transition-all duration-300 overflow-hidden">
 	<div class="flex items-start justify-between gap-3 min-w-0">
 		<p class="min-w-0 flex-1 overflow-hidden text-ellipsis line-clamp-2 {{ this.componentAttribs.useserif ? 'font-semibold font-serif' : 'font-medium' }}">{{ $title }}</p>
-		<p class="text-[13px] flex-shrink-0 {{ this.componentAttribs.useserif ? 'font-medium antialiased font-serif' : '' }}">{{ new Date(this.componentAttribs.date).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' }); }}</p>
+		<p class="text-[13px] flex-shrink-0 {{ this.componentAttribs.useserif ? 'font-medium antialiased font-serif' : '' }}">{{ new Date(this.componentAttribs.date).toLocaleDateString(require(path.join(this.routeFile, '..', 'translations', 'util')).detectLang(this.routePath), { day: 'numeric', month: 'short', year: 'numeric' }); }}</p>
 	</div>
 
 	<div class="mt-1 leading-snug">

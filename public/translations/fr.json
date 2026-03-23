@@ -214,7 +214,19 @@
 	"blog": {
 		"allPostsTitle": "Articles et réflexions",
 		"readall": "Lire l'article complet →",
-		"tocSectionTitle": "Sur cette page"
+		"tocSectionTitle": "Sur cette page",
+		"articleDetails": {
+			"ariaLabel": "Détails de l'article",
+			"readingTime": "%%MINUTES%% min de lecture",
+			"editedOn": "Édité le %%DATE%%",
+			"sourcecode": "Code source du projet",
+			"demo": "Essayer sans installation",
+			"downloadAndroid": "Télécharger pour Android",
+			"downloadIos": "Télécharger pour iOS",
+			"downloadWindows": "Télécharger pour Windows",
+			"downloadMacOS": "Télécharger pour macOS",
+			"downloadLinux": "Télécharger pour Linux"
+		}
 	},
 	"misc": {
 		"back": "Retour en arrière",

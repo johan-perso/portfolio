@@ -1,8 +1,8 @@
-<div role="complementary" aria-label="Détails de l'article">
+<div role="complementary" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.articleDetails.ariaLabel') }}">
 	<div class="mr-1 space-y-1">
-		<p>{{ $readTimeMin }} min de lecture</p>
+		<p>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.articleDetails.readingTime').replace('%%MINUTES%%', this.componentAttribs.readtimemin) }}</p>
 		<p>{{ $releaseAbsoluteDate }} ({{ $releaseRelativeDate }})</p>
-		<p class="{{ this.componentAttribs.editabsolutedate?.length ? '' : 'hidden' }}">Édité le {{ $editAbsoluteDate }}</p>
+		<p class="{{ this.componentAttribs.editabsolutedate?.length ? '' : 'hidden' }}">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.articleDetails.editedOn').replace('%%DATE%%', this.componentAttribs.editabsolutedate) }}</p>
 	</div>
 
 	<div class="w-full h-px rounded-full bg-primary-content-light my-3 {{ this.componentAttribs.projectperiod?.length || this.componentAttribs.projectstack?.length || this.componentAttribs.projectauthor?.length || this.componentAttribs.projectcoauthors?.length ? '' : 'hidden' }}"></div>
@@ -54,7 +54,7 @@
 				<path d="M7.12504 14.25C3.55462 15.8333 3.16671 12.6667 1.58337 12.6667" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 			</svg>
 
-			<a href="{{ $linkSourceCode }}" class="text-link hover:underline">Code source du projet</a>
+			<a href="{{ $linkSourceCode }}" class="text-link hover:underline">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.articleDetails.sourcecode') }}</a>
 		</div>
 		<div class="flex gap-2 items-start {{ this.componentAttribs.linkdemo?.length ? '' : 'hidden' }}">
 			<svg class="browserSvgIcon mt-[2px] md:mt-[1px] shrink-0" width="16" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -69,14 +69,14 @@
 					</clipPath>
 				</defs>
 			</svg>
-			<a href="{{ $linkDemo }}" class="text-link hover:underline">Essayer sans installation</a>
+			<a href="{{ $linkDemo }}" class="text-link hover:underline">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.articleDetails.demo') }}</a>
 		</div>
 
 		<div class="flex gap-2 items-start {{ this.componentAttribs.linkandroid?.length ? '' : 'hidden' }}">
 			<svg class="mt-[2px] md:mt-[1px] shrink-0" width="16" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
 				<path d="M14.5979 4.40056C14.0636 5.32396 13.5276 6.24657 12.9929 7.16981C12.9639 7.15754 12.9342 7.14717 12.9048 7.13577C11.4601 6.58501 10.1466 6.50243 9.40563 6.51273C7.93701 6.52737 6.75007 6.8803 6.03337 7.16213C5.96687 7.04385 4.6459 4.7705 4.43302 4.40206C4.40127 4.34783 4.36396 4.29705 4.32171 4.25054C4.05951 3.96237 3.60493 3.86587 3.23 4.08983C2.85396 4.31308 2.66507 4.83091 2.92236 5.27883C4.46342 7.94643 2.84588 5.10799 4.46397 7.93828C4.47759 7.96282 4.07241 8.14744 3.3615 8.74396C2.2948 9.63933 0.357833 11.6945 0 15.0339H19C18.9058 14.1545 18.7082 13.3722 18.4093 12.6048C17.8205 11.0913 16.9499 9.99804 16.24 9.29282C15.7296 8.78559 15.1637 8.33745 14.5531 7.95688C15.0751 7.06863 15.5917 6.17096 16.1086 5.27725C16.273 4.99106 16.2579 4.6474 16.1023 4.3913C16.0316 4.27246 15.9335 4.1722 15.8163 4.09879C15.6991 4.02539 15.566 3.98096 15.4282 3.96918C15.0146 3.92675 14.6847 4.21681 14.5979 4.40056ZM14.567 11.0989C14.8792 11.568 14.8235 12.1522 14.4432 12.4053C14.0633 12.6584 13.5027 12.4833 13.1908 12.0142C12.8786 11.545 12.9343 10.9607 13.3146 10.7076C13.6888 10.4582 14.2497 10.6217 14.567 11.0989ZM5.70554 10.7091C6.08578 10.9622 6.14143 11.5465 5.82928 12.0157C5.51736 12.4848 4.95544 12.6599 4.57528 12.4068C4.19528 12.1537 4.13963 11.5695 4.45154 11.1003C4.76884 10.6236 5.32926 10.4586 5.70554 10.7091Z" fill="currentColor"/>
 			</svg>
-			<a href="{{ $linkAndroid }}" class="text-link hover:underline">Télécharger pour Android</a>
+			<a href="{{ $linkAndroid }}" class="text-link hover:underline">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.articleDetails.downloadAndroid') }}</a>
 		</div>
 		<div class="flex gap-2 items-start {{ this.componentAttribs.linkios?.length ? '' : 'hidden' }}">
 			<svg class="mt-[2px] md:mt-[1px] shrink-0" width="16" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -89,7 +89,7 @@
 					</clipPath>
 				</defs>
 			</svg>
-			<a href="{{ $linkIos }}" class="text-link hover:underline">Télécharger pour iOS</a>
+			<a href="{{ $linkIos }}" class="text-link hover:underline">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.articleDetails.downloadIos') }}</a>
 		</div>
 
 		<div class="flex gap-2 items-start {{ this.componentAttribs.linkwindows?.length ? '' : 'hidden' }}">
@@ -97,7 +97,7 @@
 				<path d="M10.2917 2.375H8.70833C5.72277 2.375 4.22999 2.375 3.30249 3.30249C2.375 4.22999 2.375 5.72277 2.375 8.70833V10.2917C2.375 13.2772 2.375 14.77 3.30249 15.6975C4.22999 16.625 5.72277 16.625 8.70833 16.625H10.2917C13.2772 16.625 14.77 16.625 15.6975 15.6975C16.625 14.77 16.625 13.2772 16.625 10.2917V8.70833C16.625 5.72277 16.625 4.22999 15.6975 3.30249C14.77 2.375 13.2772 2.375 10.2917 2.375Z" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
 				<path d="M9.5 2.375V16.625M2.375 9.5H16.625" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round"/>
 			</svg>
-			<a href="{{ $linkWindows }}" class="text-link hover:underline">Télécharger pour Windows</a>
+			<a href="{{ $linkWindows }}" class="text-link hover:underline">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.articleDetails.downloadWindows') }}</a>
 		</div>
 		<div class="flex gap-2 items-start {{ this.componentAttribs.linkmacos?.length ? '' : 'hidden' }}">
 			<svg class="mt-[2px] md:mt-[1px] shrink-0" width="16" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -107,7 +107,7 @@
 				<path d="M5.54163 13.0625C8.31246 14.6458 10.6875 14.6458 13.4583 13.0625" stroke="currentColor" stroke-width="1.45" stroke-linejoin="round"/>
 				<path d="M10.2834 1.97916C9.59797 2.99665 8.32537 6.1065 7.97498 9.16733C7.90156 9.80866 7.86486 10.1294 8.06744 10.3848C8.08692 10.4093 8.11249 10.4376 8.13489 10.4595C8.36851 10.6875 8.72009 10.6875 9.42325 10.6875C9.80784 10.6875 10.0001 10.6875 10.1148 10.7915C10.1272 10.8028 10.1373 10.8132 10.1483 10.8259C10.2495 10.9428 10.2428 11.1403 10.2292 11.5353C10.1875 12.7582 10.2442 15.0831 11.0833 17.0208" stroke="currentColor" stroke-width="1.45" stroke-linejoin="round"/>
 			</svg>
-			<a href="{{ $linkMacOS }}" class="text-link hover:underline">Télécharger pour macOS</a>
+			<a href="{{ $linkMacOS }}" class="text-link hover:underline">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.articleDetails.downloadMacOS') }}</a>
 		</div>
 		<div class="flex gap-2 items-start {{ this.componentAttribs.linklinux?.length ? '' : 'hidden' }}">
 			<svg class="mt-[2px] md:mt-[1px] shrink-0" width="16" height="16" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -119,7 +119,7 @@
 				<path d="M7.52087 9.5V11.0833" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
 				<path d="M11.4791 9.5V11.0833" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round"/>
 			</svg>
-			<a href="{{ $linkLinux }}" class="text-link hover:underline">Télécharger pour Linux</a>
+			<a href="{{ $linkLinux }}" class="text-link hover:underline">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.articleDetails.downloadLinux') }}</a>
 		</div>
 	</div>
 </div>

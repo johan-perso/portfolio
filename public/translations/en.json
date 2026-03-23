@@ -214,7 +214,19 @@
 	"blog": {
 		"allPostsTitle": "Writing & Thoughts",
 		"readall": "Read the full article →",
-		"tocSectionTitle": "On this page"
+		"tocSectionTitle": "On this page",
+		"articleDetails": {
+			"ariaLabel": "Article details",
+			"readingTime": "%%MINUTES%% min read",
+			"editedOn": "Edited on %%DATE%%",
+			"sourcecode": "Project source code",
+			"demo": "Try from your browser",
+			"downloadAndroid": "Download for Android",
+			"downloadIos": "Download for iOS",
+			"downloadWindows": "Download for Windows",
+			"downloadMacOS": "Download for macOS",
+			"downloadLinux": "Download for Linux"
+		}
 	},
 	"misc": {
 		"back": "Go back",
