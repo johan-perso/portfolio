@@ -252,6 +252,7 @@ window.onload = async function(){
 
 	const audiosToPreload = [
 		{ name: "haptic", src: "/medias/audios/haptic.mp3" },
+		{ name: "hover", src: "/medias/audios/hover.mp3" },
 		{ name: "notif", src: "/medias/audios/notif.mp3" },
 		{ name: "switch", src: "/medias/audios/switch.mp3" },
 	]
@@ -305,6 +306,12 @@ window.onload = async function(){
 		})
 		headings.forEach(h => observer.observe(h))
 	}
+
+	Array.from(document.querySelectorAll(".bentoCard")).forEach(el => {
+		// TODO: support more elements
+		el.addEventListener("mouseenter", () => playAudio("hover"))
+		el.addEventListener("mouseleave", () => playAudio("hover"))
+	})
 
 	hasMainLoadFunctionsRun = true
 
@@ -685,7 +692,10 @@ async function preloadAudio(name, src) {
 		console.error(`Failed to preload audio "${name}" from "${src}":`, error)
 	}
 }
+var lastPlayedAudio = null
 function playAudio(name) {
+	if(lastPlayedAudio && (Date.now() - lastPlayedAudio < 120)) return console.warn(`Audio "${name}" play skipped to avoid spamming (last played ${Date.now() - lastPlayedAudio}ms ago).`)
+
 	const key = `${name}_buffer.mp3`
 	if(!preloaded[key]) return console.warn(`Audio "${name}" not found in preloaded audios (searching "${key}").`)
 
@@ -694,6 +704,7 @@ function playAudio(name) {
 		source.buffer = preloaded[key]
 		source.connect(audioContext.destination)
 		source.start(0)
+		lastPlayedAudio = Date.now()
 	} catch(error) {
 		console.error(`Failed to play audio "${key}":`, error)
 	}
