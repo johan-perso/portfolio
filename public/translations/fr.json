@@ -177,6 +177,40 @@
 			"copyright": "2026. Fait avec ❤️ par Johan."
 		}
 	},
+	"machineMode": {
+		"notUnderstanding": "Vous ne comprenez pas ? Revenez à l'<span onclick=\"switchInterface('human')\" class=\"text-stone-400 hover:underline decoration-blue-500 cursor-pointer\">expérience classique</span>.",
+		"ariaLabelGoClassicMode": "Revenir au mode classique",
+		"copyAllResume": "Copier le texte dans le presse-papier",
+		"description": {
+			"title": "Description",
+			"line1": "Développeur basé à Paris. Passionné par la création de projets innovants liés aux nouvelles technologies.",
+			"line2": "Se consacre principalement au développement de projets personnels pendant ses études en informatique.",
+			"line3": "Majoritairement orienté vers le développement frontend/backend en JavaScript, et dans le développement d'apps avec Flutter."
+		},
+		"contact": {
+			"title": "Contact"
+		},
+		"socials": {
+			"title": "Réseaux sociaux"
+		},
+		"support": {
+			"title": "Soutenir financièrement"
+		},
+		"projects": {
+			"title": "Projets",
+			"moreProjectsCta": "Plus de projets sont disponibles sur ce portfolio en mode classique. <span onclick=\"switchInterface('human')\" class=\"text-stone-400 hover:underline decoration-blue-500 cursor-pointer\">Désactivez le mode machine</span> pour les découvrir.",
+			"escive": " : Roulez mieux en trottinette électrique",
+			"fwl": " : Page de landing pour un logiciel de compression de fichiers",
+			"agendapp": " : Agenda scolaire et prise de notes",
+			"roc": " : Générateur de sites statiques et dynamiques",
+			"stend": " : Un service de partage de fichiers auto hébergé et rapide à mettre en place"
+		}
+	},
+	"bentoCards": {
+		"linkDocsAriaLabel": "Lire un article dédié à %%NAME%%",
+		"linkDemoAriaLabel": "Ouvrir le site WEB de %%NAME%%",
+		"linkGithubAriaLabel": "Consulter le code source de %%NAME%%"
+	},
 	"blog": {
 		"allPostsTitle": "Articles et réflexions",
 		"readall": "Lire l'article complet →",

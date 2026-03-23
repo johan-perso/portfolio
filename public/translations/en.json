@@ -177,6 +177,40 @@
 			"copyright": "2026. Made with ❤️ by Johan."
 		}
 	},
+	"machineMode": {
+		"notUnderstanding": "Don't understand? Switch back to <span onclick=\"switchInterface('human')\" class=\"text-stone-400 hover:underline decoration-blue-500 cursor-pointer\">classic experience</span>.",
+		"ariaLabelGoClassicMode": "Switch back to classic experience",
+		"copyAllResume": "Copy summary to clipboard",
+		"description": {
+			"title": "Summary",
+			"line1": "Paris-based developer, passionate about building innovative projects with the latest technologies.",
+			"line2": "Primarily focused on full-stack JavaScript development and building apps with Flutter.",
+			"line3": "Focusing on personal projects while studying computer science."
+		},
+		"contact": {
+			"title": "Contact"
+		},
+		"socials": {
+			"title": "Socials Networks"
+		},
+		"support": {
+			"title": "Support me"
+		},
+		"projects": {
+			"title": "Projects",
+			"moreProjectsCta": "More projects are available on this portfolio in classic mode. Switch back to <span onclick=\"switchInterface('human')\" class=\"text-stone-400 hover:underline decoration-blue-500 cursor-pointer\">classic mode</span> to discover them.",
+			"escive": ": Next level controls for your electric scooter",
+			"fwl": ": Landing page for a file optimization tool that reduces file sizes while maintaining quality",
+			"agendapp": ": School planner and note-taking app designed for students",
+			"roc": ": Static and dynamic site generator (FR Only)",
+			"stend": ": Self-hosted file sharing service that's quick to set up (FR Only)"
+		}
+	},
+	"bentoCards": {
+		"linkDocsAriaLabel": "Read a dedicated article about %%NAME%%",
+		"linkDemoAriaLabel": "Open %%NAME%%'s website",
+		"linkGithubAriaLabel": "View %%NAME%%'s source code"
+	},
 	"blog": {
 		"allPostsTitle": "Writing & Thoughts",
 		"readall": "Read the full article →",

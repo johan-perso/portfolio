@@ -239,10 +239,10 @@
 	<div id="machineViewContent" class="hidden pointer-events-none opacity-0 scale-95 duration-700 fixed inset-0 w-full h-full overflow-y-auto font-mono text-primary-background bg-dark-background backdrop-blur-sm z-50 px-6 sm:px-8 md:px-10 lg:px-32 py-8" style="transition-property: opacity, transform, border-radius, box-shadow; transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); border-radius: 16px; box-shadow: 0 0 60px 30px rgba(0,0,0,0.4);">
 		<div class="min-[768px]:flex items-start justify-center h-fit gap-1.5 w-full max-w-[88rem] mx-auto">
 			<div class="flex min-[768px]:hidden shrink-0 items-center justify-center text-center mb-8 text-sm">
-				<p>Vous ne comprenez pas ? Revenez à l'<span onclick="switchInterface('human')" class="text-stone-400 hover:underline decoration-blue-500 cursor-pointer">expérience classique</span>.</p>
+				<p>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.notUnderstanding') }}</p>
 			</div>
 			<div class="sticky max-[767px]:hidden shrink-0 -mt-0.5 mr-2.5">
-				<button onclick="switchInterface('human')" aria-label="Revenir au mode classique" class="p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
+				<button onclick="switchInterface('human')" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.ariaLabelGoClassicMode') }}" class="p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
 					<div class="relative w-5 h-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4L4 16"/><path d="M4 4L16 16"/></svg>
 					</div>
@@ -254,17 +254,16 @@
 				<p class="uppercase text-base font-medium"><span class="text-stone-400">#</span> Portfolio ⇢ Johan</p>
 
 				<div>
-					<p><span class="text-stone-400">###</span> Description</p>
-					<!-- TODO: "Summary" -->
+					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.description.title') }}</p>
 					<div class="mt-2 space-y-1">
-						<p><span class="text-stone-400">&gt;</span> Développeur basé à Paris. Passionné par la création de projets innovants liés aux nouvelles technologies.</p>
-						<p><span class="text-stone-400">&gt;</span> Se consacre principalement au développement de projets personnels pendant ses études en informatique.</p>
-						<p><span class="text-stone-400">&gt;</span> Majoritairement orienté vers le développement frontend/backend en JavaScript, et dans le développement d'apps avec Flutter.</p>
+						<p><span class="text-stone-400">&gt;</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.description.line1') }}</p>
+						<p><span class="text-stone-400">&gt;</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.description.line2') }}</p>
+						<p><span class="text-stone-400">&gt;</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.description.line3') }}</p>
 					</div>
 				</div>
 
 				<div>
-					<p><span class="text-stone-400">###</span> Contact</p>
+					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.contact.title') }}</p>
 					<div class="mt-2 space-y-1 break-all">
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://t.me/johanstick"><span>[Telegram]</span><span class="text-stone-400">(https://t.me/johanstick)</span></a></p>
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://discord.com/users/277825082334773251"><span>[Discord]</span><span class="text-stone-400">(https://discord.com/users/277825082334773251)</span></a></p>
@@ -273,7 +272,7 @@
 				</div>
 
 				<div>
-					<p><span class="text-stone-400">###</span> Réseaux sociaux</p>
+					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.socials.title') }}</p>
 					<div class="mt-2 space-y-1 break-all">
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://x.com/johan_stickman"><span>[Twitter]</span><span class="text-stone-400">(https://x.com/johan_stickman)</span></a></p>
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso"><span>[GitHub]</span><span class="text-stone-400">(https://github.com/johan-perso)</span></a></p>
@@ -282,8 +281,9 @@
 				</div>
 
 				<div>
-					<p><span class="text-stone-400">###</span> Soutenir financièrement</p>
+					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.support.title') }}</p>
 					<div class="mt-2 space-y-1 break-all">
+						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/sponsors/johan-perso"><span>[GitHub]</span><span class="text-stone-400">(https://github.com/sponsors/johan-perso)</span></a></p>
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://ko-fi.com/johan_stickman"><span>[Ko-fi]</span><span class="text-stone-400">(https://ko-fi.com/johan_stickman)</span></a></p>
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://paypal.me/moipastoii"><span>[PayPal]</span><span class="text-stone-400">(https://paypal.me/moipastoii)</span></a></p>
 						<p><span class="text-stone-400">-</span> <span>ETH: </span><span onclick="copyCryptoAddress('eth')" class="text-stone-400 hover:underline decoration-blue-500 cursor-pointer">0x1e198e9Df0519bE9E759E8995518D1A5F8025F0a</span></p>
@@ -293,40 +293,40 @@
 				</div>
 
 				<div>
-					<p><span class="text-stone-400">###</span> Articles récents</p>
+					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.blog.label') }}</p>
 					<div class="mt-2 space-y-1">
 						{{ globalThis.recentsBlogArticlesMachineCards || 'Not available for the moment.' }}
 					</div>
 				</div>
 
 				<div>
-					<p><span class="text-stone-400">###</span> Projets</p>
+					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.title') }}</p>
 					<div class="mt-2 space-y-1">
 						<ul class="list-decimal list-outside marker-medium space-y-1 pl-6 marker:text-stone-400">
 							<li>
-								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/escive"><span>[eScive]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/escive)</span></a> : Roulez mieux en trottinette électrique
+								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/escive"><span>[eScive]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/escive)</span></a>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.escive') }}
 							</li>
 							<li>
-								<a target="_blank" class="hover:underline decoration-blue-500" href="https://fwl.bassinecorp.fr"><span>[File Weight Loss]</span><span class="text-stone-400 break-all">(https://fwl.bassinecorp.fr)</span></a> : Page de landing pour un logiciel de compression de fichiers
+								<a target="_blank" class="hover:underline decoration-blue-500" href="https://fwl.bassinecorp.fr"><span>[File Weight Loss]</span><span class="text-stone-400 break-all">(https://fwl.bassinecorp.fr)</span></a>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.fwl') }}
 							</li>
 							<li>
-								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/agendapp"><span>[Agendapp]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/agendapp)</span></a> : Agenda scolaire et prise de notes
+								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/agendapp"><span>[Agendapp]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/agendapp)</span></a>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.agendapp') }}
 							</li>
 							<li>
-								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/roc-framework"><span>[roc-framework]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/roc-framework)</span></a> : Générateur de sites statiques et dynamiques
+								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/roc-framework"><span>[roc-framework]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/roc-framework)</span></a>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.roc') }}
 							</li>
 							<li>
-								<a target="_blank" class="hover:underline decoration-blue-500" href="https://stend.johanstick.fr"><span>[Stend]</span><span class="text-stone-400 break-all">(https://stend.johanstick.fr)</span></a> : Un service de partage de fichiers auto hébergé et rapide à mettre en place
+								<a target="_blank" class="hover:underline decoration-blue-500" href="https://stend.johanstick.fr"><span>[Stend]</span><span class="text-stone-400 break-all">(https://stend.johanstick.fr)</span></a>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.stend') }}
 							</li>
 						</ul>
 
-						<p class="pt-3"><span class="text-stone-400">&gt;</span> Plus de projets sont disponibles sur ce portfolio en mode classique. <span onclick="switchInterface('human')" class="text-stone-400 hover:underline decoration-blue-500 cursor-pointer">Désactivez le mode machine</span> pour les découvrir.</p>
+						<p class="pt-3"><span class="text-stone-400">&gt;</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.moreProjectsCta') }}</p>
 					</div>
 				</div>
 			</div>
 
 			<div class="sticky max-[767px]:hidden shrink-0 -mt-0.5 ml-3">
-				<button onclick="copyMachineView()" aria-label="Copier le contenu dans le presse-papier" class="p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
+				<button onclick="copyMachineView()" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.copyAllResume') }}" class="p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
 					<div class="relative w-5 h-5">
 						<svg id="machineViewCopyIcon" class="absolute inset-0 transition-all duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
 						<svg id="machineViewCheckIcon" class="absolute inset-0 opacity-0 scale-50 transition-all duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
