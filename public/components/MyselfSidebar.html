@@ -1,25 +1,25 @@
 <div class="myself px-14 pb-14 max-[1219px]:px-40 max-[1186px]:px-24 max-[900px]:px-12 {{ $class }}">
 	<div id="sectionHeaderAboutMe">
 		<SectionHeader
-			title="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.aboutMe.label') }}"
+			title="{{ globalThis.getValue(this.routePath, 'myselfSidebar.aboutMe.label') }}"
 			addMarginTitle="true"
 			svgPath="<path d='M21.3333 2.66667V5.33334' stroke='currentColor' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/><path d='M23.8867 29.3333C23.8867 27.2116 23.0438 25.1768 21.5435 23.6765C20.0432 22.1762 18.0084 21.3333 15.8867 21.3333C13.7649 21.3333 11.7301 22.1762 10.2298 23.6765C8.72953 25.1768 7.88667 27.2116 7.88667 29.3333' stroke='currentColor' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/><path d='M10.6667 2.66667V5.33334' stroke='currentColor' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/><path d='M16 21.3333C18.9455 21.3333 21.3333 18.9455 21.3333 16C21.3333 13.0545 18.9455 10.6667 16 10.6667C13.0545 10.6667 10.6667 13.0545 10.6667 16C10.6667 18.9455 13.0545 21.3333 16 21.3333Z' stroke='currentColor' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/><path d='M25.3333 5.33333H6.66667C5.19391 5.33333 4 6.52724 4 7.99999V26.6667C4 28.1394 5.19391 29.3333 6.66667 29.3333H25.3333C26.8061 29.3333 28 28.1394 28 26.6667V7.99999C28 6.52724 26.8061 5.33333 25.3333 5.33333Z' stroke='currentColor' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/>"
 		></SectionHeader>
 	</div>
 
-	<div id="myselfContainer" class="mt-12 max-[1219px]:w-3/5 max-[1000px]:w-4/5 max-[600px]:w-full" role="region" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.aboutMe.ariaLabel') }}">
+	<div id="myselfContainer" class="mt-12 max-[1219px]:w-3/5 max-[1000px]:w-4/5 max-[600px]:w-full" role="region" aria-label="{{ globalThis.getValue(this.routePath, 'myselfSidebar.aboutMe.ariaLabel') }}">
 		<h2 id="firstName" class="font-header font-extrabold text-5xl">Johan</h2>
 
 		<div id="skills" class="mt-6 space-y-3">
 			<Skill
 				id="skill_developer"
-				name="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.aboutMe.skills.developer') }}"
+				name="{{ globalThis.getValue(this.routePath, 'myselfSidebar.aboutMe.skills.developer') }}"
 				svgPath="<path d='M10 15.8333H16.6667' stroke='currentColor' stroke-opacity='0.95' stroke-width='2.15' stroke-linecap='round' stroke-linejoin='round'/><path d='M3.33333 14.1667L8.33333 9.16667L3.33333 4.16667' stroke='currentColor' stroke-opacity='0.95' stroke-width='2.15' stroke-linecap='round' stroke-linejoin='round'/>"
 			></Skill>
 			<Skill
 				id="skill_student"
-				name="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.aboutMe.skills.student') }}"
-				additional="({{ ~~((Date.now() - new Date('2008-03-07')) / 31557600000) }} {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'misc.years') }})"
+				name="{{ globalThis.getValue(this.routePath, 'myselfSidebar.aboutMe.skills.student') }}"
+				additional="({{ ~~((Date.now() - new Date('2008-03-07')) / 31557600000) }} {{ globalThis.getValue(this.routePath, 'misc.years') }})"
 				svgPath="<path d='M17.85 9.10167C17.9992 9.03585 18.1258 8.92772 18.2141 8.79067C18.3024 8.65362 18.3486 8.49366 18.3469 8.33061C18.3453 8.16757 18.2958 8.0086 18.2046 7.8734C18.1135 7.7382 17.9847 7.63271 17.8342 7.57L10.6917 4.31667C10.4745 4.21762 10.2387 4.16637 10 4.16637C9.76134 4.16637 9.52547 4.21762 9.30833 4.31667L2.16667 7.56667C2.01831 7.63164 1.8921 7.73845 1.80347 7.87401C1.71485 8.00958 1.66765 8.16803 1.66765 8.33C1.66765 8.49197 1.71485 8.65042 1.80347 8.78599C1.8921 8.92155 2.01831 9.02836 2.16667 9.09333L9.30833 12.35C9.52547 12.449 9.76134 12.5003 10 12.5003C10.2387 12.5003 10.4745 12.449 10.6917 12.35L17.85 9.10167Z' stroke='currentColor' stroke-opacity='0.95' stroke-width='2.05' stroke-linecap='round' stroke-linejoin='round'/><path d='M18.3333 8.33333V13.3333' stroke='currentColor' stroke-opacity='0.95' stroke-width='2.05' stroke-linecap='round' stroke-linejoin='round'/><path d='M5 10.4167V13.3333C5 13.9964 5.52678 14.6323 6.46447 15.1011C7.40215 15.5699 8.67392 15.8333 10 15.8333C11.3261 15.8333 12.5979 15.5699 13.5355 15.1011C14.4732 14.6323 15 13.9964 15 13.3333V10.4167' stroke='currentColor' stroke-opacity='0.95' stroke-width='2.05' stroke-linecap='round' stroke-linejoin='round'/>"
 			></Skill>
 		</div>
@@ -50,10 +50,10 @@
 		<div id="aiOptionsSections" class="mt-2.5 flex gap-2 [&>*:first-child]:flex-none [&>*:last-child]:flex-1 min-[1220px]:max-[1345px]:flex-col min-[1220px]:max-[1345px]:[&>*]:w-full">
 			<div class="min-[1220px]:max-[1345px]:hidden max-[490px]:hidden justify-self-start">
 				<SegmentedControls
-					firstChoiceLabel="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.aboutMe.segmentedControls.human') }}"
+					firstChoiceLabel="{{ globalThis.getValue(this.routePath, 'myselfSidebar.aboutMe.segmentedControls.human') }}"
 					firstChoiceId="segmentedControl-button-human"
 					firstChoiceOnclick="switchInterface('human')"
-					secondChoiceLabel="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.aboutMe.segmentedControls.machine') }}"
+					secondChoiceLabel="{{ globalThis.getValue(this.routePath, 'myselfSidebar.aboutMe.segmentedControls.machine') }}"
 					secondChoiceId="segmentedControl-button-machine"
 					secondChoiceOnclick="switchInterface('machine')"
 				></SegmentedControls>
@@ -65,8 +65,8 @@
 		<div class="mt-3">
 			<NewsBanner
 				date="2026-01-08"
-				content="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'newsBanner.content') }}"
-				href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'newsBanner.url') }}"
+				content="{{ globalThis.getValue(this.routePath, 'newsBanner.content') }}"
+				href="{{ globalThis.getValue(this.routePath, 'newsBanner.url') }}"
 			></NewsBanner>
 		</div>
 
@@ -75,30 +75,30 @@
 		</div>
 	</div>
 
-	<div class="mt-2.5 leading-snug text-primary-content text-[14.5px]" id="othersTextualAboutMeSections" style="width: 100px" role="contentinfo" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.contact.ariaLabel') }}">
+	<div class="mt-2.5 leading-snug text-primary-content text-[14.5px]" id="othersTextualAboutMeSections" style="width: 100px" role="contentinfo" aria-label="{{ globalThis.getValue(this.routePath, 'myselfSidebar.contact.ariaLabel') }}">
 		<div id="contactSection" class="max-[1219px]:w-3/5 max-[1000px]:w-4/5 max-[600px]:w-full">
 			<SectionHeader
-				title="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.contact.label') }}"
+				title="{{ globalThis.getValue(this.routePath, 'myselfSidebar.contact.label') }}"
 				class="mt-8"
 				svgPath="<path d='M8.00001 21.3334C10.9455 21.3334 13.3333 18.9455 13.3333 16C13.3333 13.0545 10.9455 10.6667 8.00001 10.6667C5.05449 10.6667 2.66667 13.0545 2.66667 16C2.66667 18.9455 5.05449 21.3334 8.00001 21.3334Z' stroke='currentColor' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'/><path d='M24 21.3334C26.9455 21.3334 29.3333 18.9455 29.3333 16C29.3333 13.0545 26.9455 10.6667 24 10.6667C21.0545 10.6667 18.6667 13.0545 18.6667 16C18.6667 18.9455 21.0545 21.3334 24 21.3334Z' stroke='currentColor' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'/><path d='M8 21.3333H24' stroke='currentColor' stroke-width='2.3' stroke-linecap='round' stroke-linejoin='round'/>"
 			></SectionHeader>
 
 			<div class="mt-2.5 ml-0.5">
-				<p>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.contact.description') }}</p>
+				<p>{{ globalThis.getValue(this.routePath, 'myselfSidebar.contact.description') }}</p>
 			</div>
 		</div>
 
-		<div id="footerSection" class="max-[1219px]:w-3/5 max-[1000px]:w-4/5 max-[600px]:w-full" role="contentinfo" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.footer.ariaLabel') }}">
+		<div id="footerSection" class="max-[1219px]:w-3/5 max-[1000px]:w-4/5 max-[600px]:w-full" role="contentinfo" aria-label="{{ globalThis.getValue(this.routePath, 'myselfSidebar.footer.ariaLabel') }}">
 			<SectionHeader
-				title="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.footer.label') }}"
+				title="{{ globalThis.getValue(this.routePath, 'myselfSidebar.footer.label') }}"
 				class="mt-8"
 				svgPath="<path d='M4.99999 20V17.025C4.99999 14.375 3.71249 13.125 3.74999 10C3.78749 6.6 5.61249 2.5 9.37499 2.5C11.7125 2.5 12.5 4.75 12.5 6.875C12.5 10.7625 9.99999 13.95 9.99999 17.725V20C9.99999 20.663 9.7366 21.2989 9.26776 21.7678C8.79892 22.2366 8.16304 22.5 7.49999 22.5C6.83695 22.5 6.20107 22.2366 5.73223 21.7678C5.26339 21.2989 4.99999 20.663 4.99999 20Z' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M25 25V22.025C25 19.375 26.2875 18.125 26.25 15C26.2125 11.6 24.3875 7.5 20.625 7.5C18.2875 7.5 17.5 9.75 17.5 11.875C17.5 15.7625 20 18.95 20 22.725V25C20 25.663 20.2634 26.2989 20.7322 26.7678C21.2011 27.2366 21.837 27.5 22.5 27.5C23.163 27.5 23.7989 27.2366 24.2678 26.7678C24.7366 26.2989 25 25.663 25 25Z' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M20 21.25H25' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/><path d='M5 16.25H10' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/>"
 			></SectionHeader>
 
 			<div class="mt-2.5">
 				<ul class="list-disc list-inside leading-tight space-y-1 gap-1 ml-[3px]">
-					<li id="donationSection">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.footer.donationContent') }}</li>
-					<li><a href="https://uptime.johanstick.fr" class="text-link hover:underline font-medium">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.footer.uptimeContent') }}</a>.</li>
+					<li id="donationSection">{{ globalThis.getValue(this.routePath, 'myselfSidebar.footer.donationContent') }}</li>
+					<li><a href="https://uptime.johanstick.fr" class="text-link hover:underline font-medium">{{ globalThis.getValue(this.routePath, 'myselfSidebar.footer.uptimeContent') }}</a>.</li>
 				</ul>
 
 				<ul class="mt-4 list-none leading-tight space-y-1 gap-1">
@@ -107,7 +107,7 @@
 							<path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
 							<path d="M12.5 12.5025C12.0492 12.9529 11.475 13.2594 10.8499 13.3835C10.2249 13.5075 9.57716 13.4435 8.98852 13.1995C8.39988 12.9555 7.89679 12.5424 7.54285 12.0126C7.18891 11.4827 7 10.8598 7 10.2226C7 9.58536 7.18891 8.96245 7.54285 8.43258C7.89679 7.90271 8.39988 7.48966 8.98852 7.24565C9.57716 7.00163 10.2249 6.93761 10.8499 7.06166C11.475 7.18571 12.0492 7.49228 12.5 7.9426" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
 						</svg>
-						{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'myselfSidebar.footer.copyright') }}
+						{{ globalThis.getValue(this.routePath, 'myselfSidebar.footer.copyright') }}
 					</li>
 					<li class="flex items-center gap-[6px]">
 						<svg class="text-primary-content-heavy shrink-0" width="18" height="18" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">

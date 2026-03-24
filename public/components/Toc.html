@@ -5,7 +5,7 @@
 			<path d="M4 12h16"/>
 			<path d="M4 19h16"/>
 		</svg>
-		<span>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'blog.tocSectionTitle') }}</span>
+		<span>{{ globalThis.getValue(this.routePath, 'blog.tocSectionTitle') }}</span>
 	</div>
 
 	<div class="relative">

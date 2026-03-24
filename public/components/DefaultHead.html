@@ -7,8 +7,8 @@
 
 <meta name="title" content="Johan ― Portfolio">
 <meta property="og:title" content="Johan ― Portfolio">
-<meta name="description" content="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'head.description') }}">
-<meta property="og:description" content="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'head.description') }}">
+<meta name="description" content="{{ globalThis.getValue(this.routePath, 'head.description') }}">
+<meta property="og:description" content="{{ globalThis.getValue(this.routePath, 'head.description') }}">
 <!-- <meta property="og:image" content=""> -->
 <!-- <meta name="twitter:card" content="summary_large_image"> -->
 <!-- <meta name="twitter:image" content=""> -->

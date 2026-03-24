@@ -2,5 +2,5 @@
 	<svg class="hover:text-primary-content/70" height="24" viewBox="0 0 15 30" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path d="M11 22.5L3.5 15L11 7.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 	</svg>
-	<span>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'misc.back') }}</span>
+	<span>{{ globalThis.getValue(this.routePath, 'misc.back') }}</span>
 </a>

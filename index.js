@@ -5,12 +5,15 @@ const path = require("path")
 const childProcess = require("child_process")
 const { getRelativeTime, getAbsoluteDate } = require("./utils/dateFormatter")
 const getReadingTime = require("./utils/readingTime")
-const { translations } = require("./public/translations/util")
 const { escapeHtml } = require("./utils/normalization")
 const roc = require("roc-framework")
 
 const NodeCache = require("node-cache")
 const caches = new NodeCache({ stdTTL: 60 * 60 * 24 * 30 }) // cache with a default of 30 days
+
+const { translations, detectLang, getValue } = require("./public/translations/util")
+globalThis.detectLang = detectLang
+globalThis.getValue = getValue
 
 const contentDir = {
 	base: path.join(__dirname, "content"),

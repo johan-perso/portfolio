@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).detectLang(this.routePath) }}" class="bg-primary-background scroll-smooth">
+<html lang="{{ globalThis.detectLang(this.routePath) }}" class="bg-primary-background scroll-smooth">
 <head>
 	<DefaultHead></DefaultHead>
 
@@ -29,12 +29,12 @@
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.fwl.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.fwl.description') }}"
-					projectBannerImg="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.fwl.bannerImg') }}"
-					linkDefault="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.fwl.linkDefault') }}"
-					linkDemo="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.fwl.linkDemo') }}"
-					linkGithub="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.fwl.linkGithub') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.fwl.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.fwl.description') }}"
+					projectBannerImg="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.fwl.bannerImg') }}"
+					linkDefault="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.fwl.linkDefault') }}"
+					linkDemo="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.fwl.linkDemo') }}"
+					linkGithub="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.fwl.linkGithub') }}"
 				></LargeProjectBentoCard>
 
 				<LargeProjectBentoCard
@@ -42,12 +42,12 @@
 					backgroundTheme="dark"
 					backgroundPositionX="top"
 					backgroundPositionY="center"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.agendapp.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.agendapp.description') }}"
-					projectBannerImg="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.agendapp.bannerImg') }}"
-					projectBannerVideo="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.agendapp.bannerVideo') }}"
-					linkDefault="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.agendapp.linkDefault') }}"
-					linkGithub="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.agendapp.linkGithub') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.agendapp.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.agendapp.description') }}"
+					projectBannerImg="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.agendapp.bannerImg') }}"
+					projectBannerVideo="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.agendapp.bannerVideo') }}"
+					linkDefault="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.agendapp.linkDefault') }}"
+					linkGithub="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.agendapp.linkGithub') }}"
 				></LargeProjectBentoCard>
 
 				<!-- 2nd row -->
@@ -56,23 +56,23 @@
 					backgroundTheme="light"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.escive.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.escive.description') }}"
-					projectBannerImg="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.escive.bannerImg') }}"
-					linkDefault="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.escive.linkDefault') }}"
-					linkDocs="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.escive.linkDocs') }}"
-					linkGithub="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.escive.linkGithub') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.escive.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.escive.description') }}"
+					projectBannerImg="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.escive.bannerImg') }}"
+					linkDefault="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.escive.linkDefault') }}"
+					linkDocs="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.escive.linkDocs') }}"
+					linkGithub="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.escive.linkGithub') }}"
 				></LargeProjectBentoCard>
 				<LargeProjectBentoCard
 					class="col-span-1 max-[540px]:col-span-2 min-[1220px]:col-span-2 min-[1220px]:row-span-2"
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.roc.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.roc.description') }}"
-					projectBannerImg="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.roc.bannerImg') }}"
-					linkDefault="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.roc.linkDefault') }}"
-					linkGithub="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.roc.linkGithub') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.roc.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.roc.description') }}"
+					projectBannerImg="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.roc.bannerImg') }}"
+					linkDefault="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.roc.linkDefault') }}"
+					linkGithub="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.roc.linkGithub') }}"
 				></LargeProjectBentoCard>
 
 				<!-- 3rd (and 4th) row -->
@@ -81,30 +81,30 @@
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.stend.name') }}"
-					projectBannerImg="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.stend.bannerImg') }}"
-					linkDefault="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.stend.linkDefault') }}"
-					linkDemo="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.stend.linkDemo') }}"
-					linkGithub="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.stend.linkGithub') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.stend.name') }}"
+					projectBannerImg="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.stend.bannerImg') }}"
+					linkDefault="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.stend.linkDefault') }}"
+					linkDemo="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.stend.linkDemo') }}"
+					linkGithub="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.stend.linkGithub') }}"
 				></LargeProjectBentoCard>
 				<LargeProjectBentoCard
 					class="col-span-2 min-[390px]:col-span-1 min-[1220px]:col-span-2 row-span-1 min-[1220px]:row-span-2"
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.magicCommand.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.magicCommand.description') }}"
-					projectBannerImg="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.magicCommand.bannerImg') }}"
-					projectBannerVideo="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.magicCommand.bannerVideo') }}"
-					linkDefault="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.magicCommand.linkDefault') }}"
-					linkGithub="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.magicCommand.linkGithub') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.magicCommand.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.magicCommand.description') }}"
+					projectBannerImg="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.magicCommand.bannerImg') }}"
+					projectBannerVideo="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.magicCommand.bannerVideo') }}"
+					linkDefault="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.magicCommand.linkDefault') }}"
+					linkGithub="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.magicCommand.linkGithub') }}"
 				></LargeProjectBentoCard>
 				<SmallProjectBentoCard
 					class="col-span-2 min-[390px]:col-span-1 min-[1451px]:col-span-2 row-span-1"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.yourdownloader.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.yourdownloader.description') }}"
-					projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.yourdownloader.source') }}"
-					href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.yourdownloader.link') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.yourdownloader.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.yourdownloader.description') }}"
+					projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.yourdownloader.source') }}"
+					href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.yourdownloader.link') }}"
 				></SmallProjectBentoCard>
 
 				<!-- 4th row -->
@@ -113,56 +113,56 @@
 					backgroundTheme="dark"
 					backgroundPositionX="center"
 					backgroundPositionY="center"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.findmeme.name') }}"
-					projectBannerImg="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.findmeme.bannerImg') }}"
-					linkDefault="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.findmeme.linkDefault') }}"
-					linkDocs="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.findmeme.linkDocs') }}"
-					linkDemo="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.projects.findmeme.linkDemo') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.findmeme.name') }}"
+					projectBannerImg="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.findmeme.bannerImg') }}"
+					linkDefault="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.findmeme.linkDefault') }}"
+					linkDocs="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.findmeme.linkDocs') }}"
+					linkDemo="{{ globalThis.getValue(this.routePath, 'mainBentoPage.projects.findmeme.linkDemo') }}"
 				></LargeProjectBentoCard>
 				<SmallProjectBentoCard
 					class="col-span-2 min-[390px]:col-span-1 row-span-1"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.sendovernetwork.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.sendovernetwork.description') }}"
-					projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.sendovernetwork.source') }}"
-					href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.sendovernetwork.link') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.sendovernetwork.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.sendovernetwork.description') }}"
+					projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.sendovernetwork.source') }}"
+					href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.sendovernetwork.link') }}"
 				></SmallProjectBentoCard>
 				
 				<SmallProjectBentoCard
 					class="col-span-2 min-[390px]:col-span-1 row-span-1"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.syncpronote.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.syncpronote.description') }}"
-					projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.syncpronote.source') }}"
-					href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.syncpronote.link') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.syncpronote.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.syncpronote.description') }}"
+					projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.syncpronote.source') }}"
+					href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.syncpronote.link') }}"
 				></SmallProjectBentoCard>
 
 				<!-- 5th row -->
 				<SmallProjectBentoCard
 					class="col-span-2 min-[390px]:col-span-1 row-span-1"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.obsidianInbox.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.obsidianInbox.description') }}"
-					projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.obsidianInbox.source') }}"
-					href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.obsidianInbox.link') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.obsidianInbox.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.obsidianInbox.description') }}"
+					projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.obsidianInbox.source') }}"
+					href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.obsidianInbox.link') }}"
 				></SmallProjectBentoCard>
 				<SmallProjectBentoCard
 					class="col-span-2 min-[390px]:col-span-1 row-span-1"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.markdocs.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.markdocs.description') }}"
-					projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.markdocs.source') }}"
-					href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.markdocs.link') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.markdocs.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.markdocs.description') }}"
+					projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.markdocs.source') }}"
+					href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.markdocs.link') }}"
 				></SmallProjectBentoCard>
 				<SmallProjectBentoCard
 					class="col-span-2 min-[390px]:col-span-1 row-span-1"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.moreshort.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.moreshort.description') }}"
-					projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.moreshort.source') }}"
-					href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.moreshort.link') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.moreshort.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.moreshort.description') }}"
+					projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.moreshort.source') }}"
+					href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.moreshort.link') }}"
 				></SmallProjectBentoCard>
 				<SmallProjectBentoCard
 					class="col-span-2 min-[390px]:col-span-1 row-span-1"
-					projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.freeboxtools.name') }}"
-					projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.freeboxtools.description') }}"
-					projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.freeboxtools.source') }}"
-					href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.smallProjects.freeboxtools.link') }}"
+					projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.freeboxtools.name') }}"
+					projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.freeboxtools.description') }}"
+					projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.freeboxtools.source') }}"
+					href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.smallProjects.freeboxtools.link') }}"
 				></SmallProjectBentoCard>
 			</div>
 
@@ -170,49 +170,49 @@
 			<div class="grid min-[541px]:grid-cols-2 min-[590px]:grid-cols-3 min-[1220px]:grid-cols-5 min-[1451px]:grid-cols-6 gap-4 mt-14">
 				<div class="col-span-1 min-[1220px]:col-span-2">
 					<!-- Past projects -->
-					<h3 class="font-semibold text-2xl 2xl:text-3xl antialiased" style="text-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2)">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.label') }}</h3>
+					<h3 class="font-semibold text-2xl 2xl:text-3xl antialiased" style="text-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2)">{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.label') }}</h3>
 					<div class="grid grid-cols-1 min-[390px]:grid-cols-2 gap-4 auto-rows-[180px] mt-4">
 						<SmallProjectBentoCard
 							class="col-span-1 min-[541px]:col-span-2 min-[1220px]:col-span-1 row-span-1"
-							projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.mcpShopServer.name') }}"
-							projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.mcpShopServer.description') }}"
-							projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.mcpShopServer.source') }}"
-							href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.mcpShopServer.link') }}"
+							projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.mcpShopServer.name') }}"
+							projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.mcpShopServer.description') }}"
+							projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.mcpShopServer.source') }}"
+							href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.mcpShopServer.link') }}"
 						></SmallProjectBentoCard>
 						<SmallProjectBentoCard
 							class="col-span-1 min-[541px]:col-span-2 min-[1220px]:col-span-1 row-span-1"
-							projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.vscodeControl.name') }}"
-							projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.vscodeControl.description') }}"
-							projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.vscodeControl.source') }}"
-							href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.vscodeControl.link') }}"
+							projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.vscodeControl.name') }}"
+							projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.vscodeControl.description') }}"
+							projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.vscodeControl.source') }}"
+							href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.vscodeControl.link') }}"
 						></SmallProjectBentoCard>
 						<SmallProjectBentoCard
 							class="col-span-1 min-[541px]:col-span-2 min-[1220px]:col-span-1 row-span-1"
-							projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.obsidianGitPush.name') }}"
-							projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.obsidianGitPush.description') }}"
-							projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.obsidianGitPush.source') }}"
-							href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.obsidianGitPush.link') }}"
+							projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.obsidianGitPush.name') }}"
+							projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.obsidianGitPush.description') }}"
+							projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.obsidianGitPush.source') }}"
+							href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.obsidianGitPush.link') }}"
 						></SmallProjectBentoCard>
 						<SmallProjectBentoCard
 							class="col-span-1 min-[541px]:col-span-2 min-[1220px]:col-span-1 row-span-1"
-							projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.infoscreen.name') }}"
-							projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.infoscreen.description') }}"
-							projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.infoscreen.source') }}"
-							href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.infoscreen.link') }}"
+							projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.infoscreen.name') }}"
+							projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.infoscreen.description') }}"
+							projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.infoscreen.source') }}"
+							href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.infoscreen.link') }}"
 						></SmallProjectBentoCard>
 						<SmallProjectBentoCard
 							class="col-span-1 min-[541px]:col-span-2 min-[1220px]:col-span-1 row-span-1"
-							projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.screenshothtml.name') }}"
-							projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.screenshothtml.description') }}"
-							projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.screenshothtml.source') }}"
-							href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.screenshothtml.link') }}"
+							projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.screenshothtml.name') }}"
+							projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.screenshothtml.description') }}"
+							projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.screenshothtml.source') }}"
+							href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.screenshothtml.link') }}"
 						></SmallProjectBentoCard>
 						<SmallProjectBentoCard
 							class="col-span-1 min-[541px]:col-span-2 min-[1220px]:col-span-1 row-span-1"
-							projectName="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.discordflutter.name') }}"
-							projectDescription="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.discordflutter.description') }}"
-							projectSource="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.discordflutter.source') }}"
-							href="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.oldProjects.discordflutter.link') }}"
+							projectName="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.discordflutter.name') }}"
+							projectDescription="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.discordflutter.description') }}"
+							projectSource="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.discordflutter.source') }}"
+							href="{{ globalThis.getValue(this.routePath, 'mainBentoPage.oldProjects.discordflutter.link') }}"
 						></SmallProjectBentoCard>
 					</div>
 				</div>
@@ -221,10 +221,10 @@
 				<!-- Articles to read on the blog -->
 				<div class="col-span-1 min-[590px]:col-span-2 min-[1220px]:col-span-3 max-[540px]:mt-10">
 					<div class="min-[350px]:inline-flex items-center justify-between w-full">
-						<h3 class="font-semibold text-2xl 2xl:text-3xl antialiased max-[349px]:mb-0.5" style="text-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2)">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.blog.label') }}</h3>
-						<a href="articles?from=/" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.blog.seeAll.ariaLabel') }}" class="text-primary-content-light max-[349px]:text-link max-[349px]:hover:underline hover:text-link transition-colors duration-300 font-medium mr-1">
-							<span class="max-[349px]:hidden">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.blog.seeAll.short') }}</span>
-							<span class="min-[350px]:hidden">{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.blog.seeAll.long') }}</span>
+						<h3 class="font-semibold text-2xl 2xl:text-3xl antialiased max-[349px]:mb-0.5" style="text-shadow: 0px 3px 4px rgba(0, 0, 0, 0.2)">{{ globalThis.getValue(this.routePath, 'mainBentoPage.blog.label') }}</h3>
+						<a href="articles?from=/" aria-label="{{ globalThis.getValue(this.routePath, 'mainBentoPage.blog.seeAll.ariaLabel') }}" class="text-primary-content-light max-[349px]:text-link max-[349px]:hover:underline hover:text-link transition-colors duration-300 font-medium mr-1">
+							<span class="max-[349px]:hidden">{{ globalThis.getValue(this.routePath, 'mainBentoPage.blog.seeAll.short') }}</span>
+							<span class="min-[350px]:hidden">{{ globalThis.getValue(this.routePath, 'mainBentoPage.blog.seeAll.long') }}</span>
 						</a>
 					</div>
 
@@ -239,10 +239,10 @@
 	<div id="machineViewContent" class="hidden pointer-events-none opacity-0 scale-95 duration-700 fixed inset-0 w-full h-full overflow-y-auto font-mono text-primary-background bg-dark-background backdrop-blur-sm z-50 px-6 sm:px-8 md:px-10 lg:px-32 py-8" style="transition-property: opacity, transform, border-radius, box-shadow; transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1); border-radius: 16px; box-shadow: 0 0 60px 30px rgba(0,0,0,0.4);">
 		<div class="min-[768px]:flex items-start justify-center h-fit gap-1.5 w-full max-w-[88rem] mx-auto">
 			<div class="flex min-[768px]:hidden shrink-0 items-center justify-center text-center mb-8 text-sm">
-				<p>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.notUnderstanding') }}</p>
+				<p>{{ globalThis.getValue(this.routePath, 'machineMode.notUnderstanding') }}</p>
 			</div>
 			<div class="sticky max-[767px]:hidden shrink-0 -mt-0.5 mr-2.5">
-				<button onclick="switchInterface('human')" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.ariaLabelGoClassicMode') }}" class="hapticAudioOnHover p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
+				<button onclick="switchInterface('human')" aria-label="{{ globalThis.getValue(this.routePath, 'machineMode.ariaLabelGoClassicMode') }}" class="hapticAudioOnHover p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
 					<div class="relative w-5 h-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4L4 16"/><path d="M4 4L16 16"/></svg>
 					</div>
@@ -254,16 +254,16 @@
 				<p class="uppercase text-base font-medium"><span class="text-stone-400">#</span> Portfolio ⇢ Johan</p>
 
 				<div>
-					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.description.title') }}</p>
+					<p><span class="text-stone-400">###</span> {{ globalThis.getValue(this.routePath, 'machineMode.description.title') }}</p>
 					<div class="mt-2 space-y-1">
-						<p><span class="text-stone-400">&gt;</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.description.line1') }}</p>
-						<p><span class="text-stone-400">&gt;</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.description.line2') }}</p>
-						<p><span class="text-stone-400">&gt;</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.description.line3') }}</p>
+						<p><span class="text-stone-400">&gt;</span> {{ globalThis.getValue(this.routePath, 'machineMode.description.line1') }}</p>
+						<p><span class="text-stone-400">&gt;</span> {{ globalThis.getValue(this.routePath, 'machineMode.description.line2') }}</p>
+						<p><span class="text-stone-400">&gt;</span> {{ globalThis.getValue(this.routePath, 'machineMode.description.line3') }}</p>
 					</div>
 				</div>
 
 				<div>
-					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.contact.title') }}</p>
+					<p><span class="text-stone-400">###</span> {{ globalThis.getValue(this.routePath, 'machineMode.contact.title') }}</p>
 					<div class="mt-2 space-y-1 break-all">
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://t.me/johanstick"><span>[Telegram]</span><span class="text-stone-400">(https://t.me/johanstick)</span></a></p>
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://discord.com/users/277825082334773251"><span>[Discord]</span><span class="text-stone-400">(https://discord.com/users/277825082334773251)</span></a></p>
@@ -272,7 +272,7 @@
 				</div>
 
 				<div>
-					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.socials.title') }}</p>
+					<p><span class="text-stone-400">###</span> {{ globalThis.getValue(this.routePath, 'machineMode.socials.title') }}</p>
 					<div class="mt-2 space-y-1 break-all">
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://x.com/johan_stickman"><span>[Twitter]</span><span class="text-stone-400">(https://x.com/johan_stickman)</span></a></p>
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso"><span>[GitHub]</span><span class="text-stone-400">(https://github.com/johan-perso)</span></a></p>
@@ -281,7 +281,7 @@
 				</div>
 
 				<div>
-					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.support.title') }}</p>
+					<p><span class="text-stone-400">###</span> {{ globalThis.getValue(this.routePath, 'machineMode.support.title') }}</p>
 					<div class="mt-2 space-y-1 break-all">
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/sponsors/johan-perso"><span>[GitHub]</span><span class="text-stone-400">(https://github.com/sponsors/johan-perso)</span></a></p>
 						<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="https://ko-fi.com/johan_stickman"><span>[Ko-fi]</span><span class="text-stone-400">(https://ko-fi.com/johan_stickman)</span></a></p>
@@ -293,40 +293,40 @@
 				</div>
 
 				<div>
-					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'mainBentoPage.blog.label') }}</p>
+					<p><span class="text-stone-400">###</span> {{ globalThis.getValue(this.routePath, 'mainBentoPage.blog.label') }}</p>
 					<div class="mt-2 space-y-1">
 						{{ globalThis.recentsBlogArticlesMachineCards || 'Not available for the moment.' }}
 					</div>
 				</div>
 
 				<div>
-					<p><span class="text-stone-400">###</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.title') }}</p>
+					<p><span class="text-stone-400">###</span> {{ globalThis.getValue(this.routePath, 'machineMode.projects.title') }}</p>
 					<div class="mt-2 space-y-1">
 						<ul class="list-decimal list-outside marker-medium space-y-1 pl-6 marker:text-stone-400">
 							<li>
-								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/escive"><span>[eScive]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/escive)</span></a>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.escive') }}
+								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/escive"><span>[eScive]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/escive)</span></a>{{ globalThis.getValue(this.routePath, 'machineMode.projects.escive') }}
 							</li>
 							<li>
-								<a target="_blank" class="hover:underline decoration-blue-500" href="https://fwl.bassinecorp.fr"><span>[File Weight Loss]</span><span class="text-stone-400 break-all">(https://fwl.bassinecorp.fr)</span></a>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.fwl') }}
+								<a target="_blank" class="hover:underline decoration-blue-500" href="https://fwl.bassinecorp.fr"><span>[File Weight Loss]</span><span class="text-stone-400 break-all">(https://fwl.bassinecorp.fr)</span></a>{{ globalThis.getValue(this.routePath, 'machineMode.projects.fwl') }}
 							</li>
 							<li>
-								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/agendapp"><span>[Agendapp]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/agendapp)</span></a>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.agendapp') }}
+								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/agendapp"><span>[Agendapp]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/agendapp)</span></a>{{ globalThis.getValue(this.routePath, 'machineMode.projects.agendapp') }}
 							</li>
 							<li>
-								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/roc-framework"><span>[roc-framework]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/roc-framework)</span></a>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.roc') }}
+								<a target="_blank" class="hover:underline decoration-blue-500" href="https://github.com/johan-perso/roc-framework"><span>[roc-framework]</span><span class="text-stone-400 break-all">(https://github.com/johan-perso/roc-framework)</span></a>{{ globalThis.getValue(this.routePath, 'machineMode.projects.roc') }}
 							</li>
 							<li>
-								<a target="_blank" class="hover:underline decoration-blue-500" href="https://stend.johanstick.fr"><span>[Stend]</span><span class="text-stone-400 break-all">(https://stend.johanstick.fr)</span></a>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.stend') }}
+								<a target="_blank" class="hover:underline decoration-blue-500" href="https://stend.johanstick.fr"><span>[Stend]</span><span class="text-stone-400 break-all">(https://stend.johanstick.fr)</span></a>{{ globalThis.getValue(this.routePath, 'machineMode.projects.stend') }}
 							</li>
 						</ul>
 
-						<p class="pt-3"><span class="text-stone-400">&gt;</span> {{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.projects.moreProjectsCta') }}</p>
+						<p class="pt-3"><span class="text-stone-400">&gt;</span> {{ globalThis.getValue(this.routePath, 'machineMode.projects.moreProjectsCta') }}</p>
 					</div>
 				</div>
 			</div>
 
 			<div class="sticky max-[767px]:hidden shrink-0 -mt-0.5 ml-3">
-				<button onclick="copyMachineView()" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.copyAllResume') }}" class="hapticAudioOnHover p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
+				<button onclick="copyMachineView()" aria-label="{{ globalThis.getValue(this.routePath, 'machineMode.copyAllResume') }}" class="hapticAudioOnHover p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
 					<div class="relative w-5 h-5">
 						<svg id="machineViewCopyIcon" class="absolute inset-0 transition-all duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
 						<svg id="machineViewCheckIcon" class="absolute inset-0 opacity-0 scale-50 transition-all duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
