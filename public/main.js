@@ -252,7 +252,8 @@ window.onload = async function(){
 
 	const audiosToPreload = [
 		{ name: "haptic", src: "/medias/audios/haptic.mp3" },
-		{ name: "hover", src: "/medias/audios/hover.mp3" },
+		{ name: "hover_x1", src: "/medias/audios/hover_x1.mp3" },
+		{ name: "hover_x2", src: "/medias/audios/hover_x2.mp3" },
 		{ name: "notif", src: "/medias/audios/notif.mp3" },
 		{ name: "switch", src: "/medias/audios/switch.mp3" },
 	]
@@ -307,10 +308,15 @@ window.onload = async function(){
 		headings.forEach(h => observer.observe(h))
 	}
 
-	Array.from(document.querySelectorAll(".bentoCard")).forEach(el => {
-		// TODO: support more elements
-		el.addEventListener("mouseenter", () => playAudio("hover"))
-		el.addEventListener("mouseleave", () => playAudio("hover"))
+	Array.from(document.querySelectorAll("a, .hapticAudioOnHover, .cursor-pointer")).forEach(el => {
+		el.addEventListener("mouseleave", () => {
+			if(el.getAttribute("disabled") || el.classList.contains("cursor-not-allowed")) return
+			playAudio("hover_x1")
+		})
+		el.addEventListener("mouseenter", () => {
+			if(el.getAttribute("disabled") || el.classList.contains("cursor-not-allowed")) return
+			playAudio("hover_x2")
+		})
 	})
 
 	hasMainLoadFunctionsRun = true
@@ -500,7 +506,7 @@ function toggleDropdown() {
 	} else closeDropdown()
 }
 
-function closeDropdown() {
+function closeDropdown(silent = false) {
 	const dropdownMenu = document.getElementById("dropdown-menu")
 	const dropdownChevron = document.getElementById("dropdown-chevron")
 	if(!dropdownMenu || !dropdownChevron) return
@@ -508,7 +514,7 @@ function closeDropdown() {
 	isDropdownOpen = false
 
 	haptic("click")
-	playAudio("haptic")
+	if(!silent) playAudio("haptic")
 	dropdownMenu.style.opacity = "0"
 	dropdownMenu.style.transform = "scaleY(0.95)"
 
@@ -692,9 +698,11 @@ async function preloadAudio(name, src) {
 		console.error(`Failed to preload audio "${name}" from "${src}":`, error)
 	}
 }
+var rateLimitedAudioNames = ["hover_x1", "hover_x2"]
 var lastPlayedAudio = null
 function playAudio(name) {
-	if(lastPlayedAudio && (Date.now() - lastPlayedAudio < 120)) return console.warn(`Audio "${name}" play skipped to avoid spamming (last played ${Date.now() - lastPlayedAudio}ms ago).`)
+	if(rateLimitedAudioNames.includes(name) && lastPlayedAudio && (Date.now() - lastPlayedAudio < 100)) return console.warn(`Audio "${name}" play skipped to avoid spamming (last played ${Date.now() - lastPlayedAudio}ms ago).`)
+	console.log(`Playing audio "${name}"...`)
 
 	const key = `${name}_buffer.mp3`
 	if(!preloaded[key]) return console.warn(`Audio "${name}" not found in preloaded audios (searching "${key}").`)
@@ -704,7 +712,9 @@ function playAudio(name) {
 		source.buffer = preloaded[key]
 		source.connect(audioContext.destination)
 		source.start(0)
-		lastPlayedAudio = Date.now()
+
+		if(name == "notif") lastPlayedAudio = Date.now() + 250
+		else lastPlayedAudio = Date.now()
 	} catch(error) {
 		console.error(`Failed to play audio "${key}":`, error)
 	}

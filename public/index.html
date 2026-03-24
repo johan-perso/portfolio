@@ -242,7 +242,7 @@
 				<p>{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.notUnderstanding') }}</p>
 			</div>
 			<div class="sticky max-[767px]:hidden shrink-0 -mt-0.5 mr-2.5">
-				<button onclick="switchInterface('human')" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.ariaLabelGoClassicMode') }}" class="p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
+				<button onclick="switchInterface('human')" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.ariaLabelGoClassicMode') }}" class="hapticAudioOnHover p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
 					<div class="relative w-5 h-5">
 						<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4L4 16"/><path d="M4 4L16 16"/></svg>
 					</div>
@@ -326,7 +326,7 @@
 			</div>
 
 			<div class="sticky max-[767px]:hidden shrink-0 -mt-0.5 ml-3">
-				<button onclick="copyMachineView()" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.copyAllResume') }}" class="p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
+				<button onclick="copyMachineView()" aria-label="{{ require(path.join(this.routeFile, '..', 'translations', 'util')).getValue(this.routePath, 'machineMode.copyAllResume') }}" class="hapticAudioOnHover p-2 rounded-lg hover:bg-stone-700/60 active:bg-stone-600/60 transition-colors duration-150 text-stone-400 hover:text-stone-200">
 					<div class="relative w-5 h-5">
 						<svg id="machineViewCopyIcon" class="absolute inset-0 transition-all duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
 						<svg id="machineViewCheckIcon" class="absolute inset-0 opacity-0 scale-50 transition-all duration-200 ease-out" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>

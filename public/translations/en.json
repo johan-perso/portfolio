@@ -172,7 +172,7 @@
 		"footer": {
 			"ariaLabel": "Footer with support methods and service statuses",
 			"label": "FOOTER",
-			"donationContent": "Support me via <a href=\"https://github.com/sponsors/johan-perso\" class=\"text-link hover:underline font-medium\">GitHub</a>, via <a href=\"https://paypal.me/moipastoii\" class=\"text-link hover:underline font-medium\">PayPal</a>, via <a href=\"https://ko-fi.com/johan_stickman\" class=\"text-link hover:underline font-medium\">Ko-fi</a>, or via cryptocurrency (<button onclick=\"copyCryptoAddress('eth')\" class=\"text-link hover:underline font-medium\">ETH/Base</button>, <button onclick=\"copyCryptoAddress('btc')\" class=\"text-link hover:underline font-medium\">BTC</button>, <button onclick=\"copyCryptoAddress('sol')\" class=\"text-link hover:underline font-medium\">Solana</button>).",
+			"donationContent": "Support me via <a href=\"https://github.com/sponsors/johan-perso\" class=\"text-link hover:underline font-medium\">GitHub</a>, via <a href=\"https://paypal.me/moipastoii\" class=\"text-link hover:underline font-medium\">PayPal</a>, via <a href=\"https://ko-fi.com/johan_stickman\" class=\"text-link hover:underline font-medium\">Ko-fi</a>, or via cryptocurrency (<button onclick=\"copyCryptoAddress('eth')\" class=\"hapticAudioOnHover text-link hover:underline font-medium\">ETH/Base</button>, <button onclick=\"copyCryptoAddress('btc')\" class=\"hapticAudioOnHover text-link hover:underline font-medium\">BTC</button>, <button onclick=\"copyCryptoAddress('sol')\" class=\"hapticAudioOnHover text-link hover:underline font-medium\">Solana</button>).",
 			"uptimeContent": "Service status",
 			"copyright": "2026. Made with ❤️ by Johan."
 		}
