@@ -236,7 +236,9 @@ window.onload = async function(){
 	if(document.querySelector(".blogPost")) {
 		Array.from(document.querySelectorAll(".aiChoiceDropdownButton")).forEach(btn => {
 			if(!btn.hasAttribute("hrefprefix") || !btn.getAttribute("hrefprefix").length) return
-			btn.setAttribute("href", btn.getAttribute("hrefprefix") + encodeURIComponent(preloaded.translations.aiDropdown.prompts.blogPost.replace("%%CURRENT_URL%%", window.location.href)))
+
+			const currentUrlWithoutParams = window.location.href.split("?")[0].split("#")[0]
+			btn.setAttribute("href", btn.getAttribute("hrefprefix") + encodeURIComponent(preloaded.translations.aiDropdown.prompts.blogPost.replace("%%CURRENT_URL%%", currentUrlWithoutParams)))
 		})
 	}
 

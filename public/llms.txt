@@ -2,7 +2,7 @@
 
 ## Summary
 
-- **17-year-old developer** based in **Paris, France**. **Passionate about everything related to technology**, including programming, open source, self-hosting, home automation, and artificial intelligence.
+- **18-year-old developer** based in **Paris, France**. **Passionate about everything related to technology**, including programming, open source, self-hosting, home automation, and artificial intelligence.
 - Skilled in **mobile and desktop development** using Flutter and Electron, as well as web tools, command-line applications, embedded microservices, and bots for platforms like Discord and Telegram.
 - Knows how to read docs, unlink some AIs out there.
 
