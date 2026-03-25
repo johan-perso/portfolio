@@ -212,6 +212,7 @@
 		"linkGithubAriaLabel": "View %%NAME%%'s source code"
 	},
 	"blog": {
+		"translationFallbackWarning": "This article is not available in your language, so we are showing you a version in another available language.",
 		"publishedOn": "Published on %%DATE%%",
 		"allPostsTitle": "Writing & Thoughts",
 		"readall": "Read the full article →",

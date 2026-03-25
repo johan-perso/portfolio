@@ -11,7 +11,7 @@ const roc = require("roc-framework")
 const NodeCache = require("node-cache")
 const caches = new NodeCache({ stdTTL: 60 * 60 * 24 * 30 }) // cache with a default of 30 days
 
-const { translations, detectLang, getValue } = require("./public/translations/util")
+const { translations, detectLang, getValue, translationsEmojis } = require("./public/translations/util")
 globalThis.detectLang = detectLang
 globalThis.getValue = getValue
 
@@ -55,27 +55,27 @@ async function executeCommandInConsole(command, options = {}){
 	return true
 }
 
-function getBlogDocument(slug, frontmatter){
-	if(!slug) throw new Error("Slug is required to get a blog document.")
-	if(isProduction && caches.has(`blogDocument-${slug}`)) {
-		console.log(`Blog document "${slug}" found in cache.`)
-		return caches.get(`blogDocument-${slug}`)
+function getBlogDocument(filePath, frontmatter){
+	if(!filePath) throw new Error("filePath is required to get a blog document.")
+	if(isProduction && caches.has(`blogDocument-${filePath}`)) {
+		console.log(`Blog document "${filePath}" found in cache.`)
+		return caches.get(`blogDocument-${filePath}`)
 	}
 
 	const originalBlogHtml = fs.readFileSync(path.join("public", "blog_post_template.html"), "utf-8")
-	const blogContent = fs.readFileSync(path.join(contentDir.compiled, `${slug}.html`), "utf-8")
+	const blogContent = fs.readFileSync(path.join(contentDir.compiled, filePath), "utf-8")
 
-	var readTime = caches.get(`readTime-${slug}`)
+	var readTime = caches.get(`readTime-${filePath}`)
 	if(!readTime) {
 		readTime = getReadingTime(blogContent).minutes
-		caches.set(`readTime-${slug}`, readTime)
-		console.log(`Calculated reading time for blog "${slug}": ${readTime} minutes (now cached)`)
+		caches.set(`readTime-${filePath}`, readTime)
+		console.log(`Calculated reading time for blog post located at file "${filePath}": ${readTime} minutes (now cached)`)
 	}
 
 	const bannerPhysicalPath = frontmatter?.banner ? path.join(contentDir.attachments, frontmatter.banner) : null
 	var bannerWebPath
 	if(frontmatter?.banner && !fs.existsSync(bannerPhysicalPath)) {
-		console.warn(`⚠️ Banner image specified in frontmatter of blog post "${slug}" not found at path: ${bannerPhysicalPath} - The banner will not be displayed.`)
+		console.warn(`⚠️ Banner image specified in frontmatter of blog post located at file "${filePath}" not found at path: ${bannerPhysicalPath} - The banner will not be displayed.`)
 	} else if(frontmatter?.banner) {
 		bannerWebPath = frontmatter?.banner ? path.join(publicAssetsPath, frontmatter.banner).replace(/\\/g, "/") : null
 	}
@@ -86,7 +86,7 @@ function getBlogDocument(slug, frontmatter){
 		readTime,
 		bannerWebPath
 	}
-	if(isProduction) caches.set(`blogDocument-${slug}`, toReturn)
+	if(isProduction) caches.set(`blogDocument-${filePath}`, toReturn)
 	return toReturn
 }
 
@@ -163,34 +163,28 @@ async function startRocServer(){
 	const cacheControlHeader = server.isDev ? "no-cache" : "max-age=7200" // 7200sec = 2h
 
 	// Parse blog documents from content index
-	const blogDocuments = Object.values(contentFiles._index).filter(content => content.type == "document").sort((a, b) => new Date(b.frontmatter?.post_releasedate || 0) - new Date(a.frontmatter?.post_releasedate || 0))
-	globalThis.recentsBlogArticlesMachineCards = blogDocuments.filter(content => content?.frontmatter?.visibility != "hidden").slice(0, 5).map(content => {
-		const href = content.slug || content.url || "#"
-		return `<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="${href}/?from=/"><span>[${(content.title || "").replace(/\[/g, "\\[").replace(/\]/g, "\\]")}]</span><span class="text-stone-400 break-all">(/${href})</span></a></p>`
-	}).join("\n")
-	globalThis.recentsBlogArticlesCards = blogDocuments.filter(content => content?.frontmatter?.visibility != "hidden").slice(0, 3).map(content => {
-		return `<BlogPostCard
-			date="${content.frontmatter?.post_releasedate || ""}"
-			title="${(content.title || "").replace(/"/g, "&quot;")}"
-			content="${(content.firstParagraph || "").replace(/"/g, "&quot;")}"
-			href="${content.slug || content.url || "#"}"
-		></BlogPostCard>`
-	}).join("\n")
+	const blogDocuments = Object.values(contentFiles._index).filter(content => content?.isBlogArticle).sort((a, b) => new Date(b.releaseDate || 0) - new Date(a.releaseDate || 0))
+	const visibleBlogDocuments = blogDocuments.filter(content => (content?.visibility || content?.frontmatter?.visibility) != "hidden")
 
 	globalThis.blogDocumentsCards = {}
+	globalThis.recentsBlogArticlesMachineCards = {}
+	globalThis.recentsBlogArticlesCards = {}
 	Object.keys(translations).forEach(lang => {
 		const publishedOnText = translations[lang]?.blog?.publishedOn || "Published on %%DATE%%"
 		const readingTimeText = translations[lang]?.blog?.articleDetails?.readingTime || "%%MINUTES%% min read"
 
-		globalThis.blogDocumentsCards[lang] = blogDocuments.filter(content => content?.frontmatter?.visibility != "hidden").map(content => {
-			const { readTime, bannerWebPath } = getBlogDocument(content?.slug, content?.frontmatter)
+		globalThis.blogDocumentsCards[lang] = visibleBlogDocuments.map(content => {
+			content = content?.[lang] || content?.en || content?.fr || Object.values(content).filter(c => c?.isBlogArticle)[0] // fallback to another supported language
+			if(!content) return
+
+			const { readTime, bannerWebPath } = getBlogDocument(content?.compiledPath || `${content?.slug}.html`, content?.frontmatter)
 			const banner = bannerWebPath ? `<img src="${bannerWebPath.replace(/"/g, "\\\"")}" alt="" class="w-full h-auto aspect-video object-cover rounded-lg mt-4 bentoCard smallShadow duration-300 transition-shadow" />` : ""
 			const href = `${(content.slug ? `/${lang}/${content.slug}` : undefined) || content.url || "#"}?from=/articles`
 
 			return `<div class="bentoCard smallShadow rounded-[18px] text-primary-content font-normal text-sm w-full h-full p-5 transition-all duration-300 overflow-hidden">
 			<div class="inline items-start justify-between min-w-0">
 				<a href="${href}" class="hover:text-link hapticAudioOnHover w-fit duration-300 transition-colors font-medium text-base 2xl:text-[17px] overflow-hidden text-ellipsis line-clamp-2 text-primary-content-heavy">
-					${(content.title || "").replace(/"/g, "&quot;")}
+					${content.lang != lang ? `${translationsEmojis[content.lang]}&nbsp;` : ""}${(content.title || "").replace(/"/g, "&quot;")}
 				</a>
 				<p class="mt-1 2xl:mt-[3px] text-sm line-clamp-2 text-primary-content-light">${publishedOnText.replace("%%DATE%%", getAbsoluteDate(lang == "fr" ? "fr-FR" : "en-US", new Date(content?.frontmatter?.post_releasedate)))} • ${readingTimeText.replace("%%MINUTES%%", readTime || "0")}</p>
 
@@ -199,6 +193,26 @@ async function startRocServer(){
 				</a>` : `<p class="mt-3 font-normal text-primary-content-light overflow-hidden break-words text-ellipsis line-clamp-5 leading-snug">${(content.firstParagraph || "").replace(/"/g, "&quot;")}</p>`}
 			</div>
 		</div>`
+		}).join("\n")
+
+		globalThis.recentsBlogArticlesMachineCards[lang] = visibleBlogDocuments.slice(0, 5).map(content => {
+			content = content?.[lang] || content?.en || content?.fr || Object.values(content).filter(c => c?.isBlogArticle)[0] // fallback to another supported language
+			if(!content) return
+
+			const href = content?.slug || content?.url || "#"
+			return `<p><span class="text-stone-400">-</span> <a target="_blank" class="hover:underline decoration-blue-500" href="${href}/?from=/"><span>[${(content.title || "").replace(/\[/g, "\\[").replace(/\]/g, "\\]")}]</span><span class="text-stone-400 break-all">(/${href})</span></a></p>`
+		}).join("\n")
+
+		globalThis.recentsBlogArticlesCards[lang] = visibleBlogDocuments.slice(0, 3).map(content => {
+			content = content?.[lang] || content?.en || content?.fr || Object.values(content).filter(c => c?.isBlogArticle)[0] // fallback to another supported language
+			if(!content) return
+
+			return `<BlogPostCard
+				date="${content?.frontmatter?.post_releasedate || ""}"
+				title="${(content.title || "").replace(/"/g, "&quot;")}"
+				content="${(content.firstParagraph || "").replace(/"/g, "&quot;")}"
+				href="${content.slug || content.url || "#"}"
+			></BlogPostCard>`
 		}).join("\n")
 	})
 
@@ -213,12 +227,17 @@ async function startRocServer(){
 		}
 	}))
 	server.registerRoutes(blogDocuments.flatMap(content => {
-		const path = content.slug || content.url
-		const cleanPath = path.startsWith("/") ? path : `/${path}`
+		var reqPath = content.slug || content.url
+		if(!reqPath) {
+			const contentInAnyLang = Object.values(content).filter(c => c?.isBlogArticle && (c?.slug || c?.url))[0]
+			reqPath = contentInAnyLang?.slug || contentInAnyLang?.url
+		}
+		if(!reqPath) return []
 
+		const cleanReqPath = reqPath.startsWith("/") ? reqPath : `/${reqPath}`
 		return [
-			{ method: "get", path: cleanPath }, // routes without language prefix
-			...(Object.keys(translations)).map(lang => ({ method: "get", path: `/${lang}${cleanPath}` })) // routes with language prefixes (ex: /en/example, /fr/example, etc.)
+			{ method: "get", path: cleanReqPath }, // routes without language prefix
+			...(Object.keys(translations)).map(lang => ({ method: "get", path: `/${lang}${cleanReqPath}` })) // routes with language prefixes (ex: /en/example, /fr/example, etc.)
 		]
 	}))
 
@@ -250,13 +269,23 @@ async function startRocServer(){
 
 		// Serve blog documents
 		if(slugToFind.length > 2 && slugToFind.endsWith("/")) slugToFind = slugToFind.slice(0, -1) // remove trailing slash if exists
-		const foundBlogDocument = contentFiles._index[`${slugToFind}.html`] || contentFiles._index[`${req.path.startsWith("/") ? req.path.substring(1) : req.path}.html`]
-		if(req.method == "GET" && foundBlogDocument) {
+		const foundBlogDocumentInAllLanguages = blogDocuments.find(doc => doc.slug == slugToFind) || contentFiles._index[`${slugToFind}.html`] || contentFiles._index[`${req.path.startsWith("/") ? req.path.substring(1) : req.path}.html`]
+		if(req.method == "GET" && foundBlogDocumentInAllLanguages) {
 			console.log("=".repeat(50))
-			console.log(`Got a request to ${req.path} - Serving blog document with slug: ${foundBlogDocument.slug || foundBlogDocument.url}`)
-			console.log(foundBlogDocument)
+			console.log(`Got a request to ${req.path} - Serving blog document with slug: ${foundBlogDocumentInAllLanguages.slug || foundBlogDocumentInAllLanguages.url}\nDocument in all available languages:`, foundBlogDocumentInAllLanguages)
 
-			const { originalBlogHtml, blogContent, readTime, bannerWebPath } = getBlogDocument(foundBlogDocument?.slug, foundBlogDocument?.frontmatter)
+			var foundBlogDocument = foundBlogDocumentInAllLanguages[potentialLang]
+			var fallbackLangUsed = false
+			if(!foundBlogDocument) {
+				foundBlogDocument = foundBlogDocument?.en || foundBlogDocument?.fr || Object.values(foundBlogDocumentInAllLanguages).find(c => c?.isBlogArticle) // fallback to english or any other available language
+				fallbackLangUsed = foundBlogDocument?.lang ?? true
+			}
+			if(!foundBlogDocument) {
+				console.warn(`Blog document found for slug "${slugToFind}" but it does not contain any content for the requested language "${potentialLang}" or english. This should not happen as the slug is generated from the content files, but it is handled just in case. Redirecting to homepage.`)
+				return res.redirect(302, "/")
+			}
+
+			const { originalBlogHtml, blogContent, readTime, bannerWebPath } = getBlogDocument(foundBlogDocument.compiledPath, foundBlogDocument?.frontmatter)
 
 			const tocContentHtml = foundBlogDocument?.toc?.map(tocItem => {
 				const childrensHtml = tocItem?.childrens?.map(child => `<li><a href="#${child.anchor}" class="toc-link block py-1.5 pl-9 hover:text-link transition-colors">${escapeHtml(child.title)}</a></li>`).join("\n")
@@ -301,6 +330,7 @@ async function startRocServer(){
 				.replaceAll("%%BLOG_METADATA_PUBLISHED_TIME%%", foundBlogDocument?.frontmatter?.post_releasedate ? new Date(foundBlogDocument.frontmatter.post_releasedate).toISOString() : "")
 				.replaceAll("%%BLOG_METADATA_IMAGES_HTML%%", !bannerWebPath ? "" : `<meta name="twitter:card" content="summary_large_image" />\n<meta property="og:image" content="https://johanstick.fr${bannerWebPath}" />\n<meta name="twitter:image" content="https://johanstick.fr${bannerWebPath}">`)
 				.replaceAll("%%CANONICAL_TAG%%", generateCanonicalTags(req.path))
+				.replaceAll("%%BLOG_TRANSLATION_WARNING%%", !fallbackLangUsed ? "" : `<p style="padding-bottom: 12px">${translationsEmojis?.[fallbackLangUsed] ? `${translationsEmojis[fallbackLangUsed]}&nbsp;` : ""}${translations[potentialLang]?.blog?.translationFallbackWarning || "This article is not available in your language, showing fallback version."}</p>`)
 
 			const htmlResponse = await server.renderPage(editedBlogHtml, { file: path.join(__dirname, "public", "blog_post_template.html"), path: req.path })
 			console.log("=".repeat(50))

@@ -235,7 +235,7 @@
 					</div>
 
 					<div class="grid gap-4 mt-4">
-						{{ globalThis.recentsBlogArticlesCards || 'Not available for the moment.' }}
+						{{ globalThis.recentsBlogArticlesCards[globalThis.detectLang(this.routePath)] || 'Not available for the moment.' }}
 					</div>
 				</div>
 			</div>
@@ -301,7 +301,7 @@
 				<div>
 					<p><span class="text-stone-400">###</span> {{ globalThis.getValue(this.routePath, 'mainBentoPage.blog.label') }}</p>
 					<div class="mt-2 space-y-1">
-						{{ globalThis.recentsBlogArticlesMachineCards || 'Not available for the moment.' }}
+						{{ globalThis.recentsBlogArticlesMachineCards[globalThis.detectLang(this.routePath)] || 'Not available for the moment.' }}
 					</div>
 				</div>
 

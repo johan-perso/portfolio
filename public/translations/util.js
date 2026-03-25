@@ -2,6 +2,10 @@ var translations = {
 	fr: require("./fr.json"),
 	en: require("./en.json")
 }
+module.exports.translationsEmojis = {
+	fr: "🇫🇷",
+	en: "🇬🇧"
+}
 
 function getLanguage(routePath){
 	var language

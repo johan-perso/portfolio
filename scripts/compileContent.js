@@ -1,6 +1,18 @@
 const fs = require("fs")
 const path = require("path")
 const compileMarkdown = require("./compileMarkdown")
+const { checkDateValidity } = require("../utils/dateFormatter")
+
+const languagesAbbreviations = {
+	"french": "fr",
+	"france": "fr",
+	"francais": "fr",
+	"français": "fr",
+
+	"english": "en",
+	"anglais": "en",
+	"us": "en",
+}
 
 const contentDir = {
 	base: path.join(__dirname, "..", "content"),
@@ -78,12 +90,12 @@ async function main(){
 		console.log(`Compiling content... (${i + 1}/${rawFilesContent.length} - ${file.filename})`)
 
 		var formattedFilename
-		if(file.type == "document" && file.content.trim().startsWith("---")) file.filename = file?.frontMatter?.slug?.toLowerCase()?.trim() || null
+		if(file.type == "document" && file.content.trim().startsWith("---")) file.filename = file?.frontMatter?.slug?.toLowerCase()?.trim() || file.filename
 		if(!formattedFilename) formattedFilename = path.basename(file.filename).toLowerCase()
 
 		const compiledPath = path.join(contentDir.compiled, formattedFilename)
 		const fileExt = path.extname(file.filename) ?? ""
-		const compiledPathHtml = `${!fileExt ? compiledPath : compiledPath.slice(0, -fileExt.length)}.html`
+		var compiledPathHtml = `${!fileExt ? compiledPath : compiledPath.slice(0, -fileExt.length)}.html`
 		const compiledPathJson = `${!fileExt ? compiledPath : compiledPath.slice(0, -fileExt.length)}.json`
 		await fs.promises.mkdir(path.dirname(compiledPath), { recursive: true })
 
@@ -99,13 +111,51 @@ async function main(){
 				gotWarnings = true
 			}
 
+			const normalizedRelativePath = path.relative(contentDir.raw, file.path).toLowerCase().replace(/\\/g, "/").normalize("NFC")
+
+			const isBlogArticle = normalizedRelativePath.startsWith("articles/") || normalizedRelativePath.startsWith("blog/")
+			const blogArticleTitle = file.frontMatter?.name || path.basename(file.filename, path.extname(file.filename))
+			const blogArticleSlug = isBlogArticle ? path.basename(path.dirname(normalizedRelativePath)) : null
+			const blogArticleLang = languagesAbbreviations?.[path.basename(normalizedRelativePath).split(".").slice(0, -1).join(".").split("_").slice(-1)[0]] || null
+			const blogArticleVisibility = file.frontMatter?.visibility || null
+
+			if(isBlogArticle && !blogArticleSlug) throw new Error(`Blog article ${file.filename} is missing a slug.`)
+			if(isBlogArticle && !blogArticleTitle) throw new Error(`Blog article ${file.filename} is missing a title (use "name" in frontmatter).`)
+			if(isBlogArticle && !blogArticleLang) throw new Error(`Blog article ${file.filename} has an unsupported language as file name. Supported languages are ${Object.keys(languagesAbbreviations).join(", ")}.`)
+
+			if(isBlogArticle) compiledPathHtml = path.join(contentDir.compiled, `${blogArticleSlug}_${blogArticleLang}.html`) // change file name for blog articles to support multiple languages
 			if(fs.existsSync(compiledPathHtml)) throw new Error(`File ${compiledPathHtml} already exists. Please remove it before compiling.`)
 			await fs.promises.writeFile(compiledPathHtml, result.content, "utf-8")
 
-			compiledFiles[path.relative(contentDir.compiled, compiledPathHtml)] = {
+			const blogArticleReleaseDate = file.frontMatter?.post_releasedate
+			if(blogArticleReleaseDate && !checkDateValidity(blogArticleReleaseDate)) {
+				throw new Error(`Blog article ${file.filename} has an invalid release date (${blogArticleReleaseDate}). Please use the format YYYY-MM-DD.`)
+			}
+
+			if(!compiledFiles[blogArticleSlug]) {
+				compiledFiles[blogArticleSlug] = [...new Set(Object.values(languagesAbbreviations))].map(lang => [lang, null]).reduce((acc, [lang, value]) => ({ ...acc, [lang]: value }), {})
+				compiledFiles[blogArticleSlug].isBlogArticle = isBlogArticle
+
+				if(compiledFiles[blogArticleSlug].releaseDate && compiledFiles[blogArticleSlug].releaseDate !== blogArticleReleaseDate) {
+					console.warn(`Warning: File ${file.filename} has a release date (${blogArticleReleaseDate}) that is different from the already set release date (${compiledFiles[blogArticleSlug].releaseDate}). Please ensure that the release date is consistent across all language versions of the article.`)
+					gotWarnings = true
+				}
+				compiledFiles[blogArticleSlug].releaseDate = blogArticleReleaseDate || null
+
+				if(compiledFiles[blogArticleSlug].visibility && compiledFiles[blogArticleSlug].visibility !== blogArticleVisibility) {
+					console.warn(`Warning: File ${file.filename} has a visibility (${blogArticleVisibility}) that is different from the already set visibility (${compiledFiles[blogArticleSlug].visibility}). Please ensure that the visibility is consistent across all language versions of the article.`)
+					gotWarnings = true
+				}
+				compiledFiles[blogArticleSlug].visibility = blogArticleVisibility || null
+			}
+			compiledFiles[blogArticleSlug].slug = blogArticleSlug
+			compiledFiles[blogArticleSlug][blogArticleLang || "en"] = {
 				type: "document",
-				slug: file.filename,
-				title: (path.extname(originalFilenameTitle).length ? originalFilenameTitle.slice(0, -path.extname(originalFilenameTitle).length) : originalFilenameTitle).normalize("NFC").replace(", ", " : "),
+				compiledPath: path.relative(contentDir.compiled, compiledPathHtml),
+				isBlogArticle: isBlogArticle,
+				slug: blogArticleSlug || file.filename,
+				lang: blogArticleLang,
+				title: blogArticleTitle || (path.extname(originalFilenameTitle).length ? originalFilenameTitle.slice(0, -path.extname(originalFilenameTitle).length) : originalFilenameTitle).normalize("NFC"),
 				firstParagraph: result.firstParagraph,
 				toc: result.toc,
 				frontmatter: {
@@ -168,7 +218,7 @@ async function main(){
 	console.log(`Compiled content saved to ${contentDir.compiled}`)
 
 	if(gotWarnings) {
-		console.error("Compilation completed with warnings. Please check the logs above and fix the issues before deploying the content.\nFiles can be found in the compiled directory, but process will be exited with code 1 to prevent deployment with warnings.")
+		console.error("\nCompilation completed with warnings. Please check the logs above and fix the issues before deploying the content.\nFiles can be found in the compiled directory, but process will be exited with code 1 to prevent deployment with warnings.")
 		process.exit(1)
 	}
 }

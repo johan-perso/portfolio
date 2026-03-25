@@ -409,7 +409,7 @@ module.exports.convertMarkdown = async (
 				const splitFileContent = fileContent.split("\n")
 
 				const releaseDate = splitFileContent.find(line => line.trim().toLowerCase().startsWith("post_releasedate:"))?.split(":").slice(1).join(":").trim() || "UNKNOWN"
-				const title = path.parse(searchResult.path)?.name?.replace(", ", " : ").replace(/"/g, "\\\"")
+				const title = path.parse(searchResult.path)?.name.replace(/"/g, "\\\"")
 				var content = stripMarkdown(fileContent, true)
 				if(content.length > 400) content = `${content.slice(0, 400)}...`
 				if(![".", "!", "?"].includes(content[content.length - 1])) content += "." // add trailing dot if not present

@@ -121,5 +121,6 @@ function getAbsoluteDate(locale, dateTime) {
 
 module.exports = {
 	getRelativeTime,
-	getAbsoluteDate
+	getAbsoluteDate,
+	checkDateValidity
 }
