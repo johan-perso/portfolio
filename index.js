@@ -271,10 +271,17 @@ async function startRocServer(){
 				.replaceAll("%%BLOG_DETAILS_LINK_MACOS%%", foundBlogDocument?.frontmatter?.download_macos || "")
 				.replaceAll("%%BLOG_DETAILS_LINK_LINUX%%", foundBlogDocument?.frontmatter?.download_linux || "")
 
-				.replace("%%BLOG_ROBOTS_RULES%%", foundBlogDocument?.frontmatter?.visibility == "hidden" ? "noindex" : "index")
-				.replace("%%BLOG_CONTENT%%", blogContent)
-				.replace("%%BLOG_TOC%%", tocComponentHtml.replace("%%TOC_CONTENT%%", tocContentHtml))
-				.replace("%%TOC_CLASSES%%", foundBlogDocument?.toc?.length > 0 ? "" : "hidden")
+				.replaceAll("%%BLOG_ROBOTS_RULES%%", foundBlogDocument?.frontmatter?.visibility == "hidden" ? "noindex" : "index")
+				.replaceAll("%%BLOG_CONTENT%%", blogContent)
+				.replaceAll("%%BLOG_TOC%%", tocComponentHtml.replaceAll("%%TOC_CONTENT%%", tocContentHtml))
+				.replaceAll("%%TOC_CLASSES%%", foundBlogDocument?.toc?.length > 0 ? "" : "hidden")
+
+				.replaceAll("%%BLOG_METADATA_TITLE%%", foundBlogDocument?.title ? escapeHtml(foundBlogDocument.title) : "")
+				.replaceAll("%%BLOG_METADATA_DESCRIPTION%%", foundBlogDocument?.firstParagraph ? escapeHtml(foundBlogDocument.firstParagraph) : "")
+				.replaceAll("%%BLOG_METADATA_URL%%", `https://johanstick.fr${req.path.endsWith("/") ? req.path.trim() : `${req.path}/`}`)
+				.replaceAll("%%BLOG_METADATA_AUTHOR%%", foundBlogDocument?.frontmatter?.post_author ? escapeHtml(foundBlogDocument.frontmatter.post_author) : "")
+				.replaceAll("%%BLOG_METADATA_PUBLISHED_TIME%%", foundBlogDocument?.frontmatter?.post_releasedate ? new Date(foundBlogDocument.frontmatter.post_releasedate).toISOString() : "")
+				.replaceAll("%%BLOG_METADATA_IMAGES_HTML%%", !bannerWebPath ? "" : `<meta name="twitter:card" content="summary_large_image" />\n<meta property="og:image" content="https://johanstick.fr${bannerWebPath}" />\n<meta name="twitter:image" content="https://johanstick.fr${bannerWebPath}">`)
 
 			const htmlResponse = await server.renderPage(editedBlogHtml, { file: path.join(__dirname, "public", "blog_post_template.html"), path: req.path })
 			console.log("=".repeat(50))
