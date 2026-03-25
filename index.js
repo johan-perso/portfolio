@@ -90,6 +90,24 @@ function getBlogDocument(slug, frontmatter){
 	return toReturn
 }
 
+function generateCanonicalTags(_originalPath){
+	// Generate canonical tag
+	var properPath = _originalPath.split("?")[0].split("#")[0].trim()
+	if(!properPath.endsWith("/")) properPath += "/"
+	if(properPath.length < 2) properPath = "/en/"
+	var html = `<link rel="canonical" href="https://johanstick.fr${properPath}" />`
+
+	// Add every language version as alternate links for SEO
+	const pathWithoutLang = properPath.length < 3 ? properPath : properPath.split("/").slice(2).join("/") // remove the potential language prefix from the path (ex: /en/example -> example)
+	Object.keys(translations).forEach(lang => {
+		var langPath = `${lang}/${pathWithoutLang}`
+		html += `\n<link rel="alternate" href="https://johanstick.fr/${langPath}" hreflang="${lang}">`
+	})
+	html += `\n<link rel="alternate" href="https://johanstick.fr/en/${pathWithoutLang}" hreflang="x-default">`
+
+	return html
+}
+
 // Main function, prepare and start the server
 async function main(){
 	var perfNow = performance.now()
@@ -282,6 +300,7 @@ async function startRocServer(){
 				.replaceAll("%%BLOG_METADATA_AUTHOR%%", foundBlogDocument?.frontmatter?.post_author ? escapeHtml(foundBlogDocument.frontmatter.post_author) : "")
 				.replaceAll("%%BLOG_METADATA_PUBLISHED_TIME%%", foundBlogDocument?.frontmatter?.post_releasedate ? new Date(foundBlogDocument.frontmatter.post_releasedate).toISOString() : "")
 				.replaceAll("%%BLOG_METADATA_IMAGES_HTML%%", !bannerWebPath ? "" : `<meta name="twitter:card" content="summary_large_image" />\n<meta property="og:image" content="https://johanstick.fr${bannerWebPath}" />\n<meta name="twitter:image" content="https://johanstick.fr${bannerWebPath}">`)
+				.replaceAll("%%CANONICAL_TAG%%", generateCanonicalTags(req.path))
 
 			const htmlResponse = await server.renderPage(editedBlogHtml, { file: path.join(__dirname, "public", "blog_post_template.html"), path: req.path })
 			console.log("=".repeat(50))
@@ -299,6 +318,11 @@ async function startRocServer(){
 				return res.sendFile(200, requestedFilePath, { headers: { "Cache-Control": isEligibleForCache(requestedFilePath) ? cacheControlHeader : "no-cache" } })
 			}
 			else return res.send(404, "Not Found", { headers: { "Content-Type": "text/plain" } })
+		}
+
+		// If URL ends with multiple slashes, remove the extra slashes
+		if(req.path.endsWith("//")) {
+			return res.redirect(302, `${req.path.replace(/\/+$/, "/")}${Object.keys(req.query).length ? `?${new URLSearchParams(req.query).toString()}` : ""}`)
 		}
 
 		// If no langs prefixes, detect user language and redirect with the appropriate lang prefix
@@ -324,16 +348,17 @@ async function startRocServer(){
 			var pathWithoutLangWithoutTrailingSlash = pathWithoutLang.endsWith("/") ? pathWithoutLang.slice(0, -1) : pathWithoutLang
 			pathWithoutLangWithoutTrailingSlash = pathWithoutLangWithoutTrailingSlash.startsWith("/") ? pathWithoutLangWithoutTrailingSlash.substring(1) : pathWithoutLangWithoutTrailingSlash
 			pathWithoutLangWithoutTrailingSlash = pathWithoutLangWithoutTrailingSlash.toLowerCase()
+			if(pathWithoutLangWithoutTrailingSlash == "index" || pathWithoutLangWithoutTrailingSlash == "index/") return res.redirect(302, `/${potentialLang}/`) // redirect to homepage if trying to access "index"
 			if(pathWithoutLangWithoutTrailingSlash.length < 1) pathWithoutLangWithoutTrailingSlash = "index"
 
 			const allowedPages = ["index", "articles"]
 			if(allowedPages.includes(pathWithoutLangWithoutTrailingSlash)) {
 				const generatedPage = await server.renderPage(fs.readFileSync(path.join(__dirname, "public", `${pathWithoutLangWithoutTrailingSlash}.html`), "utf-8"), { file: path.join(__dirname, "public", "index.html"), path: req.path })
-				return res.send(200, generatedPage, { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
+				return res.send(200, generatedPage.replace("%%CANONICAL_TAG%%", generateCanonicalTags(req.path)), { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
 			} else return res.redirect(302, `/${potentialLang}/`) // redirect to homepage if the page is not in the allowed list
 		}
 
-		if(res.initialAction.type == "sendHtml") res.send(200, res.initialAction.content, { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
+		if(res.initialAction.type == "sendHtml") res.send(200, res.initialAction.content.replace("%%CANONICAL_TAG%%", generateCanonicalTags(req.path)), { headers: { "Content-Type": "text/html", "Cache-Control": cacheControlHeader } })
 		else if(res.initialAction.type == "sendJs") res.send(200, res.initialAction.content, { headers: { "Content-Type": "application/javascript", "Cache-Control": cacheControlHeader } })
 		else if(res.initialAction.type == "sendFile") res.sendFile(200, res.initialAction.content, { headers: { "Cache-Control": isEligibleForCache(req.path) ? cacheControlHeader : "no-cache" } })
 		else if(res.initialAction.type == "redirect") res.redirect(302, res.initialAction.content)
