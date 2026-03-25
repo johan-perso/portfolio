@@ -55,7 +55,7 @@ function formatTableCell(cell) {
 
 async function searchReferenceFile(referenceName, searchPath){
 	function getReturnValue(filePath){
-		var slug = fs.readFileSync(filePath, "utf-8").split("\n").find(line => line.trim().startsWith("slug:"))?.split("slug:")[1]?.trim()
+		var slug = path.basename(filePath) || fs.readFileSync(filePath, "utf-8").split("\n").find(line => line.trim().startsWith("slug:"))?.split("slug:")[1]?.trim()
 		return {
 			path: filePath,
 			url: `/${slug || path.parse(filePath).name}`
@@ -63,17 +63,12 @@ async function searchReferenceFile(referenceName, searchPath){
 	}
 
 	referenceName = referenceName.toLowerCase().normalize("NFC")
-	const files = fs.readdirSync(searchPath)
+	const referenceFileSlug = path.basename(path.dirname(referenceName)).toLowerCase().normalize("NFC")
+	const files = fs.readdirSync(path.dirname(searchPath))
 	for(const file of files){
-		const filePath = path.join(searchPath, file)
+		const filePath = path.join(path.dirname(searchPath), file)
 		const lowerCaseFileName = file.toLowerCase().normalize("NFC")
-
-		if(fs.lstatSync(filePath).isDirectory()){
-			const result = await searchReferenceFile(referenceName, filePath)
-			if(result) return result
-		} else {
-			if(lowerCaseFileName == referenceName || lowerCaseFileName == `${referenceName}.md`) return getReturnValue(filePath)
-		}
+		if(file == referenceFileSlug || lowerCaseFileName == referenceName || lowerCaseFileName == `${referenceName}.md`) return getReturnValue(filePath)
 	}
 	return null
 }
@@ -82,18 +77,22 @@ async function searchReferenceFile(referenceName, searchPath){
 /**
  * Convert a Markdown document into an object with content formatted as HTML
  * @param {String} content Markdown document content
+ * @param {String} options.filePath Path to the Markdown file being converted (used to resolve local references and links)
+ * @param {String} options.languageAbbreviated Language of the Markdown document being converted (ex: fr, en) (used to search for references file)
+ * @param {String} options.languageFriendly Language of the Markdown document being converted (ex: french, english) (used to search for references file)
  * @param {String} options.assetsPath Path to the folder that contains the assets attached in the Markdown document (images, videos, etc.)
  * @param {String} options.publicAssetsPath Public (on the web server) path that browsers will use to access assets (used to generate the correct src in the HTML content)
- * @param {String} options.filePath Path to the Markdown file being converted (used to resolve local references and links)
  * @param {Boolean} options.documentHasBanner Whether the document being converted has a banner or not (used to add a specific margin to the first element)
  * @returns {Object}
 */
 module.exports.convertMarkdown = async (
 	content,
 	options = {
+		filePath: null,
+		languageAbbreviated: null,
+		languageFriendly: null,
 		assetsPath: null,
 		publicAssetsPath: null,
-		filePath: null,
 		documentHasBanner: false
 	}
 ) => {
@@ -405,15 +404,30 @@ module.exports.convertMarkdown = async (
 			const reference = line.trim().toLowerCase().split("> read:")[1].trim().replace("[[", "").replace("]]", "")
 			const searchResult = await searchReferenceFile(reference, path.dirname(options.filePath))
 			if(searchResult && searchResult?.path && searchResult?.url) {
-				const fileContent = fs.readFileSync(searchResult.path, "utf-8")
+				var fileContent
+				const isReferenceFolder = fs.lstatSync(searchResult.path).isDirectory()
+				if(isReferenceFolder) {
+					const filesInFolder = fs.readdirSync(searchResult.path)
+					const selectedFile = filesInFolder.find(file => file.toLowerCase() == `${options.languageFriendly || options.languageAbbreviated || "en"}.md`) || filesInFolder.find(file => file.toLowerCase() == "english.md")
+					fileContent = selectedFile ? fs.readFileSync(path.join(searchResult.path, selectedFile), "utf-8") : null
+				} else {
+					fileContent = fs.readFileSync(searchResult.path, "utf-8")
+				}
+				if(!fileContent) {
+					contentObject.warns.push(`Blog Post Card - Cannot read the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)
+					continue
+				}
 				const splitFileContent = fileContent.split("\n")
 
 				const releaseDate = splitFileContent.find(line => line.trim().toLowerCase().startsWith("post_releasedate:"))?.split(":").slice(1).join(":").trim() || "UNKNOWN"
-				const title = path.parse(searchResult.path)?.name.replace(/"/g, "\\\"")
 				var content = stripMarkdown(fileContent, true)
 				if(content.length > 400) content = `${content.slice(0, 400)}...`
 				if(![".", "!", "?"].includes(content[content.length - 1])) content += "." // add trailing dot if not present
 
+				var title = splitFileContent.find(line => line.trim().toLowerCase().startsWith("name:"))?.split(":").slice(1).join(":").trim() || path.parse(searchResult.path)?.name.replace(/"/g, "\\\"")
+				if(title.startsWith("\"") && title.endsWith("\"")) title = title.slice(1, -1)
+
+				if(!searchResult.url.startsWith("/")) searchResult.url = `/${searchResult.url}`
 				contentObject.content += `<div class="mt-5"><BlogPostCard useSerif=true openInNewTab=true date="${releaseDate}" title="${escapeHtml(title)}" content="${checkForBasicMarkdownSyntax(escapeHtml(content))}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
 			} else {
 				contentObject.warns.push(`Blog Post Card - Cannot find the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)

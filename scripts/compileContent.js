@@ -102,6 +102,8 @@ async function main(){
 		if(file.type == "document") {
 			const result = await compileMarkdown.convertMarkdown(file.content, {
 				filePath: file.path,
+				languageAbbreviated: languagesAbbreviations?.[path.basename(file.filename).split(".").slice(0, -1).join(".").split("_").slice(-1)[0].toLowerCase()],
+				languageFriendly: path.basename(file.filename).split(".").slice(0, -1).join(".").split("_").slice(-1)[0].toLowerCase(),
 				assetsPath: contentDir.attachments,
 				publicAssetsPath: publicAssetsPath,
 				documentHasBanner: !!file.frontMatter?.banner,
