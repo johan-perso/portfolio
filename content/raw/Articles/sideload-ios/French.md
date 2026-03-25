@@ -1,5 +1,5 @@
 ---
-slug: sideload-ios
+name: Sideloader une app sur iOS
 Post_ReleaseDate: 2026-02-15
 Post_EditDate: 2026-03-10
 Post_Theme: Sideloading, Third Party Store, iOS

@@ -1,5 +1,5 @@
 ---
-slug: blog-demo-features
+name: Blog demo features
 visibility: hidden
 Post_ReleaseDate: 2026-03-03
 Post_EditDate: 2026-03-10
@@ -39,7 +39,8 @@ Post_Author: Johan
 
 | Key                | Value                                                                                              | Example                                  |
 | ------------------ | -------------------------------------------------------------------------------------------------- | ---------------------------------------- |
-| `slug`             | Unique ID for this post, will be shown to users in the access URL                                  | `blog-demo-features`                     |
+| `name`             | Friendly post name displayed to the user                                                           |                                          |
+| ~~`slug`~~         | (Not used anymore) Unique ID for this post, will be shown to users in the access URL               | `blog-demo-features`                     |
 | `visibility`       | Allows to hide this post from search engines and from the internal "Blog posts list"               | `hidden`, `<nothing>`                    |
 | `banner`           | Local path for the banner of this blog post                                                        |                                          |
 | `Post_Author`      | Main writer of this blog post, can include hyperlinks                                              | `Johan`                                  |

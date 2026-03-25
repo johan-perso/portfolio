@@ -1,5 +1,5 @@
 ---
-slug: findmeme-web
+name: Le nouveau FindMeme sur navigateur
 banner: findmeme_webapp_banner.jpg
 Post_ReleaseDate: 2024-10-06
 Post_Author: Johan
@@ -17,7 +17,7 @@ Le design est adapté pour tous les types d'écrans, et les fonctionnalités, le
 
 Ce nouveau site, ainsi que l'application pour mobile, partagent la même base de code. Cela permet aux deux projets d'être mis à jour en même temps, et de partager les mêmes fonctionnalités, avec une interface familière quelle que soit la plateforme et l’appareil que vous utilisiez.
 
-> READ: [[FindMeme arrive sur téléphone]]
+> READ: [[Portfolio/Articles/findmeme-mobile/French]]
 
 # Nouvelles fonctionnalités ^features
 

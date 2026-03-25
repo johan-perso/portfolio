@@ -1,5 +1,5 @@
 ---
-slug: bachero
+name: Bachero
 Post_ReleaseDate: 2026-03-11
 Post_Date: 2022 - 2024
 Post_Author: Johan
