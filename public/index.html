@@ -2,6 +2,10 @@
 <html lang="{{ globalThis.detectLang(this.routePath) }}" class="bg-primary-background scroll-smooth">
 <head>
 	<DefaultHead></DefaultHead>
+	<meta name="title" content="Johan ― Portfolio">
+	<meta property="og:title" content="Johan ― Portfolio">
+	<meta name="description" content="{{ globalThis.getValue(this.routePath, 'head.description') }}">
+	<meta property="og:description" content="{{ globalThis.getValue(this.routePath, 'head.description') }}">
 
 	<script src="/main.js"></script>
 
