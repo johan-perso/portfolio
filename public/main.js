@@ -550,7 +550,7 @@ function showToast(message, duration = 0) {
 	text.classList = "flex items-center justify-center"
 
 	const toast = document.createElement("div")
-	toast.className = `toast z-50 fixed bottom-4 ${isShortScreen ? "" : currentInterfaceMode == "human" ? "right-4" : "right-8"} px-5 py-2 border-2 ${currentInterfaceMode == "human" ? "border-light-background-heavy bg-[rgba(248,248,248,0.4)] text-primary-content" : "border-light-background/30 bg-[rgba(98,98,98,0.6)] text-white/90"} font-medium rounded-full bg-blur-xl`
+	toast.className = `toast z-50 fixed bottom-4 ${isShortScreen ? "" : currentInterfaceMode == "human" ? "right-4" : "right-8"} px-5 py-2 border-2 ${currentInterfaceMode == "human" ? "border-light-background-heavy bg-[rgba(248,248,248,0.67)] text-primary-content" : "border-light-background/30 bg-[rgba(98,98,98,0.6)] text-white/90"} font-medium rounded-full bg-blur-xl`
 	toast.id = randomId
 	toast.style.opacity = "0"
 	toast.style.transform = "translateY(100px)"

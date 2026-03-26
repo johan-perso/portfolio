@@ -263,9 +263,9 @@
 		}
 	},
 	"cryptoAddressCopied": {
-		"eth": "Adresse Ethereum/Base copiée dans le presse-papier !",
-		"btc": "Adresse Bitcoin copiée dans le presse-papier !",
-		"sol": "Adresse Solana copiée dans le presse-papier !",
+		"eth": "Adresse Ethereum/Base copiée dans le presse-papier !",
+		"btc": "Adresse Bitcoin copiée dans le presse-papier !",
+		"sol": "Adresse Solana copiée dans le presse-papier !",
 		"unknown": "Type de cryptomonnaie inconnu, veuillez signalez ce problème svp."
 	},
 	"jsRequired": {
