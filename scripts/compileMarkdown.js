@@ -6,6 +6,7 @@ const path = require("path")
 const stripMarkdown = require("../utils/stripMarkdown")
 const { svgPaths } = require("../utils/svgPaths")
 const { escapeHtml } = require("../utils/normalization")
+const { translations } = require("../public/translations/util")
 
 const components = {
 	"callout": fs.readFileSync(path.join(__dirname, "..", "public", "components", "Callout.html"), "utf-8"),
@@ -355,7 +356,7 @@ module.exports.convertMarkdown = async (
 				if(contentObject.metadata?.download_linux) ctaButtons.push({ platform: "Linux", href: contentObject.metadata.download_linux, svgPath: svgPaths.linux, includeMb: true })
 
 				contentObject.content += `<div class="mt-4 flex gap-3 max-[600px]:gap-2.5 max-[600px]:flex-col max-[600px]:[&>*]:w-full">
-					${ctaButtons.map(button => components.primarybutton.replaceAll("{{ $label }}", `Télécharger pour ${button.platform}`).replaceAll("{{ $href }}", button.href).replaceAll("{{ $svgPath }}", button.svgPath).replace((button.includeMb ? "<svg " : "<svg class=\"mb-0.5\""), "<svg ")).join("\n")}
+					${ctaButtons.map(button => components.primarybutton.replaceAll("{{ $label }}", `${translations[options.languageAbbreviated].blog.articleDetails.downloadPrefix} ${button.platform}`).replaceAll("{{ $href }}", button.href).replaceAll("{{ $svgPath }}", button.svgPath).replace((button.includeMb ? "<svg " : "<svg class=\"mb-0.5\""), "<svg ")).join("\n")}
 				</div>`
 			}
 

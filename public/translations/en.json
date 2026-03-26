@@ -223,6 +223,7 @@
 			"editedOn": "Edited on %%DATE%%",
 			"sourcecode": "Project source code",
 			"demo": "Try from your browser",
+			"downloadPrefix": "Download for",
 			"downloadAndroid": "Download for Android",
 			"downloadIos": "Download for iOS",
 			"downloadWindows": "Download for Windows",
