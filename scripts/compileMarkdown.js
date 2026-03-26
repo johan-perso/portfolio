@@ -408,13 +408,13 @@ module.exports.convertMarkdown = async (
 				const isReferenceFolder = fs.lstatSync(searchResult.path).isDirectory()
 				if(isReferenceFolder) {
 					const filesInFolder = fs.readdirSync(searchResult.path)
-					const selectedFile = filesInFolder.find(file => file.toLowerCase() == `${options.languageFriendly || options.languageAbbreviated || "en"}.md`) || filesInFolder.find(file => file.toLowerCase() == "english.md")
+					const selectedFile = filesInFolder.find(file => file.toLowerCase() == `${options.languageFriendly || options.languageAbbreviated || "en"}.md`) || filesInFolder.find(file => file.toLowerCase() == "english.md") || filesInFolder.find(file => file.toLowerCase() == "french.md") || filesInFolder.find(file => file.toLowerCase().endsWith(".md"))
 					fileContent = selectedFile ? fs.readFileSync(path.join(searchResult.path, selectedFile), "utf-8") : null
 				} else {
 					fileContent = fs.readFileSync(searchResult.path, "utf-8")
 				}
 				if(!fileContent) {
-					contentObject.warns.push(`Blog Post Card - Cannot read the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)
+					contentObject.warns.push(`Blog Post Card - Cannot read the referenced file "${reference}" for the blog post card (searchResult: ${typeof searchResult == "object" ? JSON.stringify(searchResult) : searchResult}).`)
 					continue
 				}
 				const splitFileContent = fileContent.split("\n")
@@ -428,9 +428,10 @@ module.exports.convertMarkdown = async (
 				if(title.startsWith("\"") && title.endsWith("\"")) title = title.slice(1, -1)
 
 				if(!searchResult.url.startsWith("/")) searchResult.url = `/${searchResult.url}`
+				if(!searchResult.url.endsWith("/")) searchResult.url = `${searchResult.url}/`
 				contentObject.content += `<div class="mt-5"><BlogPostCard useSerif=true openInNewTab=true date="${releaseDate}" title="${escapeHtml(title)}" content="${checkForBasicMarkdownSyntax(escapeHtml(content))}" href="${searchResult.url.replace(/"/g, "\\\"")}"></BlogPostCard></div>\n`
 			} else {
-				contentObject.warns.push(`Blog Post Card - Cannot find the referenced file "${reference}" for the blog post card (searchResult: ${searchResult}).`)
+				contentObject.warns.push(`Blog Post Card - Cannot find the referenced file "${reference}" for the blog post card (searchResult: ${typeof searchResult == "object" ? JSON.stringify(searchResult) : searchResult}).`)
 			}
 			lastLineType = "blogpostcard"
 		}
