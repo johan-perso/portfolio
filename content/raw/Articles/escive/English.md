@@ -1,5 +1,5 @@
 ---
-name: "eScive : next level controls for your electric scooter"
+name: "eScive: next level controls for your electric scooter"
 banner: escive_app_banner.en.jpg
 Post_ReleaseDate: 2025-08-17
 Post_Date: 2025 - Present
@@ -49,8 +49,5 @@ These two features allow you, for example, to set up an NFC tag on your handleba
 # Design and development ^design
 
 The design was initially sketched out quickly in Figma to share my ideas visually with [@el2zay](https://github.com/el2zay). We then iterated with changes tied to the app's core components to make it more intuitive for all users. These choices led to a clean, distraction-free interface that lets you perform any action in an instant.
-
-![[escive_design_evolution.webp|800]]
-*Design evolution across iterations*
 
 As for the app's development, [Flutter](https://flutter.dev/) was used to quickly build an app available across multiple platforms (Android and iOS, along with a browser experiment). Scooters are connected by mimicking their original Bluetooth protocol, based on decompiled code from the official apps and analysis of sent and received BLE packets, which currently limits the app to a single manufacturer.
