@@ -1,9 +1,9 @@
 ---
 name: "eScive : roulez mieux en trottinette électrique"
-banner: escive_app_banner.jpg
+banner: escive_app_banner.fr.jpg
 Post_ReleaseDate: 2025-08-17
 Post_Date: 2025 - Présent
-Post_Theme: Flutter, Bluetooth Low Energy, Reverse Engineer, Mapbox
+Post_Theme: Flutter, Bluetooth Low Energy, Reverse Engineering, Mapbox
 Post_Author: Johan
 Post_CoAuthors: "[el2zay](https://github.com/el2zay)"
 Download_Android: https://dl.bassinecorp.fr/escive?os=android
@@ -25,7 +25,7 @@ Cependant, vous pouvez tout de même l'utiliser sur Android via un [fichier APK]
 
 Pour l'instant, eScive n'est compatible qu'avec la gamme "i10" de chez iScooter (aucune affiliation, j'en pouvais juste plus de l'app officiel). Le code étant conçu avec une facilité d'ajout d'autres modèles à l'esprit, la liste d'appareils supportés pourrait venir à évoluer au fil du temps.
 
-Il est possible de développer ses propres "bridges", permettant de relier un appareil à l'app en utilisant le Bluetooth, à condition d'être suffisamment motivé dans le reverse engineer.
+Il est possible de développer ses propres "bridges", permettant de relier un appareil à l'app en utilisant le Bluetooth, à condition d'être suffisamment motivé dans le reverse engineering.
 
 # Contexte / motivation, fonctionnalités ^features
 
@@ -52,6 +52,6 @@ Ces deux éléments vous permettent, par exemple, de configurer un tag NFC posé
 
 Le design avait d’abord été conçu rapidement sur Figma par mes soins (enfin, façon de parler…) afin de visualiser avec [@el2zay](https://github.com/el2zay) les idées que j’avais en tête. On a ensuite itéré avec des modifications liées aux composants de base de l’app, afin de la rendre plus intuitive pour tous les utilisateurs. Ces choix ont permis de proposer une interface claire, sans distractions, et qui vous permet d’effectuer n’importe quelle action en un instant.
 
-![[escive_design_evolution.webp]]
+![[escive_design_evolution.webp|800]]
 
 Quant au développement de l’app, [Flutter](https://flutter.dev/) a été utilisé pour concevoir rapidement une app disponible sur différentes plateformes (Android et iOS, ainsi qu’une expérimentation pour navigateur). Les trottinettes sont connectées en utilisant une imitation de leur protocole Bluetooth originel, basée sur le code décompilé des apps officielles, et sur des analyses des paquets BLE envoyés et reçus, ce qui limite l’utilisation de l’app à un seul constructeur pour le moment.
