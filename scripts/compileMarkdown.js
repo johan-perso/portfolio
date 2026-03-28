@@ -360,8 +360,8 @@ module.exports.convertMarkdown = async (
 				</div>`
 			}
 
-			contentObject.content += `<div class="flex gap-1.5 ${lastLineType == "metadata" ? "" : lastLineType.startsWith("title") ? "mt-3" : "mt-8"} items-center blogSubHeader">
-				<h${titleLevel} id="${escapeHtml(anchor)}" class="antialiased font-serif-alt font-semibold ${titleLevel > 1 ? "text-primary-content-heavy/90" : "text-primary-content-heavy"} ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
+			contentObject.content += `<div class="flex gap-1.5 ${lastLineType == "metadata" ? "mt-3" : lastLineType.startsWith("title") ? "mt-4" : "mt-8"} items-center blogSubHeader">
+				<h${titleLevel} id="${escapeHtml(anchor)}" class="antialiased font-serif-alt font-semibold text-primary-content-heavy ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${24 * Math.pow(0.9, titleLevel - 1)}px">${checkForBasicMarkdownSyntax(escapeHtml(line))}</h${titleLevel}>
 				<a href="#${escapeHtml(anchor)}" onclick="copyHeaderLink(event)" class="text-link focus:underline hover:underline transition-opacity duration-100 opacity-0 focus:opacity-100 hover:opacity-100 ${titleLevel < 3 ? "leading-8" : "leading-5"}" style="font-size: ${(titleLevel > 4 ? 24 : 20) * Math.pow(0.9, titleLevel - 1)}px">#</a>
 			</div>`
 
@@ -490,7 +490,7 @@ module.exports.convertMarkdown = async (
 			if(line.trim() != "") {
 				let marginTop = lastLineWasEmpty && lastLineType == "paragraph" ? "mt-2.5" : "mt-1"
 
-				if(lastLineType == "image" || (!wentPastFirstParagraph && options.documentHasBanner)) marginTop = "mt-6"
+				if(lastLineType == "image" || (!wentPastFirstParagraph && !wentPastFirstTitle && options.documentHasBanner)) marginTop = "mt-6"
 				else if(!wentPastFirstParagraph && !options.documentHasBanner) marginTop = "mt-4"
 				else if(lastLineType == "list") marginTop = "mt-3.5"
 				else if(lastLineType.startsWith("title-")) {
@@ -524,7 +524,7 @@ module.exports.convertMarkdown = async (
 	const codeBlockPlaceholders = {}
 	let codeBlockIndex = 0
 	contentObject.content = contentObject.content.replace(/<code>([\s\S]*?)<\/code>/g, (match) => {
-		const placeholder = `@@CODEBLOCK_${codeBlockIndex}@@`
+		const placeholder = `⋅CODEBLOCK_${codeBlockIndex}⋅`
 		codeBlockPlaceholders[placeholder] = match
 		codeBlockIndex++
 		return placeholder
@@ -556,7 +556,7 @@ module.exports.convertMarkdown = async (
 					htmlLink = `<MentionInText username="${content.replace("@", "")}" href="${url}" avatarUrl="${avatarUrl}"></MentionInText>`
 				} else {
 					if(!isExtern) url = (await searchReferenceFile(url, path.dirname(options.filePath)))?.url || url // if it's not an extern link, try to find the file in the local assets
-					htmlLink = isExtern ? `<a href="${url.replace(/"/g, "\\\"")}" target="_blank" rel="noopener noreferrer" class="text-link hover:underline">${content}</a>` : `<a href="${isInternalAnchor ? "" : options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${url.replace(/"/g, "\\\"")}" class="text-link hover:underline">${content}</a>`
+					htmlLink = isExtern ? `<a href="${url.replace(/"/g, "\\\"")}" target="_blank" rel="noopener noreferrer" class="text-link hover:underline">${content}</a>` : `<a href="${url.replace(/"/g, "\\\"")}" class="text-link hover:underline">${content}</a>`
 				}
 			}
 
