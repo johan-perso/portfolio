@@ -16,7 +16,7 @@ This new version is a major refresh with a codebase rebuilt from scratch, using 
 
 One of the most important additions in this version is the ability to write articles about my projects, with much more depth than simply sharing a README link of a GitHub repo.
 
-[Articles](https://johanstick.fr/articles/) can be translated into multiple languages, come with a better presentation (download links for apps, publication date and custom details, table of contents) and can be written even for projects that aren't available on GitHub.
+[Articles](https://johanstick.fr/articles/) can be translated into multiple languages, come with a better presentation (download links for apps, publication date and custom details, table of contents), and can be written even for projects that aren't available on GitHub.
 
 > READ: [[Portfolio/Articles/escive/English]]
 
@@ -47,7 +47,7 @@ Every interaction on this site triggers feedback: a vibration on phones and a sm
 
 ## Obsidian as a CMS
 
-All of the articles on this site are written in [Obsidian](https://obsidian.md) and synced with the portfolio's GitHub repository via my own plugin, [Obsidian GitPush](https://github.com/johan-perso/obsidian-gitpush). No dashboard, no database, just Markdown files read when [building the server](https://github.com/johan-perso/portfolio/blob/main/Dockerfile) and converted into JSON and HTML files.
+All the articles on this site are written in [Obsidian](https://obsidian.md) and synced with the portfolio's GitHub repository via my own plugin, [Obsidian GitPush](https://github.com/johan-perso/obsidian-gitpush). No dashboard, no database, just Markdown files read when [building the server](https://github.com/johan-perso/portfolio/blob/main/Dockerfile) and converted into JSON and HTML files.
 
 ![[portfolio_v4_obsidiancms.jpeg|775]]
 
@@ -64,7 +64,7 @@ The language used is determined by your browser's settings, and a fallback is av
 
 The site is developed with [`roc-framework`](https://npmjs.com/package/roc-framework), a project I created to make building my own sites easier. It handles server-side rendering (SSR), reusable components, [Tailwind CSS](https://tailwindcss.com/), and most importantly, a dynamic routing system that lets me add routes at runtime (while the server is already running) that can return different responses depending on the context.
 
-You can learn more about the project on [its GitHub repository](https://github.com/johan-perso/roc-framework) (exclusively in French, I'm not even looking for an audience, this project will probably remain only used by me).
+You can learn more about the project on [its GitHub repository](https://github.com/johan-perso/roc-framework) (exclusively in French; I'm not even looking for an audience, this project will probably remain only used by me).
 
 ## Open Source ^open-source
 

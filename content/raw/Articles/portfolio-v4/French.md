@@ -51,14 +51,14 @@ L’ensemble des articles de ce site est écrit dans [Obsidian](https://obsidian
 
 ![[portfolio_v4_obsidiancms.jpeg|775]]
 
-J’ai également dû [écrire un parser](https://github.com/johan-perso/portfolio/blob/main/scripts/compileMarkdown.js), basé sur celui que j’ai écrit pour [MarkDocs](https://markdocs.johanstick.fr/), qui va convertir les fichiers Markdown qu’il rencontre, en fichiers HTML supportant les fonctionnalités d’Obsidian ([Liens internes](https://obsidian.md/help/links#Link+to+a+file), [tableaux](https://obsidian.md/help/advanced-syntax#Tables), …) et celles que j’ai décidé d’implémenter en supplément.
+J’ai également dû [écrire un parser](https://github.com/johan-perso/portfolio/blob/main/scripts/compileMarkdown.js), basé sur celui que j’ai écrit pour [MarkDocs](https://markdocs.johanstick.fr/), qui va convertir les fichiers Markdown qu’il rencontre, en fichiers HTML supportant les fonctionnalités d’Obsidian ([liens internes](https://obsidian.md/help/links#Link+to+a+file), [tableaux](https://obsidian.md/help/advanced-syntax#Tables), …) et celles que j’ai décidé d’implémenter en supplément.
 Les différentes redirections que le site supporte sont aussi gérées via Obsidian avec l’extension tierce [Sheet Plus](https://github.com/ljcoder2015/obsidian-sheet-plus) supporté par le même parser.
 
 ## Multilingue ^multilingual
 
 Le site est entièrement disponible en français et en anglais. Ce besoin de traduction s’est imposé naturellement au fil du temps par mon envie de cibler un public international, tout en gardant ma communauté française.
 
-La langue qui est utilisée dépend de celle de votre navigateur, et un *fallback* est disponible pour les posts qui ne seraient pas disponible dans votre langue. Vous pouvez utiliser ces liens pour consulter cet article [en français](/fr/portfolio-v4/) ou [en anglais](/en/portfolio-v4/).
+La langue qui est utilisée dépend de celle de votre navigateur, et un *fallback* est disponible pour les posts qui ne seraient pas disponibles dans votre langue. Vous pouvez utiliser ces liens pour consulter cet article [en français](/fr/portfolio-v4/) ou [en anglais](/en/portfolio-v4/).
 
 ## Framework maison ^roc
 
