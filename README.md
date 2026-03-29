@@ -1,8 +1,9 @@
 ###### Version française [ici](https://github.com/johan-perso/portfolio/blob/main/README.fr.md).
 
-# Portfolio
+# Portfolio v4 ⇢ Johan
 
-<!-- TODO: landscape screenshot of the website, redirect to it when clicking -->
+[![Screenshot of the portfolio website](./public/medias/homepage_mockup_en.webp)](https://johanstick.fr/en/portfolio-v4/)
+*click the image to see a live version + a blog post that explains the development process*
 
 ## Setup locally
 
@@ -11,6 +12,7 @@ git clone https://github.com/johan-perso/portfolio.git
 cd portfolio
 
 bun install
+bun run scripts/compileContent.js
 bun run dev
 
 # build with:          bun run build
@@ -19,11 +21,10 @@ bun run dev
 
 ## Stack
 
-WIP.
-
-<!-- - [Tailwind CSS](https://tailwindcss.com)
+- [Tailwind CSS](https://tailwindcss.com)
 - [Roc Framework](https://github.com/johan-perso/roc-framework)
-- [Bun](https://bun.sh) -->
+- [Bun Runtime](https://bun.sh)
+- [Obsidian](https://obsidian.md) and [Obsidian GitPush](https://github.com/johan-perso/obsidian-gitpush) plugin (for content writing)
 
 ## License
 
