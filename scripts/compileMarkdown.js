@@ -245,8 +245,8 @@ module.exports.convertMarkdown = async (
 				var link = match.split("[[")[1].split("]]")[0]
 				link = link?.replace(/\|(\d+)$/, "") // remove "|number" at the end of the URL (syntax used by Obsidian to specify image width)
 
-				if(!link.endsWith(".png") && !link.endsWith(".jpg") && !link.endsWith(".jpeg") && !link.endsWith(".gif") && !link.endsWith(".webp")){
-					contentObject.warns.push(`Attaching an image - The extension of the file located at "${imagePath}" is not supported. Supported extensions are: .png, .jpg, .jpeg, .gif and .webp.`)
+				if(!link.endsWith(".png") && !link.endsWith(".jpg") && !link.endsWith(".jpeg") && !link.endsWith(".gif") && !link.endsWith(".webp") && !link.endsWith(".mp4")){
+					contentObject.warns.push(`Attaching an image - The extension of the file located at "${imagePath}" is not supported. Supported extensions are: .png, .jpg, .jpeg, .gif, .webp and .mp4.`)
 					return
 				}
 
@@ -268,9 +268,13 @@ module.exports.convertMarkdown = async (
 				lastLineType = "image"
 				lastLineWasEmpty = false
 
+				const html = image.src.endsWith(".mp4")
+					? `<video class="w-full h-auto rounded-lg shadow my-5" controls src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" aria-label="${image.alt.replace(/"/g, "\\\"")}" />`
+					: `<img class="w-full h-auto rounded-lg bentoCard smallShadow duration-300 transition-shadow my-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`
+
 				line = line.replace(
 					match,
-					addHtmlToken(`<img class="w-full h-auto rounded-lg bentoCard smallShadow duration-300 transition-shadow my-5" src="${options.publicAssetsPath.replace(/"/g, "\\\"") || ""}${image.src.replace(/"/g, "\\\"")}" alt="${image.alt.replace(/"/g, "\\\"")}" />`)
+					addHtmlToken(html)
 				)
 			})
 		}
@@ -355,9 +359,11 @@ module.exports.convertMarkdown = async (
 				if(contentObject.metadata?.download_macos) ctaButtons.push({ platform: "macOS", href: contentObject.metadata.download_macos, svgPath: svgPaths.macos, includeMb: false })
 				if(contentObject.metadata?.download_linux) ctaButtons.push({ platform: "Linux", href: contentObject.metadata.download_linux, svgPath: svgPaths.linux, includeMb: true })
 
-				contentObject.content += `<div class="mt-4 flex gap-3 max-[600px]:gap-2.5 max-[600px]:flex-col max-[600px]:[&>*]:w-full">
-					${ctaButtons.map(button => components.primarybutton.replaceAll("{{ $label }}", `${translations[options.languageAbbreviated].blog.articleDetails.downloadPrefix} ${button.platform}`).replaceAll("{{ $href }}", button.href).replaceAll("{{ $svgPath }}", button.svgPath).replace((button.includeMb ? "<svg " : "<svg class=\"mb-0.5\""), "<svg ")).join("\n")}
-				</div>`
+				if(ctaButtons.length) {
+					contentObject.content += `<div class="mt-4 flex gap-3 max-[600px]:gap-2.5 max-[600px]:flex-col max-[600px]:[&>*]:w-full">
+						${ctaButtons.map(button => components.primarybutton.replaceAll("{{ $label }}", `${translations[options.languageAbbreviated].blog.articleDetails.downloadPrefix} ${button.platform}`).replaceAll("{{ $href }}", button.href).replaceAll("{{ $svgPath }}", button.svgPath).replace((button.includeMb ? "<svg " : "<svg class=\"mb-0.5\""), "<svg ")).join("\n")}
+					</div>`
+				}
 			}
 
 			contentObject.content += `<div class="flex gap-1.5 ${lastLineType == "metadata" ? "mt-3" : lastLineType.startsWith("title") ? "mt-4" : "mt-8"} items-center blogSubHeader">
