@@ -278,7 +278,7 @@ async function startRocServer(){
 			var foundBlogDocument = foundBlogDocumentInAllLanguages[potentialLang]
 			var fallbackLangUsed = false
 			if(!foundBlogDocument) {
-				foundBlogDocument = foundBlogDocument?.en || foundBlogDocument?.fr || Object.values(foundBlogDocumentInAllLanguages).find(c => c?.isBlogArticle) // fallback to english or any other available language
+				foundBlogDocument = foundBlogDocumentInAllLanguages?.en || foundBlogDocumentInAllLanguages?.fr || Object.values(foundBlogDocumentInAllLanguages).find(c => c?.isBlogArticle) // fallback to english or any other available language
 				fallbackLangUsed = foundBlogDocument?.lang ?? true
 			}
 			if(!foundBlogDocument) {
