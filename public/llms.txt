@@ -127,10 +127,6 @@
 - **Year:** 2022 - 2023.
 - **Links:** GitHub: https://github.com/johan-perso/sendovernetwork
 
-## Interesting Blogs Posts
-
-TODO
-
 ## Socials
 
 - Twitter/X : @Johan_Stickman ( https://x.com/Johan_Stickman )
