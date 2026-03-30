@@ -234,7 +234,8 @@
 	"misc": {
 		"back": "Retour en arrière",
 		"copiedSectionLink": "Lien vers cette section copié dans le presse-papier !",
-		"years": "ans"
+		"years": "ans",
+		"loadingIsSlow": "Le chargement prend plus de temps que prévu, vous pouvez peut-être actualiser la page ou vérifier votre connexion internet."
 	},
 	"map": {
 		"openParisMaps": "Ouvrir Paris sur Google Maps",

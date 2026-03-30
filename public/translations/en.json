@@ -234,7 +234,8 @@
 	"misc": {
 		"back": "Go back",
 		"copiedSectionLink": "Section link copied to clipboard!",
-		"years": "years old"
+		"years": "years old",
+		"loadingIsSlow": "The loading is taking longer than expected, you might want to refresh the page or check your internet connection."
 	},
 	"map": {
 		"openParisMaps": "Open Paris on Google Maps",

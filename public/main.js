@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 	setTimeout(() => {
 		if(isLoadingPage){
 			console.warn("15sec since DOMContentLoaded, partially hiding loader.")
-			document.getElementById("loader__error").innerText = "Le chargement prend plus de temps que prévu, vous pouvez peut-être actualiser la page ou vérifier votre connexion internet."
+			document.getElementById("loader__error").innerText = preloaded.translations.misc.loadingIsSlow || "This is taking longer than usual... Hang tight or refresh the page!"
 			document.getElementById("loader__error").classList.remove("hidden")
 			document.getElementById("loader__background").style.opacity = 0.8
 		}
