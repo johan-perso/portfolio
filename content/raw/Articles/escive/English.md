@@ -8,7 +8,6 @@ Post_Author: Johan
 Post_CoAuthors: "[el2zay](https://github.com/el2zay)"
 Download_Android: https://dl.bassinecorp.fr/escive?os=android
 Download_iOS: https://dl.bassinecorp.fr/escive?os=ios
-Link_Demo: https://escive-demo.johanstick.fr
 Link_SourceCode: https://github.com/johan-perso/escive
 ---
 The eScive app is now available! It offers a better experience for users of electric scooters from certain brands with Bluetooth capabilities. It replaces official apps by offering more features in a better interface, with no tracking and no ads.
@@ -35,6 +34,10 @@ But it's also designed to stay on screen throughout a ride, when your phone is m
 To save you as much time as possible, eScive opens and connects to your device quickly, while letting you configure multiple devices. To go even further, I've integrated tools to make it easier to create automations and shortcuts, speeding up every interaction with your vehicle.
 
 *Also, the official iScooter app crashes one out of three times on Android, requires access to your exact location, forces you to wait ten seconds before letting you unlock your vehicle, and has really unintuitive controls. That was also part of the motivation.*
+
+# Future of this project ^future
+
+I made this app by myself for myself, and only added support for one single e-scooter with Bluetooth capacity because it was the only one I got. Recently, I changed my setup and no longer have any Bluetooth scooter: the project will be "stopped" for a while because I won’t be able to test new features, or use the ones already present.
 
 # Automation ^automation
 

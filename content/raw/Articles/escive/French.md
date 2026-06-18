@@ -8,7 +8,6 @@ Post_Author: Johan
 Post_CoAuthors: "[el2zay](https://github.com/el2zay)"
 Download_Android: https://dl.bassinecorp.fr/escive?os=android
 Download_iOS: https://dl.bassinecorp.fr/escive?os=ios
-Link_Demo: https://escive-demo.johanstick.fr
 Link_SourceCode: https://github.com/johan-perso/escive
 ---
 L'application eScive est disponible ! Elle offre une meilleure expérience de conduite pour les utilisateurs de trottinettes électriques de certaines marques dotées de capacités Bluetooth. Elle remplace les apps officielles en offrant plus de fonctionnalités, avec une meilleure interface, sans tracking, et sans publicités.
@@ -37,6 +36,10 @@ Mais, elle est également faite pour être affichée à l'écran tout le long d'
 Pour vous faire perdre le moins de temps possible, eScive s'ouvre et se connecte rapidement à votre appareil, en vous laissant la possibilité d'en configurer plusieurs. Pour aller encore plus loin, j’ai intégré des outils pour faciliter la création d’automatisations et raccourcis, permettant d’accélérer encore plus chacune de vos actions avec votre véhicule.
 
 *Également, l'app officielle iScooter plante une fois sur trois sur Android, demande un accès à la localisation exacte de votre téléphone, vous force à attendre dix secondes avant de vous autoriser à déverrouiller votre véhicule, et dispose de contrôles vraiment pas intuitifs. Ça fait aussi partie des motivations.*
+
+# Avenir du projet ^future
+
+J’ai donc développé cette application tout seul, en ajoutant un support pour la seule trottinette électrique dotée d’une capacité Bluetooth que j’avais, mais que je n’ai plus : le projet sera donc interrompu pour un bon bout de temps puisque je ne pourrai plus l’utiliser moi-même.
 
 # Automatisation ^automation
 
